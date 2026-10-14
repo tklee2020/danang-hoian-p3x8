@@ -135,3 +135,4 @@ WRONG 은 데이터와 일정을 고치고, CONFIRMED 만 `{?}` 를 뗀다. 처�
   ② 닫기 버튼이 `history.back()` 을 부르면 `popstate` 가 화면을 맨 위로 올렸다 — `skipPop` 플래그.
   ③ 하네스가 주는 `ls` 값은 JSON 문자열이어야 한다(`'d'` 가 아니라 `'"d"'`).
   ④ 아래 고정 메뉴에 가린 입력칸은 puppeteer 클릭이 메뉴에 맞는다 — `scrollIntoView({block:'center'})` 뒤에 입력.
+  ⑤ MapLibre 출처 표시는 출처 글이 들어온 뒤(load·idle)에야 펼쳐진다 — `styledata` 때 접으면 다시 펴진다. `foldAttr()` 를 load·idle 에.

@@ -1059,7 +1059,7 @@ const TRIP = {
 <script>
 (function(){
 'use strict';
-var BUILD = '10/14 11:00';
+var BUILD = '10/14 11:10';
 var NS = 'danang26:';
 var OFF_L = 7, OFF_K = 9;   /* 현지(베트남) UTC+7 · 한국 UTC+9 */
 
@@ -1765,8 +1765,11 @@ function initMap(){
     map.addControl(new ml.NavigationControl({ showCompass: false }), 'top-right');
     map.addControl(new ml.ScaleControl({ maxWidth: 90, unit: 'metric' }), 'bottom-left');
     map.on('styleimagemissing', function(e){ try { if (!map.hasImage(e.id)) map.addImage(e.id, { width: 1, height: 1, data: new Uint8Array(4) }); } catch (x) {} });
+    /* 출처 표시는 접어 둔다(ⓘ 를 누르면 펴짐) — 펼친 채로는 지도 아래쪽을 가린다. 출처 글이 들어온 뒤에야 펼쳐지므로 load·idle 때 접는다 */
+    function foldAttr(){ var at = $('#map .maplibregl-ctrl-attrib'); if (at){ at.classList.remove('maplibregl-compact-show'); at.removeAttribute('open'); } }
     map.once('styledata', function(){ mapMsg(''); });
-    map.on('load', function(){ mapMsg(''); });
+    map.on('load', function(){ mapMsg(''); foldAttr(); });
+    map.once('idle', foldAttr);
     map.on('error', function(){ if (!navigator.onLine) mapMsg('📴 오프라인이에요 · 한 번 본 곳만 지도가 보여요'); });
     map.on('zoomend', mapVis);
     map.on('click', function(){ if (mapSel){ mapSel = null; mapVis(); } });
