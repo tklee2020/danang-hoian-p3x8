@@ -55,6 +55,21 @@ TRIP.lists.forEach(l => l.groups.forEach(g => g.items.forEach(it => uniq('ck:' +
 TRIP.phrases.forEach(g => g.list.forEach(p => { uniq('ph:' + p[0], '표현'); if (!p[1] || !p[2]) out.push('표현 ' + p[0] + ': 빈 칸'); }));
 TRIP.crew.forEach(c => uniq('crew:' + c.id, '사람'));
 TRIP.meds.forEach(x => { if (!(x.gapH > 0 && x.maxDay > 0)) out.push('약 ' + x.id + ': 간격·횟수'); });
+/* 디자인 D: 날짜 칩 아이콘 · 카드 대표 경로 · 짧은 이름 · 앱 바로가기 · 경로 그림 바탕(geo.js) */
+TRIP.days.forEach(d => { if (!d.ic) out.push(d.date + ': 날짜 칩 아이콘(ic) 없음'); });
+TRIP.cards.forEach(c => { if (!(c.route || []).length) out.push('카드 ' + c.id + ': route 없음 (경로 그림에 안 나와요)'); (c.route || []).forEach(k => need(k, '카드 ' + c.id + ' route')); });
+Object.keys(TRIP.short || {}).forEach(k => { need(k, 'short'); if (TRIP.short[k].length > 9) out.push('short ' + k + ': 9자 넘음'); });
+(TRIP.apps || []).forEach(a => { uniq('app:' + a.n, '앱'); if (!/^https:\/\//.test(a.web || '')) out.push('앱 ' + a.n + ': web 주소'); if (a.and && !(a.and[0] === 'play' ? a.and.length === 2 : a.and.length === 3)) out.push('앱 ' + a.n + ': and 형식'); });
+if (!(TRIP.apps || []).length) out.push('앱 바로가기(apps) 없음');
+const geoF = path.join(root, 'geo.js');
+if (!fs.existsSync(geoF)) out.push('geo.js 없음 (경로 그림 바탕)');
+else { const w = {}; try { new Function('window', fs.readFileSync(geoF, 'utf8'))(w); } catch (e) { out.push('geo.js: ' + e.message); }
+  if (!w.GEO || !w.GEO.sea || !w.GEO.rivers) out.push('geo.js: window.GEO 형식');
+  else if (!/OpenStreetMap/.test(fs.readFileSync(geoF, 'utf8').slice(0, 200))) out.push('geo.js: 첫 줄 OSM 출처 표기 없음'); }
+if (!/OpenStreetMap contributors/.test(TRIP.footer)) out.push('footer: 경로 그림 OSM 출처 없음');
+if (!fs.existsSync(path.join(root, 'fonts', 'Jua-ko.woff2')) || !fs.existsSync(path.join(root, 'fonts', 'LICENSE-Jua.txt'))) out.push('fonts/Jua-ko.woff2 · LICENSE-Jua.txt 없음');
+const swS = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
+['./geo.js', './fonts/Jua-ko.woff2'].forEach(f => { if (swS.indexOf("'" + f + "'") < 0) out.push('sw.js CORE 에 ' + f + ' 없음 (오프라인)'); });
 
 /* spots ↔ research TSV */
 const B = [[107.9, 15.75], [108.5, 16.25]];

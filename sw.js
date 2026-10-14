@@ -1,10 +1,10 @@
 /* 다낭 · 호이안 오프라인 지원 (강화판 sw.js + 도쿄판의 지도 타일 저장)
    - 페이지(index.html): 인터넷이 되면 항상 새 버전, 안 되거나 4초 넘게 걸리면 저장해 둔 버전
-   - 아이콘·글꼴(fonts/Pretendard, 설치 때 미리 저장)·지도 라이브러리(jsDelivr): 한 번 받으면 저장해 두고 씀 (뒤에서 조용히 새로 받기)
+   - 아이콘·글꼴(fonts/Pretendard·Jua, 설치 때 미리 저장)·경로 그림 바탕(geo.js)·지도 라이브러리(jsDelivr): 한 번 받으면 저장해 두고 씀 (뒤에서 조용히 새로 받기)
    - 실제 지도(OpenFreeMap) 타일·글꼴·아이콘: 한 번 본 곳은 저장해 두고 씀 (최근 1,500장까지)
    - 날씨·환율 API, 구글 지도 링크, 가족 공유(ntfy.sh): 가로채지 않음 (날씨·환율은 페이지가 따로 저장해 둬요) */
-const V = 'dnh-v1';   /* 바꾸면 저장해 둔 글꼴·아이콘·지도 라이브러리도 새로 받아요 */
-const CORE = ['./', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './fonts/PretendardVariable.woff2'];
+const V = 'dnh-v2';   /* 바꾸면 저장해 둔 글꼴·아이콘·지도 라이브러리도 새로 받아요 */
+const CORE = ['./', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './fonts/PretendardVariable.woff2', './fonts/Jua-ko.woff2', './geo.js'];
 const PAGE = new URL('./', self.registration.scope).href;
 
 self.addEventListener('install', e => {

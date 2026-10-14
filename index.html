@@ -15,6 +15,7 @@
 <meta name="apple-mobile-web-app-title" content="다낭 호이안">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preload" href="fonts/PretendardVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/Jua-ko.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 /* 글꼴: Pretendard 하나 (저장소에 파일로 — 오프라인에서도 같은 글꼴, 서비스워커가 저장) · SIL OFL 1.1 (fonts/LICENSE-Pretendard.txt) */
 @font-face{font-family:'Pretendard';src:url('fonts/PretendardVariable.woff2') format('woff2');font-weight:45 920;font-style:normal;font-display:swap}
@@ -510,6 +511,107 @@ html[data-big] .ev{grid-template-columns:68px 18px minmax(0,1fr)}
 .half .big{font-size:1.5rem}
 @media (max-width:374px){.show__name{font-size:2.375rem}.show__addr{font-size:1.8125rem}.clk__r b{font-size:1.6875rem}}
 
+/* ================= 디자인 D (10/14): 강화 틀 + 도쿄 맛 + 경로 ================= */
+/* 제목·숫자만 둥근 글꼴 Jua (fonts/Jua-ko.woff2 — 한글 2,350자 + 페이지 글자만 남긴 것, tools/make_font.py · SIL OFL 1.1) */
+@font-face{font-family:'Jua';src:url('fonts/Jua-ko.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+:root{--lan:#F5B83D;--lan-d:#C98A12;--lan-txt:#9A6408;--lan-ink:#2B1D00;--f-game:'Jua',var(--f-body)}
+.title,.now-title,.card h3,.badge,.time,.tm,.big,.clk__r b,.fc-head,.plan-now,.lead,.wx-d,.days button b,.chap b,.stage,.app,.appi__t b,.rb,.rr-t{font-family:var(--f-game);font-weight:400;letter-spacing:0}
+.title{font-size:2.25rem}
+.now-title{font-size:1.75rem}
+.card h3{font-size:1.25rem}
+.title em{color:var(--lan-txt)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .title em{color:var(--lan)}}
+:root[data-theme="dark"] .title em{color:var(--lan)}
+
+/* 오늘 탭 머리: DAY 표시 · 등불 그림 */
+#v-plan .vhead{position:relative}
+#v-plan .title{padding-right:62px}
+.stage{display:inline-block;margin-bottom:6px;padding:2px 10px;border-radius:8px;background:var(--inv);color:var(--inv-ink);font-size:.875rem;letter-spacing:.02em}
+.lantern{position:absolute;right:4px;top:-6px;width:58px;height:86px;pointer-events:none}
+
+/* 날짜 칩 줄 (오늘 탭 위) — 아이콘은 예보, 없으면 그날 성격 · 누르면 그날 일정 */
+.chap{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:12px}
+body:not([data-view="plan"]) .top .chap{display:none}
+.chap button{min-width:0;display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 0 6px;border:0;border-radius:14px;background:var(--card);box-shadow:0 3px 0 rgba(16,36,43,.12);font-size:.75rem;font-weight:700;line-height:1.25;color:var(--ink-2);cursor:pointer}
+.chap button i{font-style:normal;font-size:1.0625rem;line-height:1.2}
+.chap button b{font-size:.9375rem;color:var(--ink)}
+.chap button.on{background:var(--lan);color:var(--lan-ink);box-shadow:0 3px 0 var(--lan-d)}
+.chap button.on b{color:var(--lan-ink)}
+.chap button.past{opacity:.55}
+.chap button:active{transform:translateY(2px);box-shadow:none}
+
+/* 앱 바로가기 줄 — 도톰한 버튼 (가로로 밀어요) */
+.approw{display:flex;gap:8px;overflow-x:auto;margin:-6px calc(-1 * var(--gutter)) 16px;padding:2px var(--gutter) 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.approw::-webkit-scrollbar{display:none}
+.app{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:48px;padding:0 14px 0 10px;border-radius:14px;background:var(--card);color:var(--ink);border:2px solid var(--line);box-shadow:0 3px 0 rgba(16,36,43,.14);font-size:1rem;text-decoration:none;white-space:nowrap}
+.app i{font-style:normal;font-size:1.375rem;line-height:1}
+.appi{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}
+.appi:first-child{border-top:0}
+.appi > i{flex:none;width:30px;font-style:normal;font-size:1.5rem;text-align:center}
+.appi__t{flex:1;min-width:0;display:grid;gap:1px}
+.appi__t b{font-size:1.0625rem}
+.appi__t small{font-size:.875rem;color:var(--ink-2);line-height:1.45}
+.appi__x{flex:none;color:var(--ink-3);font-weight:800}
+
+/* 버튼·태그 — 아래 그림자(눌리는 느낌), 지금 = 등불 색 */
+.btn{box-shadow:0 3px 0 rgba(16,36,43,.18)}
+.btn--pri{box-shadow:0 3px 0 #08555C}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.tag.now{background:var(--lan);color:var(--lan-ink);font-family:var(--f-game);font-weight:400}
+.ev.is-now{background:rgba(245,184,61,.16)}
+.is-now .rail i{background:var(--lan);box-shadow:0 0 0 4px rgba(245,184,61,.25)}
+
+/* 오늘 경로 그림 카드 — 실제 좌표 + OSM 해안선·강 위에 점선 */
+:root{--rm-land:#EEF2E1;--rm-sea:#A9D8EF;--rm-ink:#1E2A30;--rm-halo:#FFFFFF}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--rm-land:#26323A;--rm-sea:#123A52;--rm-ink:#EAF1F4;--rm-halo:#0E171D}}
+:root[data-theme="dark"]{--rm-land:#26323A;--rm-sea:#123A52;--rm-ink:#EAF1F4;--rm-halo:#0E171D}
+.rcard{padding:12px}
+.rmap{display:block;width:100%;height:auto;margin-top:8px;border-radius:14px;overflow:hidden}
+.rm-land{fill:var(--rm-land)}
+.rm-sea{fill:var(--rm-sea)}
+.rm-river{fill:none;stroke:var(--rm-sea);stroke-linecap:round;stroke-linejoin:round}
+.rm-route-c{fill:none;stroke:var(--rm-halo);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+.rm-route{fill:none;stroke:#E2483B;stroke-width:3;stroke-dasharray:1 7;stroke-linecap:round;stroke-linejoin:round}
+.rm-stop circle,.rm-stop rect{fill:#FFFFFF;stroke:#1E2A30;stroke-width:2.5}
+.rm-stop.is-stay circle{fill:var(--lan)}
+.rm-n{font-family:var(--f-game);font-size:13px;text-anchor:middle;fill:#1E2A30}
+.rm-l{font-family:var(--f-game);font-size:14px;fill:var(--rm-ink);paint-order:stroke;stroke:var(--rm-halo);stroke-width:4px;stroke-linejoin:round}
+.rm-far path{fill:#E2483B;stroke:var(--rm-halo);stroke-width:1.5}
+.rm-far rect{fill:var(--rm-ink)}
+.rm-far text{font-family:var(--f-game);font-size:13px;fill:var(--rm-halo)}
+.rm-scale path{stroke:var(--rm-ink);stroke-width:2.5;fill:none}
+.rm-scale text{font-size:11px;font-weight:700;fill:var(--rm-ink);paint-order:stroke;stroke:var(--rm-halo);stroke-width:3px}
+.rrows{list-style:none;margin:10px 0 0;padding:0}
+.rr{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px;align-items:start;padding:7px 0;border-top:1px solid var(--line)}
+.rr:first-child{border-top:0}
+.rr-t{font-size:.9375rem;line-height:24px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.rr-c{display:flex;flex-wrap:wrap;align-items:center;gap:4px 5px;font-size:.9375rem;font-weight:700;line-height:1.35}
+.rr-c > span{display:inline-flex;align-items:center;gap:5px}
+.rr--mv .rr-c{font-weight:800}
+.rb{display:inline-flex;align-items:center;justify-content:center;flex:none;min-width:24px;height:24px;padding:0 5px;border-radius:12px;background:var(--ink);color:var(--card);font-size:.8125rem;line-height:1}
+.rb.is-stay{background:var(--lan);color:var(--lan-ink)}
+.rb.is-far{background:var(--chip);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.rl{font-style:normal;font-size:.8125rem;font-weight:600;color:var(--ink-2);white-space:nowrap}
+.rl::before{content:"→ ";color:var(--ink-3)}
+.rl::after{content:" →";color:var(--ink-3)}
+
+/* 지도 탭: 날짜 칩 · 경로 안내 · 번호 핀 */
+.rchips{margin:0}
+.rchips button{padding:4px 0 5px}
+.rnote{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8px 10px;border-radius:12px;background:var(--card);font-size:.875rem;font-weight:700;line-height:1.45}
+.rnote span{flex:1 1 100%;min-width:0}
+.rnote small{display:block;font-size:.8125rem;font-weight:600;color:var(--ink-2)}
+.rnote .mini{min-height:40px}
+.rpin{width:30px;height:30px;padding:0;border:0;background:none;cursor:pointer}
+.rpin b{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;padding:0 6px;border-radius:15px;background:#FFFFFF;border:3px solid #1E2A30;color:#1E2A30;font-family:var(--f-game);font-weight:400;font-size:15px;line-height:1;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.rpin.is-stay b{background:#F5B83D}
+.rpin.is-far b{background:#EDF2F4}
+.rpin span{position:absolute;top:50%;left:calc(50% + var(--o,18px));transform:translateY(-50%);padding:1px 7px;border-radius:8px;background:rgba(255,255,255,.94);color:#1E2A30;font-family:var(--f-game);font-size:14px;line-height:1.45;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.2);pointer-events:none}
+.rpin.lbl-l span{left:auto;right:calc(50% + var(--o,18px))}
+.rpin.lbl-b span{left:50%;top:calc(50% + 18px);transform:translateX(-50%)}
+.rpin.lbl-t span{left:50%;top:auto;bottom:calc(50% + 18px);transform:translateX(-50%)}
+#mapBox.routing .mk{opacity:.35!important}   /* 마커는 maplibre 가 opacity 를 직접 적어 넣어요 */
+#mapBox.routing .mk.is-sel{opacity:1!important}
 </style>
 <script>
 (function(){var m=null,b=null;try{m=JSON.parse(localStorage.getItem('danang26:theme'));b=JSON.parse(localStorage.getItem('danang26:big'));}catch(e){}
@@ -528,14 +630,18 @@ if(b===true)document.documentElement.setAttribute('data-big','');})();
         <button class="ibtn" id="themeBtn" type="button" aria-label="화면 테마 바꾸기">🌗</button>
       </div>
     </div>
+    <div class="chap" id="chap" role="group" aria-label="날짜별 일정 (누르면 그날 일정)"></div>
     <button class="ticker" id="ticker" type="button" aria-label="지금 할 일로 이동"></button>
   </header>
 
   <!-- ============ 오늘 ============ -->
   <section class="view" id="v-plan" data-view="plan" aria-labelledby="planT">
-    <header class="vhead"><h1 class="title" id="planT">다낭 · 호이안</h1><p class="sub" id="subT"></p></header>
+    <header class="vhead"><span class="stage" id="stage" hidden></span><h1 class="title" id="planT">다낭 · 호이안</h1><p class="sub" id="subT"></p>
+      <svg class="lantern" viewBox="0 0 58 86" aria-hidden="true"><line x1="29" y1="0" x2="29" y2="14" stroke="#8C3E1E" stroke-width="2.5"/><rect x="17" y="12" width="24" height="6" rx="2" fill="#8C3E1E"/><ellipse cx="29" cy="40" rx="22" ry="23" fill="#F5B83D"/><ellipse cx="29" cy="40" rx="13" ry="23" fill="none" stroke="#E0952A" stroke-width="2"/><ellipse cx="29" cy="40" rx="5" ry="23" fill="none" stroke="#E0952A" stroke-width="2"/><ellipse cx="25" cy="33" rx="5" ry="8" fill="#FFECAA" opacity=".8"/><rect x="17" y="61" width="24" height="6" rx="2" fill="#8C3E1E"/><line x1="29" y1="67" x2="29" y2="74" stroke="#8C3E1E" stroke-width="2.5"/><rect x="25.5" y="73" width="7" height="12" rx="3" fill="#D64834"/></svg></header>
+    <nav class="approw" id="appRow" aria-label="앱 바로가기 (설치돼 있으면 앱으로 열려요)"></nav>
     <div class="bento">
       <section class="tile span2 hero" id="hero" aria-label="지금과 다음"></section>
+      <section class="tile span2" id="routeTile" aria-label="오늘 경로" hidden></section>
       <section class="tile half" id="clockTile" aria-label="현지 시각과 한국 시각"></section>
       <section class="tile half" id="wxTile" aria-label="날씨"></section>
       <section class="tile span2" id="fcTile" aria-label="예보와 카드 추천"></section>
@@ -562,10 +668,12 @@ if(b===true)document.documentElement.setAttribute('data-big','');})();
   <!-- ============ 지도 ============ -->
   <section class="view" id="v-map" data-view="map" hidden aria-labelledby="mapT">
     <header class="vhead"><h2 class="title" id="mapT">실제 <em>지도</em></h2>
-      <p class="sub">핀을 누르면 아래에 장소가 떠요. 한 번 본 곳은 인터넷이 없어도 보여요.</p></header>
+      <p class="sub">날짜를 누르면 그날 경로가 번호 핀으로 떠요. 한 번 본 곳은 인터넷이 없어도 보여요.</p></header>
     <div class="stack">
       <section class="tile" aria-label="지도">
         <div class="seg" id="mapArea" role="group" aria-label="지역"></div>
+        <div class="chap rchips" id="mapDays" role="group" aria-label="경로 볼 날짜 (한 번 더 누르면 끄기)"></div>
+        <p class="rnote" id="mapRoute" hidden></p>
         <div id="mapBox"><div id="map"></div><p class="map-msg" id="mapMsg">지도를 불러오는 중…</p></div>
         <div class="card"><div class="chipsel" id="mapFilt" role="group" aria-label="종류" style="margin-top:0"></div></div>
         <div id="mapCard"></div>
@@ -688,9 +796,10 @@ const TRIP = {
       facts: ['키즈클럽 연령 {?13개월 가능한지}', '베이비시팅 요금 {?}', '레이트 체크아웃(13시) {?}', '아기 침대·유아 의자·전자레인지 {?}', '수영장은 온수가 아니라 흐린 날 차갑다는 후기'] }
   ],
 
-  /* k: flight·move·stay·food·walk·rest·spa·shop·card / place: 대표 장소(spots key) / places: 고를 곳들 / alt: 비·피곤할 때 */
+  /* k: flight·move·stay·food·walk·rest·spa·shop·card / place: 대표 장소(spots key) / places: 고를 곳들 / alt: 비·피곤할 때
+     ic: 날짜 칩 아이콘(예보가 없을 때) / 오늘 경로 = 일정마다 place 또는 places 의 첫 곳, 장소 없는 쉬기·숙소·조식은 그 시각의 숙소, 카드는 cards[].route */
   days: [
-    { date: '2026-11-01', label: '일', title: '인천 → 다낭 → 호이안', items: [
+    { date: '2026-11-01', label: '일', ic: '✈️', title: '인천 → 다낭 → 호이안', items: [
       { t: '08:20', tz: 'K', k: 'flight', title: '인천공항 **제2터미널** 도착 · 체크인', memo: ['유모차는 탑승구에서 맡겨요', '프레스티지 라운지'] },
       { t: '11:10', tz: 'K', k: 'flight', title: '**KE457 출발** — 인천 T2 → 다낭 T2', memo: ['다낭 도착은 현지 시각 14:15 — 시계를 2시간 뒤로 돌려요'] },
       { t: '14:15', k: 'flight', title: '**다낭공항 T2 도착** — 입국·짐 찾기', memo: ['낮 도착이라 보통 40~60분', '도착장에서 이름판 든 기사를 찾아요'], place: 'd_airport' },
@@ -700,7 +809,7 @@ const TRIP = {
       { t: '18:00', approx: true, k: 'shop', title: '윈마트+ 에서 생수·간식', memo: ['57 Hùng Vương · 390m · 22시쯤까지', '(힘 남으면) 안호이 강변 등불만 보고 오기 — 700m'], places: ['h_winmart'] },
       { t: '19:00', approx: true, k: 'rest', title: '숙소 · 아기 재우기', memo: ['현지 19시 = 아기 몸시계(한국) 21시'] }
     ] },
-    { date: '2026-11-02', label: '월', title: '호이안 올드타운 — 아침 한 번, 해 질 녘 한 번', items: [
+    { date: '2026-11-02', label: '월', ic: '🏮', title: '호이안 올드타운 — 아침 한 번, 해 질 녘 한 번', items: [
       { t: '06:30', k: 'food', title: '조식', memo: ['06:30~10:00'] },
       { t: '08:00', end: '10:30', k: 'walk', title: '올드타운 아침 산책', memo: ['선선하고 사람 없을 때 — 리버타운에서 걸어서 12분',
           '**내원교**(겉에서) → 쩐푸 거리 → **복건회관**(07:00~) 또는 **떤끼 고택**(08:30~) 중 한 곳만 → **리칭아웃 티하우스**(08:00~)에서 쉬기 → 호이안 시장 앞',
@@ -715,7 +824,7 @@ const TRIP = {
       { t: '17:30', k: 'walk', title: '등불 켜진 강변 → 소원배 20분', memo: ['척당 15~20만 동 — **타기 전에 값·시간 합의**', '강물이 높거나 비 오면 생략', '야시장 입구까지만 보고 돌아와요'], places: ['h_nightmarket'] },
       { t: '18:30', k: 'rest', title: '귀가 (19시 전)', memo: ['현지 19시 = 아기 몸시계(한국) 21시'] }
     ] },
-    { date: '2026-11-03', label: '화', title: '호이안 → 다낭', items: [
+    { date: '2026-11-03', label: '화', ic: '🚗', title: '호이안 → 다낭', items: [
       { t: '06:30', k: 'food', title: '조식', memo: ['06:30~10:00'] },
       { t: '08:00', approx: true, k: 'rest', title: '수영장 / 전날 비로 못 본 올드타운' },
       { t: '12:00', k: 'move', title: '**12:00 체크아웃 → 예약 차량(카시트)** → 푸라마', memo: ['23 km · 35~40분 — 아기는 차에서 낮잠', '맑고 아기가 깨어 있으면 가는 길에 **오행산** 엘리베이터 코스 1시간(차는 대기) {?대기 요금}'], place: 'd_furama', places: ['s_marble'] },
@@ -724,25 +833,25 @@ const TRIP = {
       { t: '15:00', approx: true, k: 'rest', title: '수영장 · 해변 산책 · K마켓 장보기', memo: ['K마켓 VNG점 200m — 한국 식품'], places: ['m_kmarket'] },
       { t: '17:00', approx: true, k: 'food', title: '저녁 — 리조트 식당 또는 길 건너', memo: ['**랑**(인도 요리) · **냐벱**'], places: ['d_rang', 'd_nhabep'] }
     ] },
-    { date: '2026-11-04', label: '수', title: '다낭 자유 1 — 아침에 카드 한 장', free: true, def: ['resort'], defNote: '기본 배치: 리조트 데이 + 안트엉 저녁', items: [
+    { date: '2026-11-04', label: '수', ic: '🌴', title: '다낭 자유 1 — 아침에 카드 한 장', free: true, def: ['resort'], defNote: '기본 배치: 리조트 데이 + 안트엉 저녁', items: [
       { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 카드 고르기', memo: ['06:30~10:30'] },
       { t: '08:00', approx: true, k: 'card', title: '오늘의 카드 (하루 한 장, 많아야 두 장)', memo: ['아침에 나갔다가 12시 전후에 돌아와요', '기본 배치(날씨가 평범하면): **리조트 데이** + 안트엉 저녁'] },
       { t: '12:00', approx: true, k: 'rest', title: '리조트 — 낮잠 · 수영장' },
       { t: '16:30', k: 'food', title: '저녁 (16:30~17:00 출발)', memo: ['안트엉 거리 1.2~1.5 km — 그랩 5분', '비 오는 저녁은 그랩이 잘 안 잡혀요 — **돌아올 차를 식사 전에** 생각해 둬요'], dinner: true }
     ] },
-    { date: '2026-11-05', label: '목', title: '다낭 자유 2 — 아침에 카드 한 장', free: true, def: ['city', 'linhung'], defNote: '기본 배치: 시내 반나절 또는 린응사', items: [
+    { date: '2026-11-05', label: '목', ic: '🌴', title: '다낭 자유 2 — 아침에 카드 한 장', free: true, def: ['city', 'linhung'], defNote: '기본 배치: 시내 반나절 또는 린응사', items: [
       { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 카드 고르기', memo: ['06:30~10:30'] },
       { t: '08:00', approx: true, k: 'card', title: '오늘의 카드 (하루 한 장, 많아야 두 장)', memo: ['아침에 나갔다가 12시 전후에 돌아와요', '기본 배치(날씨가 평범하면): **시내 반나절** 또는 **린응사**'] },
       { t: '12:00', approx: true, k: 'rest', title: '리조트 — 낮잠 · 수영장' },
       { t: '16:30', k: 'food', title: '저녁 (16:30~17:00 출발)', memo: ['안트엉 거리 1.2~1.5 km — 그랩 5분', '비 오는 저녁은 그랩이 잘 안 잡혀요 — **돌아올 차를 식사 전에** 생각해 둬요'], dinner: true }
     ] },
-    { date: '2026-11-06', label: '금', title: '다낭 자유 3 — 마지막 밤', free: true, def: ['marble'], defNote: '기본 배치: 오행산(아침) + 가족 저녁(티아고)', items: [
+    { date: '2026-11-06', label: '금', ic: '🌴', title: '다낭 자유 3 — 마지막 밤', free: true, def: ['marble'], defNote: '기본 배치: 오행산(아침) + 가족 저녁(티아고)', items: [
       { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 카드 고르기', memo: ['06:30~10:30'] },
       { t: '07:30', approx: true, k: 'card', title: '오늘의 카드 (하루 한 장, 많아야 두 장)', memo: ['아침에 나갔다가 12시 전후에 돌아와요', '기본 배치(날씨가 평범하면): **오행산**(아침 07:30) + 가족 저녁'] },
       { t: '12:00', approx: true, k: 'rest', title: '리조트 — 낮잠 · 수영장 · 짐 미리 싸기' },
       { t: '16:30', k: 'food', title: '가족 저녁 — 티아고 (16:30~17:00 출발)', memo: ['미쉐린 빕구르망 · 북부식 쌀국수·반쎄오 · 10:00~', '푸라마에서 2.2 km — 그랩', '용다리 불쇼는 21:00(아기에겐 한국 23시)이라 넣지 않았어요. 보고 싶으면 어른 둘만 그랩으로 {?금요일 운영}'], places: ['d_thiago'], dinner: true }
     ] },
-    { date: '2026-11-07', label: '토', title: '귀국 — 13:00 차량, 15:45 비행기', items: [
+    { date: '2026-11-07', label: '토', ic: '🏠', title: '귀국 — 13:00 차량, 15:45 비행기', items: [
       { t: '06:30', k: 'food', title: '조식', memo: ['06:30~10:30'] },
       { t: '09:00', approx: true, k: 'rest', title: '수영장 · 짐 싸기' },
       { t: '11:00', k: 'stay', title: '**11:00 체크아웃**', memo: ['13시까지 레이트 체크아웃 요청 {?}'], place: 'd_furama' },
@@ -753,23 +862,24 @@ const TRIP = {
     ] }
   ],
 
-  /* 날씨 카드 — w: sun(맑은 날) / rain(비 오는 날). 다낭 자유 3일(11/4~6)에 하루 한 장 */
+  /* 날씨 카드 — w: sun(맑은 날) / rain(비 오는 날). 다낭 자유 3일(11/4~6)에 하루 한 장
+     route: 오늘 경로 그림·지도에 찍을 대표 순서 (places 에는 '또는' 후보가 섞여 있어요) */
   cards: [
-    { id: 'linhung', w: 'sun', title: '린응사', sub: '해수관음상 · 바다 전망 1시간 (무료)', go: '11 km · 차로 20~25분', when: '08:30 출발',
+    { id: 'linhung', route: ['s_linhung', 'd_moc'], w: 'sun', title: '린응사', sub: '해수관음상 · 바다 전망 1시간 (무료)', go: '11 km · 차로 20~25분', when: '08:30 출발',
       memo: ['어깨·무릎 가리는 옷', '원숭이 주의', '점심: **목 해산물**(10:30~) 또는 **벱꾸온**(반쎄오·분짜, 카톡 예약)'], places: ['s_linhung', 'd_moc', 'd_bepcuon'] },
-    { id: 'marble', w: 'sun', title: '오행산', sub: '엘리베이터로 올라가 사원·동굴 1시간', go: '5 km · 차로 10~12분', when: '07:30 또는 16시 이후',
+    { id: 'marble', route: ['s_marble', 'd_kembo'], w: 'sun', title: '오행산', sub: '엘리베이터로 올라가 사원·동굴 1시간', go: '5 km · 차로 10~12분', when: '07:30 또는 16시 이후',
       memo: ['입장 4만 동 + 엘리베이터 1.5만 동', '유모차 불가 → 아기띠', '**비 온 뒤엔 미끄러워 생략**', '끝나고 꼬번 아보카도 아이스크림'], places: ['s_marble', 'd_kembo'] },
-    { id: 'city', w: 'sun', title: '시내 반나절', sub: '한시장(짧게) → 핑크성당(겉) → 원더러스트 → 점심', go: '6 km · 차로 15분',
+    { id: 'city', route: ['s_han', 's_cathedral', 'd_wonderlust', 'd_4ps_bd'], w: 'sun', title: '시내 반나절', sub: '한시장(짧게) → 핑크성당(겉) → 원더러스트 → 점심', go: '6 km · 차로 15분',
       memo: ['한시장은 좁고 더워요 — 어른 둘만 들어가고 나머지는 카페', '점심: **피자 4P’s 인도차이나**(예약) 또는 **냐벱 한시장점**'], places: ['s_han', 's_cathedral', 'd_wonderlust', 'd_4ps_bd', 'd_nhabepcho'] },
-    { id: 'bana', w: 'sun', cond: true, title: '바나힐', sub: '골든브릿지 + 프렌치빌리지 광장만 · 12시 하산', go: '28 km · 차로 45~50분 · 카시트 예약차 반일 대절', when: '07:30 출발',
+    { id: 'bana', route: ['s_bana'], w: 'sun', cond: true, title: '바나힐', sub: '골든브릿지 + 프렌치빌리지 광장만 · 12시 하산', go: '28 km · 차로 45~50분 · 카시트 예약차 반일 대절', when: '07:30 출발',
       memo: ['**전날 예보 + 당일 아침 정상 라이브캠**을 보고 가요', '성인 100만 동 × 4', '케이블카 25분 — 호이안역 방면(환승 없음)', '정상은 5~8도 낮고 안개 잦음 → 얇은 긴팔', '유모차 지참'], places: ['s_bana'] },
-    { id: 'resort', w: 'rain', title: '리조트 데이', sub: '수영장 · 키즈클럽 · 어른 스파 교대', go: '걸어서',
+    { id: 'resort', route: ['p_dahan'], w: 'rain', title: '리조트 데이', sub: '수영장 · 키즈클럽 · 어른 스파 교대', go: '걸어서',
       memo: ['키즈클럽 {?13개월 가능한지}', '스파: **다한스파 다낭점**(250m) / **포레스트**(430m)', '수영장은 온수가 아니라 흐린 날 차갑다는 후기'], places: ['p_dahan', 'p_forest'] },
-    { id: 'lotte', w: 'rain', title: '롯데마트', sub: '쇼핑 + 5층 키즈카페 + 2층 퍼 29', go: '2.8 km · 차로 8~10분', when: '07:30~',
+    { id: 'lotte', route: ['s_lotte'], w: 'rain', title: '롯데마트', sub: '쇼핑 + 5층 키즈카페 + 2층 퍼 29', go: '2.8 km · 차로 8~10분', when: '07:30~',
       memo: ['5층 키즈카페 {?연령·요금}', '짐 보관 무료 {?}'], places: ['s_lotte', 'd_pho29lotte'] },
-    { id: 'mikazuki', w: 'rain', title: '미카즈키 워터파크 365', sub: '실내 온수 풀 · 1m 미만 무료 · 평일 35만 동', go: '20 km · 차로 30~35분 · 카시트 예약차', when: '오전에',
+    { id: 'mikazuki', route: ['s_mikazuki'], w: 'rain', title: '미카즈키 워터파크 365', sub: '실내 온수 풀 · 1m 미만 무료 · 평일 35만 동', go: '20 km · 차로 30~35분 · 카시트 예약차', when: '오전에',
       memo: ['13시 이후 붐벼요', '주변 식당 없음'], places: ['s_mikazuki'] },
-    { id: 'museum', w: 'rain', title: '미술관 + 카페', sub: '다낭 미술관 또는 다낭 박물관 → 남하우스 / 브루맨', go: '6~7 km · 차로 15분',
+    { id: 'museum', route: ['s_fineart', 'd_namhouse'], w: 'rain', title: '미술관 + 카페', sub: '다낭 미술관 또는 다낭 박물관 → 남하우스 / 브루맨', go: '6~7 km · 차로 15분',
       places: ['s_fineart', 's_museum', 'd_namhouse', 'd_brewman'] }
   ],
   dinners: [
@@ -904,6 +1014,22 @@ const TRIP = {
     { name: '아플 때', list: [
       ['ph17', '아기가 열이 나요', 'Em bé bị sốt'], ['ph18', '가장 가까운 병원이 어디예요?', 'Bệnh viện gần nhất ở đâu?'], ['ph19', '소아과 의사가 필요해요', 'Tôi cần bác sĩ nhi'], ['ph20', '약국이 어디예요?', 'Nhà thuốc ở đâu?'] ] }
   ],
+  /* 경로 그림·번호 핀에 쓰는 짧은 이름 (없으면 괄호를 뺀 이름, 9자 넘으면 줄임) */
+  short: { d_airport: '다낭공항', h_nightmarket: '야시장', h_redbean: '레드빈', d_kembo: '꼬번 아이스크림', d_4ps_bd: '피자 4P’s', d_nhabepcho: '냐벱 한시장점', s_mikazuki: '미카즈키', d_pho29lotte: '퍼 29', s_cathedral: '핑크성당', p_dahan: '다한스파' },
+
+  /* 앱 바로가기 — 오늘 탭 제목 아래 줄 + 공략집 설명. and: 안드로이드 [주소, scheme, 패키지] 또는 ['play', 패키지](스토어의 「열기」를 거침), ios: 앱스토어 id
+     안드로이드 방식은 도쿄 PLAYBOOK 1-3절 표(실제 폰에서 눌러 본 결과)대로. 그랩은 그 표에 없어서 폰 확인 필요(PLAYBOOK 8절) */
+  apps: [
+    { e: '🗺️', n: '구글 지도', d: '길찾기·가게 리뷰. 장소의 「지도」 버튼도 이 앱으로 열려요.', web: 'https://www.google.com/maps', and: ['www.google.com/maps', 'https', 'com.google.android.apps.maps'] },
+    { e: '🚗', n: '그랩', d: '차 부르기 — 시내·안트엉·린응사는 7인승으로. 한국에서 전화번호 인증·카드 등록까지. 카시트는 없어요.', web: 'https://www.grab.com/vn/en/', and: ['open?screenType=BOOKING', 'grab', 'com.grabtaxi.passenger'] },
+    { e: '🈯', n: '구글 번역', s: '번역', d: '베트남어 메뉴판·간판 카메라 번역, 대화 모드. 베트남어 오프라인 팩을 미리 받아 두세요.', web: 'https://translate.google.com/?sl=vi&tl=ko', and: ['translate.google.com/?sl=vi&tl=ko', 'https', 'com.google.android.apps.translate'], ios: 414706506 },
+    { e: '🦜', n: '파파고', d: '한국어 ↔ 베트남어 대화·사진 번역. 안드로이드는 스토어의 「열기」를 한 번 거쳐요(웹에서 바로 여는 걸 앱이 막아 둠).', web: 'https://papago.naver.com/', and: ['play', 'com.naver.labs.translator'], ios: 1147874819 },
+    { e: '🔍', n: '구글 렌즈', s: '렌즈', d: '간판·메뉴를 비추면 번역·검색. 안드로이드는 스토어의 「열기」를 거쳐요(구글 번역 → 카메라도 같은 기능).', web: 'https://lens.google/', and: ['play', 'com.google.ar.lens'], ios: 284815942 },
+    { e: '✈️', n: '대한항공', d: 'KE457·KE458 모바일 체크인·탑승권. 앱이 있으면 앱, 없으면 웹으로 열려요.', web: 'https://www.koreanair.com/' },
+    { e: '🤖', n: 'Claude', d: '사진 찍어 「이거 뭐야?」, 비 와서 일정이 바뀌면 동선 다시 짜기.', web: 'https://claude.ai/new', and: ['claude.ai/new', 'https', 'com.anthropic.claude'] },
+    { e: '💳', n: '트래블월렛', d: '트래블월렛 카드 잔액 확인·충전.', web: 'https://www.travel-wallet.com/', and: ['play', 'com.mobiletoong.travelwallet'], ios: 1460769945 },
+    { e: '🆘', n: '해외안전여행', s: '해외안전', d: '외교부 해외안전여행 — 영사콜센터·현지 안전 공지. 급한 전화는 오늘 탭 🚑 비상 연락처에.', web: 'https://www.0404.go.kr/' }
+  ],
   driverLead: 'Xin chở tôi đến địa chỉ này:',   /* 기사에게 보여주기 첫 줄 */
   showVi: { d_airport: ['Sân bay quốc tế Đà Nẵng', 'Ga quốc tế T2 (Terminal 2)'] },   /* 주소 칸이 한글뿐인 곳의 베트남어 표기 */
   sunset: '17:17',   /* 예보를 못 받았을 때 보여 줄 11월 초 일몰 */
@@ -928,7 +1054,7 @@ const TRIP = {
       '문 닫음: 쩐(Trần) 폐업 · 트리비엣 임시 휴업 · tiNiWorld 빈컴 폐업',
       '전망·위치로만 남긴 곳: 선짜 마리나 4.0 · 콩카페 박당점 4.1' ] }
   ],
-  footer: '장소·평점: 구글 지도 직접 조회(2026-10-14) · 날씨: Open-Meteo · 환율: open.er-api.com · 지도: OpenFreeMap / OpenStreetMap',
+  footer: '장소·평점: 구글 지도 직접 조회(2026-10-14) · 날씨: Open-Meteo · 환율: open.er-api.com · 지도: OpenFreeMap / OpenStreetMap · 경로 그림 해안선·강: © OpenStreetMap contributors (ODbL) · 글꼴: Pretendard, Jua (SIL OFL)',
 
   spots: [
     /* key, 지역, 종류, 이름, 구글 이름, 평점, 리뷰 수, 위도, 경도, 숙소에서 도로 km, 직선 m, 주소, 전화, 메모 */
@@ -1056,10 +1182,11 @@ const TRIP = {
   ]
 };
 </script>
+<script src="geo.js"></script>
 <script>
 (function(){
 'use strict';
-var BUILD = '10/14 11:10';
+var BUILD = '10/14 15:50';
 var NS = 'danang26:';
 var OFF_L = 7, OFF_K = 9;   /* 현지(베트남) UTC+7 · 한국 UTC+9 */
 
@@ -1297,7 +1424,8 @@ function startPlanEdit(preset){
 }
 function gotPlan(date, p, remote){
   var P = plans(); if (P[date] && P[date].t >= p.t) return false;
-  P[date] = p; save('plans', P); renderPlan(); renderHero();
+  P[date] = p; save('plans', P); renderPlan(); renderHero(); renderRoute();
+  if (date === mapDay) setMapDay(date, false);
   if (remote){ var by = crew(p.by); toast((by ? by.name + ' · ' : '') + md(date) + ' 계획: ' + planLine(p)); }
   return true;
 }
@@ -1361,6 +1489,332 @@ function nextTodo(){
   var done = load('ck', {}), g = listItems(listById('pre'));
   for (var i = 0; i < g.length; i++) if (!done[g[i][0]]) return g[i][1];
   return null;
+}
+
+/* ---------- 날짜 칩 · DAY 표시 ---------- */
+/* 칩 아이콘: 그날 예보(3일 앞까지)가 있으면 날씨, 없으면 그날 성격(days[].ic) */
+function dayIcon(d){
+  var L = wxLoc(hubAt(at(d.date, '09:00')));
+  if (L && L.daily){ var i = L.daily.time.indexOf(d.date); if (i >= 0) return wmo(L.daily.weather_code[i]); }
+  return [d.ic || '', ''];
+}
+function renderChap(){
+  var tdy = today();
+  $('#chap').innerHTML = TRIP.days.map(function(d, i){
+    var ic = dayIcon(d);
+    return '<button type="button" data-chap="' + i + '" class="' + (d.date === tdy ? 'on' : d.date < tdy ? 'past' : '') + '"' + (d.date === tdy ? ' aria-current="date"' : '') +
+      ' aria-label="' + md(d.date) + ' ' + d.label + '요일' + (ic[1] ? ' ' + ic[1] : '') + ' 일정 보기"><i aria-hidden="true">' + ic[0] + '</i><b>' + (+d.date.slice(8)) + '</b>' + d.label + '</button>';
+  }).join('');
+}
+function renderStage(){
+  var i = todayIdx(), el = $('#stage');
+  el.hidden = i < 0 || nowState().phase === 'after';
+  el.textContent = i < 0 ? '' : 'DAY ' + (i + 1) + ' · ' + plain(TRIP.days[i].title.split(' — ')[0]);
+}
+
+/* ---------- 앱 바로가기 (안드로이드 링크 방식은 도쿄 PLAYBOOK 1-3절 표) ---------- */
+var UA = navigator.userAgent || '';
+var IS_AND = /Android/i.test(UA), IS_IOS = /iPhone|iPad|iPod/i.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
+function playUrl(pkg){ return 'https://play.google.com/store/apps/details?id=' + pkg; }
+function appHref(a){
+  var x = a.and;
+  if (IS_AND && x) return x[0] === 'play' ? playUrl(x[1]) :
+    'intent://' + x[0] + '#Intent;scheme=' + x[1] + ';package=' + x[2] + ';S.browser_fallback_url=' + encodeURIComponent(x[1] === 'https' ? 'https://' + x[0] : playUrl(x[2])) + ';end';
+  if (IS_IOS && a.ios) return 'https://apps.apple.com/kr/app/id' + a.ios;
+  return a.web;
+}
+function appA(a, cls, inner, label){
+  var h = appHref(a);
+  return '<a class="' + cls + '" href="' + esc(h) + '"' + (/^intent:/.test(h) ? '' : ' ' + EXT) + (label ? ' aria-label="' + esc(a.n) + ' 열기"' : '') + '>' + inner + '</a>';
+}
+function renderApps(){
+  $('#appRow').innerHTML = TRIP.apps.map(function(a){ return appA(a, 'app', '<i aria-hidden="true">' + a.e + '</i><span>' + esc(a.s || a.n) + '</span>', true); }).join('');
+}
+function appsHTML(){
+  return TRIP.apps.map(function(a){ return appA(a, 'appi', '<i aria-hidden="true">' + a.e + '</i><span class="appi__t"><b>' + esc(a.n) + '</b><small>' + esc(a.d) + '</small></span><span class="appi__x" aria-hidden="true">↗</span>'); }).join('');
+}
+
+/* ---------- 오늘 경로 — 오늘 탭 그림 카드와 지도 탭 번호 핀이 같은 계산을 써요 ----------
+   순서: 일정마다 place(없으면 places 첫 곳) · 장소 없는 쉬기·숙소·조식은 그 시각의 숙소(hubAt) · 카드 일정은 오늘 계획(없으면 기본 배치) 카드의 route.
+   숙소·공항(★·✈)에서 끊어 "나들이" 줄로 보여 주고, 그날 숙소에서 3km 넘는 공항·다른 숙소는 그림 밖 화살표로(11/1·11/3·11/7) */
+var FAR_M = 3000;
+function isAnchor(k){ var s = SP[k]; return s.kind === 'stay' || s.kind === 'transit'; }
+function shortName(k){
+  var s = SP[k]; if (!s) return k;
+  if (TRIP.short[k]) return TRIP.short[k];
+  if (s.kind === 'stay') return TRIP.hubs[s.area].short;
+  var t = s.ko.replace(/\s*\([^)]*\)/g, '');
+  return t.length > 9 ? t.slice(0, 8) + '…' : t;
+}
+function cardRoute(id){ var c = cardById(id); return c ? (c.route || (c.places || []).slice(0, 1)) : []; }
+function routeSym(s){ return SP[s.k].kind === 'transit' ? '✈' : SP[s.k].kind === 'stay' ? '★' : String(s.n); }
+function legTxt(a, b){
+  var m = hav(SP[a].ll, SP[b].ll), sa = SP[a], sb = SP[b];
+  if (m <= 1500) return '🚶 ' + walkMin(m) + '분';
+  /* 숙소 ↔ 그 지역 장소는 조사한 도로 거리, 나머지는 직선 × 1.3 */
+  var km = sa.kind === 'stay' && TRIP.hubs[sb.area].stay === a ? sb.km : sb.kind === 'stay' && TRIP.hubs[sa.area].stay === b ? sa.km : m * 1.3 / 1000;
+  return '🚗 ' + (km < 9.95 ? km.toFixed(1) : Math.round(km)) + 'km';
+}
+function moveTxt(a, b){ var it = b.it; return it && it.k === 'move' && it.memo && it.memo[0] ? '🚗 ' + it.memo[0].split(' — ')[0] : legTxt(a.k, b.k); }
+function routeFor(date){
+  var d = dayByDate(date); if (!d) return null;
+  /* 기본 배치(def)는 "A 또는 B" — 계획이 없으면 첫 장만 그린다 */
+  var p = d.free ? plans()[date] : null, cards = d.free ? (p ? p.cards : (d.def || []).slice(0, 1)) : [], seq = [];
+  function push(k, it){ if (SP[k] && (!seq.length || seq[seq.length - 1].k !== k)) seq.push({ k: k, it: it }); }
+  d.items.forEach(function(it){
+    if (it.k === 'card') cards.forEach(function(id){ cardRoute(id).forEach(function(k){ push(k, it); }); });
+    else if (it.place || (it.places && it.places.length)) push(it.place || it.places[0], it);
+    else if (it.k === 'rest' || it.k === 'stay' || (it.k === 'food' && !it.dinner)) push(TRIP.hubs[hubAt(it._at)].stay, it);
+  });
+  if (!seq.length) return null;
+  var last = d.items[d.items.length - 1], home = TRIP.hubs[hubAt(last._at)].stay;
+  if (!isAnchor(seq[0].k)) seq.unshift({ k: TRIP.hubs[hubAt(seq[0].it._at)].stay, it: seq[0].it });
+  if (!isAnchor(seq[seq.length - 1].k)) push(home, last);
+  var n = 0, num = {};
+  seq.forEach(function(s){
+    s.anchor = isAnchor(s.k);
+    if (!s.anchor && !num[s.k]) num[s.k] = ++n;
+    s.n = num[s.k] || 0;
+    s.far = s.anchor && s.k !== home && hav(SP[s.k].ll, SP[home].ll) > FAR_M;
+  });
+  /* 숙소·공항에서 끊은 줄: [★, 1, 2, ★] = 나들이, [★, ★] = 숙소 옮기기 */
+  var rows = [], cur = [seq[0]], farTxt = {};
+  seq.slice(1).forEach(function(s){ cur.push(s); if (s.anchor){ rows.push(cur); cur = [s]; } });
+  rows.forEach(function(row){
+    var a = row[0], b = row[row.length - 1], t = row.length === 2 ? moveTxt(a, b) : '';
+    [[a, row[1]], [b, row[row.length - 2]]].forEach(function(x){ if (x[0].far) farTxt[x[0].k] = (t || legTxt(x[1].k, x[0].k)).replace(/^🚗 /, '').split(' · ')[0]; });
+  });
+  return { date: date, day: d, from: p ? 'plan' : 'def', cards: cards, seq: seq, rows: rows, home: home, farTxt: farTxt };
+}
+function routeTitle(r){
+  if (!r.day.free) return plain(r.day.title);
+  function nm(id){ var c = cardById(id); return id === 'rest' ? '숙소에서 쉬기' : c ? c.title : id; }
+  if (r.from === 'plan') return '오늘 계획: ' + r.cards.map(nm).join(' + ');
+  var alt = (r.day.def || []).slice(1);
+  return '기본 배치: ' + r.cards.map(nm).join(' + ') + (alt.length ? ' (또는 ' + alt.map(nm).join(', ') + ')' : '');
+}
+function rbadge(s){ return '<b class="rb' + (s.far ? ' is-far' : s.anchor ? ' is-stay' : '') + '">' + routeSym(s) + '</b>'; }
+function rowHTML(row){
+  var a = row[0], b = row[row.length - 1];
+  if (row.length === 2) return '<li class="rr rr--mv"><span class="rr-t">' + esc(b.it.t) + '</span><span class="rr-c"><span>' + rbadge(a) + esc(shortName(a.k)) + '</span><i class="rl">' + esc(moveTxt(a, b)) + '</i><span>' + rbadge(b) + esc(shortName(b.k)) + '</span></span></li>';
+  return '<li class="rr"><span class="rr-t">' + esc(row[1].it.t) + '</span><span class="rr-c">' + row.map(function(s, i){
+    /* 숙소는 ★ 만 (이름은 그림에), 멀리 있는 공항·숙소와 번호 장소는 이름까지 */
+    return (i ? '<i class="rl">' + esc(legTxt(row[i - 1].k, s.k)) + '</i>' : '') + '<span>' + rbadge(s) + (s.anchor && !s.far ? '' : esc(shortName(s.k))) + '</span>';
+  }).join('') + '</span></li>';
+}
+/* 글자 폭 어림 (Jua: 한글은 글자 크기만큼, 숫자·영문은 절반 남짓) */
+function textW(t, px){ var w = 0; for (var i = 0; i < t.length; i++){ var c = t.charCodeAt(i); w += c >= 0x1100 ? px * 0.96 : c === 32 ? px * 0.3 : px * 0.58; } return w; }
+function overlap(a, b){ var x = Math.min(a[2], b[2]) - Math.max(a[0], b[0]), y = Math.min(a[3], b[3]) - Math.max(a[1], b[1]); return x > 0 && y > 0 ? x * y : 0; }
+/* 이름표 자리: 후보(오른쪽·왼쪽·아래·위·대각선) 중 다른 점·이름표와 덜 겹치고 틀 안에 드는 곳 */
+function placeLabel(x, y, r, w, h, boxes, W, H){
+  var c = [[x + r + 4, y - h / 2], [x - r - 4 - w, y - h / 2], [x - w / 2, y + r + 3], [x - w / 2, y - r - 3 - h],
+           [x + r, y + r - 2], [x + r, y - r - h + 2], [x - r - w, y + r - 2], [x - r - w, y - r - h + 2]], best = null, bs = Infinity;
+  c.forEach(function(p, i){
+    var bx = [p[0], p[1], p[0] + w, p[1] + h], s = i * 0.5;
+    s += (Math.max(0, 4 - bx[0]) + Math.max(0, bx[2] - (W - 4)) + Math.max(0, 4 - bx[1]) + Math.max(0, bx[3] - (H - 4))) * 400;
+    boxes.forEach(function(q){ s += overlap(bx, q) * 3; });
+    if (s < bs){ bs = s; best = bx; }
+  });
+  var dx = Math.max(0, 4 - best[0]) - Math.max(0, best[2] - (W - 4)), dy = Math.max(0, 4 - best[1]) - Math.max(0, best[3] - (H - 4));
+  return [best[0] + dx, best[1] + dy, best[2] + dx, best[3] + dy];
+}
+/* 가까이 붙은 번호는 하나로 ("3·4") — 이름표가 길면 "○○ 외 N곳" */
+function groupLabel(names){ return names.length > 2 ? names[0] + ' 외 ' + (names.length - 1) + '곳' : names.join('·'); }
+function routeSVG(r, W, H){
+  var g = window.GEO; if (!g) return '';
+  var loc = r.seq.filter(function(s){ return !s.far; }), pts = loc.map(function(s){ return SP[s.k].ll; });
+  var la = pts.map(function(p){ return p[0]; }), lo = pts.map(function(p){ return p[1]; });
+  var la0 = Math.min.apply(null, la), la1 = Math.max.apply(null, la), lo0 = Math.min.apply(null, lo), lo1 = Math.max.apply(null, lo);
+  var K = Math.cos((la0 + la1) / 2 * Math.PI / 180), MD = 111320, cx = (lo0 + lo1) / 2, cy = (la0 + la1) / 2;
+  var sc = Math.min((W - 48) / Math.max((lo1 - lo0) * K * MD, 900), (H - 64) / Math.max((la1 - la0) * MD, 600)), tx = W / 2, ty = H / 2;   /* sc = 화면 px / m */
+  function mx(p){ return (p[1] - cx) * K * MD; }
+  function my(p){ return (p[0] - cy) * MD; }
+  function P(p){ return [tx + mx(p) * sc, ty - my(p) * sc]; }
+  function f1(v){ return v.toFixed(1); }
+  function path(arr, close){ return arr.map(function(p, i){ var q = P(p); return (i ? 'L' : 'M') + f1(q[0]) + ' ' + f1(q[1]); }).join('') + (close ? 'Z' : ''); }
+  function group(){
+    var ms = [];
+    loc.forEach(function(s){
+      if (ms.some(function(m){ return m.ks.indexOf(s.k) >= 0; })) return;
+      var q = P(SP[s.k].ll), m = null;
+      if (!s.anchor) ms.forEach(function(x){ if (!m && !x.anchor && Math.hypot(x.x - q[0], x.y - q[1]) < 22) m = x; });
+      if (m){ m.ks.push(s.k); m.txt += '·' + routeSym(s); m.names.push(shortName(s.k)); }
+      else ms.push({ ks: [s.k], ll: SP[s.k].ll, x: q[0], y: q[1], anchor: s.anchor, txt: routeSym(s), names: [shortName(s.k)] });
+    });
+    ms.forEach(function(m){ m.r = m.anchor ? 12 : 10; m.w = m.txt.length > 2 ? 12 + m.txt.length * 7 : m.r * 2; m.name = groupLabel(m.names); m.lw = textW(m.name, 14) + 4; });
+    return ms;
+  }
+  /* 축척 맞추기: 이름표(오른쪽)까지 틀에 들어가게 줄이고 가운데로 — 이름표가 엉뚱한 쪽으로 밀리지 않게 */
+  var marks;
+  for (var pass = 0; pass < 5; pass++){
+    marks = group();
+    var x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    marks.forEach(function(m){
+      var rx = mx(m.ll) * sc, ry = -my(m.ll) * sc;
+      x0 = Math.min(x0, rx - m.w / 2 - 4); x1 = Math.max(x1, rx + m.w / 2 + 4 + m.lw); y0 = Math.min(y0, ry - 14); y1 = Math.max(y1, ry + 14);
+    });
+    var AW = W - 16, AH = H - 40;
+    tx = W / 2 - (x0 + x1) / 2; ty = (H - 22) / 2 + 4 - (y0 + y1) / 2;
+    if (x1 - x0 <= AW && y1 - y0 <= AH) break;
+    sc *= Math.max(0.5, Math.min(AW / (x1 - x0), AH / (y1 - y0)) * 0.97);
+  }
+  marks = group();
+  var h = '<svg class="rmap" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(routeTitle(r)) + ' 경로 그림">';
+  h += '<rect class="rm-land" width="' + W + '" height="' + H + '"/><path class="rm-sea" d="' + path(g.sea, true) + '"/>';
+  g.islands.forEach(function(isl){ h += '<path class="rm-land" d="' + path(isl, true) + '"/>'; });
+  if (g.water && g.water.length) h += '<path class="rm-sea" fill-rule="evenodd" d="' + g.water.map(function(rg){ return path(rg, true); }).join('') + '"/>';
+  g.rivers.forEach(function(rv){ h += '<path class="rm-river" stroke-width="' + f1(Math.max(1.4, rv.w * sc)) + '" d="' + path(rv.p) + '"/>'; });
+  /* 점선 경로 (먼 곳까지 그리고 틀 밖은 잘린다) */
+  var all = r.seq.map(function(s){ return SP[s.k].ll; });
+  h += '<path class="rm-route-c" d="' + path(all) + '"/><path class="rm-route" d="' + path(all) + '"/>';
+  var bars = [100, 200, 500, 1000, 2000, 5000, 10000], bm = bars[0];
+  bars.forEach(function(b){ if (b * sc <= W * 0.22) bm = b; });
+  h += '<g class="rm-scale"><path d="M12 ' + (H - 12) + 'h' + f1(bm * sc) + '"/><text x="12" y="' + (H - 17) + '">' + (bm >= 1000 ? bm / 1000 + 'km' : bm + 'm') + '</text></g>';
+  var boxes = [[8, H - 30, 12 + Math.max(bm * sc, 36), H - 6]], labels = '', dots = '';
+  marks.forEach(function(m){ boxes.push([m.x - m.w / 2, m.y - m.r, m.x + m.w / 2, m.y + m.r]); });
+  /* 먼 곳: 숙소 → 그쪽으로 틀 가장자리에 화살표 + 이름표 */
+  var home = P(SP[r.home].ll), M = 12, seenFar = {};
+  r.seq.forEach(function(s){
+    if (!s.far || seenFar[s.k]) return; seenFar[s.k] = 1;
+    var q = P(SP[s.k].ll), dx = q[0] - home[0], dy = q[1] - home[1], L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L;
+    var t = Math.min(ux > 0 ? (W - M - home[0]) / ux : ux < 0 ? (M - home[0]) / ux : Infinity, uy > 0 ? (H - M - home[1]) / uy : uy < 0 ? (M - home[1]) / uy : Infinity);
+    var ex = home[0] + ux * t, ey = home[1] + uy * t, txt = (routeSym(s) === '✈' ? '✈ ' : '★ ') + shortName(s.k) + ' ' + (r.farTxt[s.k] || '');
+    var w = textW(txt, 13) + 14, side = Math.abs(ex - M) < 1 || Math.abs(ex - (W - M)) < 1, bx, by, bs = Infinity;
+    [0, -36, 36, -72, 72, -108, 108, -144, 144].forEach(function(off){
+      var x = Math.max(4, Math.min(W - 4 - w, ex - ux * 18 - w / 2 + (side ? 0 : off))), y = Math.max(4, Math.min(H - 26, ey - uy * 18 - 11 + (side ? off : 0))), sc2 = Math.abs(off) / 36;
+      marks.forEach(function(m){ sc2 += overlap([x, y, x + w, y + 22], [m.x - m.w / 2 - 4, m.y - m.r - 4, m.x + m.w / 2 + 4 + m.lw, m.y + m.r + 4]) * 3; });
+      boxes.forEach(function(q){ sc2 += overlap([x, y, x + w, y + 22], q) * 3; });
+      if (sc2 < bs){ bs = sc2; bx = x; by = y; }
+    });
+    h += '<g class="rm-far"><path d="M' + f1(ex + ux * 7) + ' ' + f1(ey + uy * 7) + 'L' + f1(ex - ux * 5 - uy * 7) + ' ' + f1(ey - uy * 5 + ux * 7) + 'L' + f1(ex - ux * 5 + uy * 7) + ' ' + f1(ey - uy * 5 - ux * 7) + 'Z"/>' +
+      '<rect x="' + f1(bx) + '" y="' + f1(by) + '" width="' + f1(w) + '" height="22" rx="11"/><text x="' + f1(bx + 7) + '" y="' + f1(by + 16) + '">' + esc(txt) + '</text></g>';
+    boxes.push([bx, by, bx + w, by + 22]);
+  });
+  marks.forEach(function(m){
+    var b = placeLabel(m.x, m.y, m.w / 2, m.lw, 17, boxes, W, H);
+    boxes.push(b);
+    labels += '<text class="rm-l" x="' + f1(b[0] + 2) + '" y="' + f1(b[1] + 13) + '">' + esc(m.name) + '</text>';
+    dots += '<g class="rm-stop' + (m.anchor ? ' is-stay' : '') + '">' + (m.w > m.r * 2 ? '<rect x="' + f1(m.x - m.w / 2) + '" y="' + f1(m.y - m.r) + '" width="' + f1(m.w) + '" height="' + m.r * 2 + '" rx="' + m.r + '"/>' : '<circle cx="' + f1(m.x) + '" cy="' + f1(m.y) + '" r="' + m.r + '"/>') +
+      '<text class="rm-n" x="' + f1(m.x) + '" y="' + f1(m.y + 4.5) + '">' + esc(m.txt) + '</text></g>';
+  });
+  return h + dots + labels + '</svg>';
+}
+function renderRoute(){
+  var tile = $('#routeTile'), date = today(), r = routeFor(date);
+  tile.hidden = !r;
+  if (!r){ tile.innerHTML = ''; return; }
+  var h = th('오늘 경로 · ' + md(date), '<button class="pill pill--btn" type="button" data-rmgo="' + date + '">실제 지도 →</button>', true) +
+    '<div class="card rcard"><p class="k">' + esc(routeTitle(r)) + (r.day.free && r.from !== 'plan' ? ' — 오늘 계획을 정하면 바뀌어요' : '') + '</p>';
+  if (!r.rows.length) h += '<p class="lead" style="margin-top:8px">오늘은 숙소에서 쉬어요 🛋</p>';
+  else h += routeSVG(r, 360, 230) + '<ol class="rrows">' + r.rows.map(rowHTML).join('') + '</ol>' +
+    '<p class="fine">★ 숙소 · 번호는 그림의 핀 · 🚶 시간은 직선거리 어림. 바탕은 실제 좌표와 해안선·강(© OpenStreetMap) — 실제 길은 「실제 지도」에서</p>';
+  tile.innerHTML = h + '</div>';
+}
+
+/* ---------- 지도 탭 경로: 날짜 칩 + 번호 핀 + 점선 ---------- */
+var mapDay, mapRt = null, rpinMk = [];
+function renderMapDays(){
+  if (mapDay === undefined) mapDay = dayByDate(today()) ? today() : null;   /* 여행 중엔 오늘 경로를 켜 둔 채로 시작 */
+  $('#mapDays').innerHTML = TRIP.days.map(function(d){
+    var on = d.date === mapDay;
+    return '<button type="button" data-rmday="' + d.date + '" class="' + (on ? 'on' : '') + '" aria-pressed="' + on + '" aria-label="' + md(d.date) + ' ' + d.label + '요일 경로"><b>' + (+d.date.slice(8)) + '</b>' + d.label + '</button>';
+  }).join('');
+  var r = mapDay ? routeFor(mapDay) : null, n = $('#mapRoute'), d = mapDay ? dayByDate(mapDay) : null;
+  mapRt = r && r.rows.length ? r : null;
+  n.hidden = !mapDay;
+  if (!mapDay){ n.innerHTML = ''; return; }
+  var far = mapRt ? Object.keys(mapRt.farTxt).map(function(k){ return shortName(k) + ' ' + mapRt.farTxt[k]; }) : [];
+  n.innerHTML = '<span><b>' + md(mapDay) + '(' + d.label + ')</b> ' + (mapRt ? esc(routeTitle(mapRt)) + (far.length ? '<small>' + esc(far.join(', ')) + ' — 「전체 보기」로 같이 봐요</small>' : '') : '숙소에서 쉬는 날 — 경로 없음') + '</span>' +
+    (far.length ? '<button class="mini" type="button" data-rmall>전체 보기</button>' : '') + '<button class="mini" type="button" data-rmoff>경로 끄기</button>';
+}
+function mapRouteLayers(){
+  if (!map) return;
+  var coords = mapRt ? mapRt.seq.map(function(s){ return [SP[s.k].ll[1], SP[s.k].ll[0]]; }) : [];
+  var data = { type: 'FeatureCollection', features: coords.length > 1 ? [{ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: coords } }] : [] };
+  try {
+    var src = map.getSource('route');
+    if (src){ src.setData(data); return; }
+    map.addSource('route', { type: 'geojson', data: data });
+    map.addLayer({ id: 'route-c', type: 'line', source: 'route', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#FFFFFF', 'line-width': 7, 'line-opacity': 0.85 } });
+    map.addLayer({ id: 'route', type: 'line', source: 'route', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#E2483B', 'line-width': 4, 'line-dasharray': [0.1, 2] } });
+  } catch (e) {}   /* 스타일을 바꾸는 중 — styledata·idle 때 다시 */
+}
+/* 번호 핀: 화면에서 30px 안으로 붙은 번호는 하나로("3·4", 누르면 확대), 이름표는 다른 핀·이름표와 안 겹치는 쪽에 */
+function mapRoutePins(){
+  rpinMk.forEach(function(m){ m.remove(); }); rpinMk = [];
+  if (!map || !mapRt) return;
+  var uniq = [], groups = [], box = map.getContainer(), W = box.clientWidth, H = box.clientHeight;
+  mapRt.seq.forEach(function(s){ if (!uniq.some(function(u){ return u.k === s.k; })) uniq.push(s); });
+  uniq.forEach(function(s){
+    var p = map.project([SP[s.k].ll[1], SP[s.k].ll[0]]), g = null;
+    groups.forEach(function(x){ if (!g && !(x.anchor && s.anchor) && Math.hypot(x.p.x - p.x, x.p.y - p.y) < 30) g = x; });
+    if (!g) groups.push({ p: p, anchor: s.anchor, ss: [s] });
+    else if (s.anchor){ g.ss.unshift(s); g.anchor = true; g.p = p; }   /* 숙소·공항에 붙은 번호는 숙소 핀으로 (멀리서 본 화면) */
+    else g.ss.push(s);
+  });
+  var boxes = groups.map(function(g){ var hw = Math.max(17, (g.ss.length * 2 - 1) * 4.5 + 8); return [g.p.x - hw, g.p.y - 17, g.p.x + hw, g.p.y + 17]; });
+  groups.forEach(function(g){
+    var el = document.createElement('button'), s0 = g.ss[0], txt = g.ss.map(routeSym).join('·'), names = groupLabel(g.ss.map(function(s){ return shortName(s.k); }));
+    el.type = 'button'; el.className = 'rpin' + (g.anchor ? (SP[s0.k].kind === 'transit' ? ' is-far' : ' is-stay') : '');
+    el.innerHTML = '<b>' + esc(txt) + '</b><span>' + esc(names) + '</span>';
+    el.setAttribute('aria-label', names + ' · 경로 ' + txt);
+    el.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (g.ss.length > 1) map.easeTo({ center: map.unproject(g.p), zoom: map.getZoom() + 1.5, duration: 500 }); else mapSelect(s0.k, false);
+    });
+    var ll = g.ss.length > 1 && !g.anchor ? map.unproject(g.p) : [SP[s0.k].ll[1], SP[s0.k].ll[0]];
+    rpinMk.push(new maplibregl.Marker({ element: el }).setLngLat(ll).addTo(map));
+    var sp = el.querySelector('span'), w = sp.offsetWidth || textW(names, 14) + 14, hh = sp.offsetHeight || 22, x = g.p.x, y = g.p.y, o = Math.max(18, el.querySelector('b').offsetWidth / 2 + 4);
+    el.style.setProperty('--o', o + 'px');
+    var cand = [['', x + o, y - hh / 2], ['lbl-l', x - o - w, y - hh / 2], ['lbl-b', x - w / 2, y + 18], ['lbl-t', x - w / 2, y - 18 - hh]], best = null, bs = Infinity;
+    cand.forEach(function(c, i){
+      var bx = [c[1], c[2], c[1] + w, c[2] + hh], sc = i;
+      sc += (Math.max(0, -bx[0]) + Math.max(0, bx[2] - W) + Math.max(0, -bx[1]) + Math.max(0, bx[3] - H)) * 50;
+      boxes.forEach(function(q){ sc += overlap(bx, q) * 3; });
+      if (sc < bs){ bs = sc; best = [c[0], bx]; }
+    });
+    if (best[0]) el.classList.add(best[0]);
+    boxes.push(best[1]);
+  });
+}
+function mapSetStyle(t){
+  if (!map) return;
+  map.setStyle(MAP_STYLE[t], { transformStyle: function(prev, next){
+    if (!prev || !prev.sources || !prev.sources.route) return next;
+    next.sources = Object.assign({}, next.sources, { route: prev.sources.route });
+    next.layers = next.layers.concat(prev.layers.filter(function(l){ return l.source === 'route'; }));
+    return next;
+  } });
+}
+function mapRouteFit(all){
+  if (!map || !mapRt) return;
+  var b = new maplibregl.LngLatBounds();
+  mapRt.seq.forEach(function(s){ if (all || !s.far) b.extend([SP[s.k].ll[1], SP[s.k].ll[0]]); });
+  var c = map.getContainer(), W = c.clientWidth, sm = W < 420, pad = { top: 56, bottom: 44, left: sm ? 40 : 70, right: sm ? 100 : 140 };
+  /* 오른쪽 이름표(붙은 번호는 "비스마켓·야시장"처럼 합친 이름)까지 화면에 들어오게 오른쪽 여백을 늘려 다시 맞춘다 */
+  for (var i = 0; i < 3; i++){
+    map.fitBounds(b, { padding: pad, maxZoom: 15.5, duration: 0 });
+    var pp = mapRt.seq.filter(function(s){ return all || !s.far; }).map(function(s){ return { s: s, p: map.project([SP[s.k].ll[1], SP[s.k].ll[0]]) }; }), need = 0;
+    pp.forEach(function(a){
+      var near = pp.filter(function(x){ return !x.s.anchor && Math.hypot(x.p.x - a.p.x, x.p.y - a.p.y) < 30; }).map(function(x){ return shortName(x.s.k); });
+      var nm = groupLabel(near.filter(function(v, j){ return near.indexOf(v) === j; }).concat(a.s.anchor ? [shortName(a.s.k)] : []));
+      need = Math.max(need, a.p.x + 18 + near.length * 5 + textW(nm, 14) + 22 - W);
+    });
+    if (need <= 0) break;
+    pad.right = Math.min(W * 0.55, pad.right + need + 8);
+  }
+}
+function mapRouteDraw(fit){
+  if (!map) return;
+  $('#mapBox').classList.toggle('routing', !!mapRt);
+  mapRouteLayers();
+  if (fit) mapRouteFit(false);
+  mapRoutePins(); mapVis();
+}
+function setMapDay(date, fit){
+  mapDay = date; renderMapDays();
+  if (mapRt && fit){ mapArea = SP[mapRt.home].area; renderMapUI(); }
+  mapRouteDraw(fit);
 }
 
 /* ---------- 두 시계 ---------- */
@@ -1434,7 +1888,7 @@ function fetchWx(force){
   fetch(u).then(function(r){ return r.ok ? r.json() : null; }).then(function(j){
     if (!j || !j.length || !j[0].hourly || !j[1].hourly) return;
     save('wx', { _t: Date.now(), L: { hoian: { hourly: j[0].hourly, daily: j[0].daily }, danang: { hourly: j[1].hourly, daily: j[1].daily } } });
-    renderWx(); renderFc(); renderClock(); renderCards();
+    renderWx(); renderFc(); renderClock(); renderCards(); renderChap();
   }).catch(function(){});
 }
 
@@ -1673,6 +2127,7 @@ var MAP_VER = '5.24.0';
 var MAP_JS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@' + MAP_VER + '/dist/maplibre-gl.js', MAP_CSS = 'https://cdn.jsdelivr.net/npm/maplibre-gl@' + MAP_VER + '/dist/maplibre-gl.css';
 var MAP_STYLE = { light: 'https://tiles.openfreemap.org/styles/liberty', dark: 'https://tiles.openfreemap.org/styles/dark' };
 var MAP_BOUNDS = [[107.9, 15.75], [108.5, 16.25]];   /* 바나힐(서) ~ 호이안·안방(남동) ~ 린응사(북) */
+var fitOnLoad = true;
 var map = null, mapP = null, mapArea = null, mapFilter = 'all', mapSel = null, MK = {}, meMk = null, meLL = null, peerMk = {}, mapPending = null;
 var TOP = {};
 (function(){
@@ -1703,7 +2158,8 @@ function loadMapLib(){
   });
 }
 function renderMapUI(){
-  if (!mapArea) mapArea = hubAt(Date.now());
+  renderMapDays();
+  if (!mapArea) mapArea = mapRt ? SP[mapRt.home].area : hubAt(Date.now());
   $('#mapArea').innerHTML = ['hoian', 'danang'].map(function(k){ return '<button type="button" data-maparea="' + k + '" aria-pressed="' + (k === mapArea) + '">' + TRIP.hubs[k].name + '</button>'; }).join('') +
     '<button type="button" data-mapme aria-pressed="false">📍 내 위치</button>';
   $('#mapFilt').innerHTML = ['all', 'food', 'cafe', 'sight', 'spa', 'mart', 'med'].map(function(k){ return '<button type="button" data-mapf="' + k + '" aria-pressed="' + (k === mapFilter) + '">' + (k === 'all' ? '주요 장소' : SK[k][1] + ' ' + SK[k][0]) + '</button>'; }).join('');
@@ -1711,10 +2167,11 @@ function renderMapUI(){
 }
 function mapVis(){
   if (!map) return;
-  var z = map.getZoom();
+  var z = map.getZoom(), inRt = {};
+  if (mapRt) mapRt.seq.forEach(function(s){ inRt[s.k] = 1; });
   SPK.forEach(function(k){
     var s = SP[k], el = MK[k] && MK[k].getElement(); if (!el) return;
-    var on = s.kind === 'stay' || k === mapSel || (mapFilter === 'all' ? (TOP[k] || z >= 14) : s.kind === mapFilter);
+    var on = k === mapSel || (!inRt[k] && (s.kind === 'stay' || (mapFilter === 'all' ? (TOP[k] || z >= 14) : s.kind === mapFilter)));
     el.style.display = on ? '' : 'none';
     el.classList.toggle('is-sel', k === mapSel);
   });
@@ -1768,7 +2225,11 @@ function initMap(){
     /* 출처 표시는 접어 둔다(ⓘ 를 누르면 펴짐) — 펼친 채로는 지도 아래쪽을 가린다. 출처 글이 들어온 뒤에야 펼쳐지므로 load·idle 때 접는다 */
     function foldAttr(){ var at = $('#map .maplibregl-ctrl-attrib'); if (at){ at.classList.remove('maplibregl-compact-show'); at.removeAttribute('open'); } }
     map.once('styledata', function(){ mapMsg(''); });
-    map.on('load', function(){ mapMsg(''); foldAttr(); });
+    map.on('load', function(){ mapMsg(''); foldAttr(); mapRouteDraw(fitOnLoad); });
+    /* 테마를 바꾸면(setStyle) 경로 선이 지워져요 → 다시 */
+    function keepRoute(){ if (mapRt && !map.getSource('route')) mapRouteLayers(); }
+    map.on('styledata', keepRoute); map.on('idle', keepRoute);
+    map.on('moveend', mapRoutePins);
     map.once('idle', foldAttr);
     map.on('error', function(){ if (!navigator.onLine) mapMsg('📴 오프라인이에요 · 한 번 본 곳만 지도가 보여요'); });
     map.on('zoomend', mapVis);
@@ -1780,7 +2241,7 @@ function initMap(){
       MK[k] = new ml.Marker({ element: el }).setLngLat([s.ll[1], s.ll[0]]).addTo(map);
     });
     mapVis(); if (meLL) mapSetMe(meLL); mapPeers(share.list());
-    if (mapPending){ var k = mapPending; mapPending = null; mapSelect(k, true); }
+    if (mapPending){ var k = mapPending; mapPending = null; fitOnLoad = false; mapSelect(k, true); }
   }).catch(function(){
     mapP = null; mapMsg('');
     $('#mapMsg').hidden = false; $('#mapMsg').innerHTML = '지도를 못 불러왔어요 — 인터넷이 될 때 <button class="mini mini--pri" type="button" data-mapretry>다시</button>';
@@ -2003,6 +2464,7 @@ function renderGuide(){
   var q = collectQ(), mv = TRIP.move, f = TRIP.flood, big = document.documentElement.hasAttribute('data-big');
   $('#guide').innerHTML =
     '<section class="tile" id="shareSec">' + th('가족 공유 · 위치와 오늘 계획', '', true) + '<div class="card" id="shareBox">' + share.html() + '</div></section>' +
+    '<section class="tile" id="appsSec">' + th('앱 바로가기') + '<div class="card"><p class="k">오늘 탭 제목 아래 줄과 같아요. 설치돼 있으면 앱이, 없으면 웹이나 스토어가 열려요. 출발 전에 한 번씩 눌러 로그인까지 해 두세요.</p><div class="appsbox">' + appsHTML() + '</div></div></section>' +
     '<section class="tile" id="floodSec">' + th('침수 · 태풍 확인') + '<div class="card"><ul class="dots" style="margin-top:0">' + lis(f.facts) + '</ul><div class="lnks">' +
       f.links.map(function(l){ return '<a class="lnk" href="' + l[1] + '" ' + EXT + '>' + esc(l[0]) + ' ↗</a>'; }).join('') + '</div></div>' +
       '<div class="card"><h3>🌊 ' + esc(f.alt.title) + '</h3><ul class="dots">' + lis(f.alt.lines) + '</ul>' + spotRows(f.alt.places) + '</div></section>' +
@@ -2073,6 +2535,7 @@ document.addEventListener('click', function(e){
   if ((b = t.closest('[data-go]'))) { e.preventDefault(); go(b.getAttribute('data-go')); return; }
   if ((b = t.closest('[data-ev]'))) { toggleEv(b); return; }
   if ((b = t.closest('#tlAll'))) { allOpen = !allOpen; openSet = {}; renderTL(); return; }
+  if ((b = t.closest('[data-chap]'))) { curDay = +b.getAttribute('data-chap'); renderDays(); renderTL(); scrollToEl('#tlTile'); return; }
   if ((b = t.closest('[data-day]'))) {
     var fromBelow = !!b.closest('#tmr') || !!b.closest('#hero');
     curDay = +b.getAttribute('data-day'); renderDays(); renderTL();
@@ -2084,7 +2547,7 @@ document.addEventListener('click', function(e){
     var sysDark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches), nx = effTheme() === 'dark' ? 'light' : 'dark', follow = nx === (sysDark ? 'dark' : 'light');
     save('theme', follow ? 'system' : nx);
     if (follow) document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', nx);
-    syncThemeColor(); if (map) map.setStyle(MAP_STYLE[nx]);
+    syncThemeColor(); mapSetStyle(nx);
     toast((nx === 'light' ? '테마: 밝게' : '테마: 어둡게') + (follow ? ' (폰 설정 따라가기)' : '')); return;
   }
   if ((b = t.closest('#bigBtn, [data-bigtoggle]'))) { setBig(!document.documentElement.hasAttribute('data-big')); return; }
@@ -2107,6 +2570,10 @@ document.addEventListener('click', function(e){
   if ((b = t.closest('[data-plkind]'))) { plKind = b.getAttribute('data-plkind'); renderPlaces(); return; }
   if ((b = t.closest('[data-plsort]'))) { plSort = b.getAttribute('data-plsort'); renderPlaces(); return; }
   if ((b = t.closest('[data-maparea]'))) { mapFly(b.getAttribute('data-maparea')); return; }
+  if ((b = t.closest('[data-rmday]'))) { var rd = b.getAttribute('data-rmday'); setMapDay(rd === mapDay ? null : rd, true); if (!mapDay) toast('경로를 껐어요'); return; }
+  if ((b = t.closest('[data-rmgo]'))) { show('map'); setMapDay(b.getAttribute('data-rmgo'), true); return; }
+  if ((b = t.closest('[data-rmall]'))) { mapRouteFit(true); return; }
+  if ((b = t.closest('[data-rmoff]'))) { setMapDay(null, false); toast('경로를 껐어요'); return; }
   if ((b = t.closest('[data-mapme]'))) { mapLocate(); return; }
   if ((b = t.closest('[data-mapf]'))) { mapFilter = b.getAttribute('data-mapf'); renderMapUI(); mapVis(); return; }
   if ((b = t.closest('[data-mapretry]'))) { initMap(); return; }
@@ -2202,7 +2669,7 @@ window.addEventListener('popstate', function(){
   show(location.hash.slice(1), false);
 });
 window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferredPrompt = e; var b = $('#installBtn'); if (b) b.disabled = false; });
-function onScheme(){ syncThemeColor(); if (map && load('theme', 'system') === 'system') map.setStyle(MAP_STYLE[effTheme()]); }
+function onScheme(){ syncThemeColor(); if (load('theme', 'system') === 'system') mapSetStyle(effTheme()); }
 try { var mq = matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', onScheme); else if (mq.addListener) mq.addListener(onScheme); } catch (e) {}
 try { if (window.speechSynthesis){ findVoice(); speechSynthesis.onvoiceschanged = function(){ var had = !!viVoice; findVoice(); if (had !== !!viVoice){ var b = $('#phrBox'); if (b) b.innerHTML = phrasesHTML(); } }; } } catch (e) {}
 
@@ -2213,7 +2680,8 @@ try { if (window.speechSynthesis){ findVoice(); speechSynthesis.onvoiceschanged 
   if (st.phase === 'during'){ var ti0 = todayIdx(); curDay = ti0 >= 0 ? ti0 : st.cur._day; }   /* 자정 뒤엔 새 날짜의 일정을 먼저 */
   $('#bigBtn').setAttribute('aria-pressed', String(document.documentElement.hasAttribute('data-big')));
   share.init();
-  renderDays(); renderTL(); renderHero(); renderTicker(); renderClock(); renderWx(); renderFc(); renderPlan(); renderCards();
+  renderChap(); renderStage(); renderApps();
+  renderDays(); renderTL(); renderHero(); renderRoute(); renderTicker(); renderClock(); renderWx(); renderFc(); renderPlan(); renderCards();
   renderStay(); renderCkTile(); renderSOS(); renderExpTile(); renderFevTile();
   renderPlaces(); renderExp(); renderFev(); renderCk(); renderMemo(); renderGuide(); renderMapUI(); setFevTime();
   $('#ver1').textContent = '🔖 앱 버전 ' + BUILD;
@@ -2231,7 +2699,7 @@ try { if (window.speechSynthesis){ findVoice(); speechSynthesis.onvoiceschanged 
     if (miniListId() !== miniId) renderCkTile();
     if ($('#fevDose')) $('#fevDose').innerHTML = doseHTML(false) + '<p class="fine">' + rich(TRIP.medNote) + '</p>';
     renderFevTile();
-    if (today() !== lastDay || hubAt(Date.now()) !== lastHub){ lastDay = today(); lastHub = hubAt(Date.now()); renderDays(); renderClock(); renderWx(); renderFc(); renderCards(); renderStay(); renderSOS(); renderExpTile(); if (!planEdit) renderPlan(); }
+    if (today() !== lastDay || hubAt(Date.now()) !== lastHub){ lastDay = today(); lastHub = hubAt(Date.now()); renderChap(); renderStage(); renderRoute(); renderDays(); renderClock(); renderWx(); renderFc(); renderCards(); renderStay(); renderSOS(); renderExpTile(); if (!planEdit) renderPlan(); }
     fetchWx();
   }, 60000);
   document.addEventListener('visibilitychange', function(){ if (!document.hidden){ tickClock(); renderTicker(); renderHero(); renderWx(); renderFc(); fetchWx(); } });

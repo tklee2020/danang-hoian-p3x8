@@ -1,5 +1,5 @@
 /* 기능 흐름: 체크 저장·배지, 지출(동→원), 체온·해열제 다음 시각, 메모, 기사에게 보여주기, 오늘 계획, 예보→카드 추천,
-   큰 글씨·테마, 장소 목록, 지도 핀, 공략집(확인 필요·앱 버전), 가족 공유(위치·계획 — 실제 ntfy.sh 로 암호화된 시험 값을 보낸다) */
+   큰 글씨·테마, 장소 목록, 지도 핀, 공략집(확인 필요·앱 버전·앱 바로가기), 오늘 경로(route.js), 가족 공유(위치·계획 — 실제 ntfy.sh 로 암호화된 시험 값을 보낸다) */
 const { ls, NS } = require('./_fake');
 const U = process.env.QA_URL || 'http://localhost:8765/';
 const CODE = 'QA' + Array.from({ length: 8 }, () => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random() * 32)]).join('');
@@ -97,7 +97,7 @@ module.exports = { parallel: 1, scenarios: [
     { shot: 'f-map-sel.png' }
   ] },
   { name: 'guide', now: PRE, ls: ls(PRE), steps: [
-    { wait: 600, eval: `document.querySelector('#dock [data-view=guide]').click(); ${T('#qSec .pill')} + ' | ' + ${T('.foot')}.slice(-40) + ' | lastEl=' + document.querySelector('#guide').lastElementChild.className + ' | ver1=' + document.querySelector('#ver1').textContent + ' | details=' + document.querySelectorAll('#guide details').length + ' links=' + document.querySelectorAll('#floodSec a.lnk').length` },
+    { wait: 600, eval: `document.querySelector('#dock [data-view=guide]').click(); ${T('#qSec .pill')} + ' | ' + ${T('.foot')}.slice(-40) + ' | lastEl=' + document.querySelector('#guide').lastElementChild.className + ' | ver1=' + document.querySelector('#ver1').textContent + ' | details=' + document.querySelectorAll('#guide details').length + ' links=' + document.querySelectorAll('#floodSec a.lnk').length + ' apps=' + document.querySelectorAll('#appsSec .appi').length + ' row=' + document.querySelectorAll('#appRow .app').length + ' href0=' + document.querySelector('#appRow .app').getAttribute('href')` },
     { eval: `document.querySelectorAll('.qbadge').length + ' badges on page; q list: ' + [].slice.call(document.querySelectorAll('.qlist li')).length` }
   ] },
   /* 가족 공유: 아빠 폰이 코드·위치·계획을 보내고, 엄마 폰이 같은 코드로 받는다 (ntfy.sh, 암호화) */
@@ -118,4 +118,4 @@ module.exports = { parallel: 1, scenarios: [
   { name: 'share-other', url: U + '#join=' + CODE.split('').reverse().join(''), now: FREE, ls: ls(FREE, {}, { me: 'g' }), steps: [
     { wait: 6000, eval: `'peers=' + document.querySelectorAll('#shareBox .peer').length + ' plan=' + ${T('#planTile .plan-now')}` }
   ] }
-] };
+].concat(require('./route').scenarios) };   /* 오늘 경로 그림 카드 · 지도 경로 — scenarios/route.js */

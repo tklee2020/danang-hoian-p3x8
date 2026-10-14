@@ -1,4 +1,4 @@
-/* 폭 × 테마 × 화면 5개 전수 — 가로 넘침(scrollWidth > innerWidth)과 렌더를 봐요. 360 은 큰 글씨 보기도.
+/* 폭 × 테마 × 화면 5개 전수 — 가로 넘침(scrollWidth > innerWidth)과 렌더를 봐요. 360 은 큰 글씨 보기도. wide = 화면 밖으로 삐져나간 요소 수(지도·앱 바로가기 줄·경로 그림 SVG 는 안에서 잘리므로 뺌)
    스크린샷은 fullPage 대신 뷰포트를 페이지 높이로 키운 한 장(유리+고정 배경은 fullPage 가 같은 내용을 반복해 찍는다 — 강화 PLAYBOOK 6절) */
 const { ls, NS } = require('./_fake');
 const views = ['plan', 'map', 'places', 'log', 'guide'];
@@ -10,7 +10,7 @@ function add(name, w, h, dpr, theme, extra){
   sc.push({ name, now: NOW, w, h, dpr, dark: theme === 'dark', ls: ls(NOW, { danang: [15, 20, 65, 70] }, o),
     steps: [{ wait: 800 }].concat(...views.map(v => [
       { eval: `document.querySelector('#dock [data-view=${v}]').click()` },
-      { wait: v === 'map' ? 6000 : 300, eval: `'${v} overflow=' + (document.documentElement.scrollWidth - innerWidth) + ' h=' + document.documentElement.scrollHeight + ' wide=' + [].slice.call(document.querySelectorAll('#v-${v} *')).filter(function(e){ var r = e.getBoundingClientRect(); return r.width && r.right > innerWidth + 1 && !e.closest('#mapBox'); }).length` },
+      { wait: v === 'map' ? 6000 : 300, eval: `'${v} overflow=' + (document.documentElement.scrollWidth - innerWidth) + ' h=' + document.documentElement.scrollHeight + ' wide=' + [].slice.call(document.querySelectorAll('#v-${v} *')).filter(function(e){ var r = e.getBoundingClientRect(); return r.width && r.right > innerWidth + 1 && !e.closest('#mapBox, .approw, svg.rmap'); }).length` },
       { shot: `w-${name}-${v}.png` },
       { tall: true, shot: `w-${name}-${v}-full.png` }
     ])) });

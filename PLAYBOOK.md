@@ -24,8 +24,11 @@
 | 파일 | 역할 |
 |---|---|
 | `index.html` | 페이지 전부. 데이터 `const TRIP`(첫 본문 `<script>`), 로직은 그다음 `<script>` IIFE |
-| `sw.js` | 캐시 접두어 `dnh-`(지금 `dnh-v1`), 지도 타일은 `dnmap-tiles`(최근 1,500장, `V` 를 올려도 안 지워짐). jsDelivr(지도 라이브러리)도 저장 |
-| `fonts/PretendardVariable.woff2` | 페이지 유일 글꼴(SIL OFL) |
+| `sw.js` | 캐시 접두어 `dnh-`(지금 `dnh-v2`), 지도 타일은 `dnmap-tiles`(최근 1,500장, `V` 를 올려도 안 지워짐). jsDelivr(지도 라이브러리)도 저장. 설치 때 두 글꼴·`geo.js` 를 미리 저장 |
+| `fonts/PretendardVariable.woff2` | 본문 글꼴(SIL OFL) |
+| `fonts/Jua-ko.woff2` + `LICENSE-Jua.txt` | 제목·숫자 글꼴 Jua(SIL OFL) — KS X 1001 한글 2,350자 + 페이지에 쓴 글자만 남긴 352KB. 원본 TTF 는 저장소에 없음. 다시 만들기: `python tools/make_font.py <Jua-Regular.ttf>`(google/fonts `ofl/jua`) |
+| `geo.js` | 경로 그림 카드의 바탕(OSM 해안선·강·섬, `window.GEO`, © OpenStreetMap contributors · ODbL). `node tools/geo_build.js <coast.json> <river.json> [water.json]` 로 만든다(받는 질의는 그 파일 머리) |
+| `design/drafts/` | 디자인 시안 A~D(로컬 전용 — `.git/info/exclude`). 반영이 끝났으니 지워도 된다 |
 | `manifest.webmanifest`, `icon-*.png`, `apple-touch-icon.png` | 홈 화면 앱. 아이콘은 `python tools/make_icons.py`(등불) |
 | `research/` | 접수 뒤 조사 5건 + 구글 지도 직접 조회 `2026-10-14-google-places.tsv`(121곳) + 확정 일정 `2026-10-14-route-draft.md` |
 | `tools/qa/` | 헤드리스 크롬 QA (3절) |
@@ -39,8 +42,11 @@
 | `crew[]` | 호칭·한 글자 태그·색. 위치 공유·오늘 계획의 "누가"가 여기서 나온다. 사람 수는 자유(배열) |
 | `hubs` `stays[]` | 지역별 기준 숙소(좌표는 spots 와 같아야 함)·체크인/아웃·조식·`facts` |
 | `days[].items[]` | `t`·`end`·`tz: 'K'`(한국 시각인 일정만)·`k`(flight·move·stay·food·walk·rest·spa·shop·card)·`title`·`memo[]`·`alt`·`place`(대표)·`places[]`(고를 곳)·`approx`·`dinner` |
-| `days[].free` `def` `defNote` | 다낭 자유일(카드 고르는 날)과 기본 배치 |
-| `cards[]` | 날씨 카드. `w: sun/rain`, `cond`(조건부 — 추천 표시 안 함), `places[]` |
+| `days[].free` `def` `defNote` | 다낭 자유일(카드 고르는 날)과 기본 배치. `def` 는 "A 또는 B" — 경로 그림은 계획이 없으면 첫 장만 |
+| `days[].ic` | 날짜 칩 아이콘 — 그날 예보(3일 앞까지)가 없을 때 |
+| `cards[]` | 날씨 카드. `w: sun/rain`, `cond`(조건부 — 추천 표시 안 함), `places[]`, `route[]`(경로 그림·지도 핀에 찍을 대표 순서 — `places` 엔 '또는' 후보가 섞여 있어서 따로) |
+| `short` | 경로 그림·번호 핀의 짧은 이름(9자 이하). 없으면 괄호를 뺀 이름, 9자 넘으면 줄임 |
+| `apps[]` | 앱 바로가기 `{ e, n, s?(줄에 쓸 짧은 이름), d(공략집 설명), web, and?, ios? }`. `and` = `[주소, scheme, 패키지]`(intent) 또는 `['play', 패키지]`(스토어의 「열기」를 거침), `ios` = 앱스토어 id |
 | `dinners[]` `flood` `move` `sos` | 저녁 후보 묶음, 침수·태풍(사실·링크·대안), 이동 표, 비상(지역별 + 공통) |
 | `meds[]` `medNote` | 해열제 간격(`gapH`)·하루 횟수(`maxDay`). **용량은 넣지 않는다** |
 | `fx` `expCats` | 1동 = 원 기본값(인터넷이 되면 open.er-api.com 값으로), 지출 분류 |
@@ -80,6 +86,10 @@
 | 체온·해열제 | 약마다 마지막 복용 + 간격 = 다음 가능 시각, 24시간 횟수가 차면 경고 | 간격은 일반 제품 설명서 기준 `{?}` — 소아과 상담 뒤 `TRIP.meds` 를 고친다. 시각은 폰 시계 기준 |
 | 큰 글씨 | 뿌리 글자 크기 120%(글자 크기는 전부 rem, 배치는 px) | 새 CSS 를 쓸 때 `font-size` 는 rem 으로 |
 | 실제 지도 | 처음엔 일정에 나오는 곳만, 확대(14↑)하거나 종류를 고르면 전부. 핀 → 아래 카드 | 헤드리스에선 이동이 2~5초 걸린다 → 시험은 `waitFor` 로 |
+| 날짜 칩 · DAY 표시 | 오늘 탭 맨 위 7칸(아이콘 = 예보, 없으면 `ic`), 오늘은 등불 색(`today()`), 지난 날은 흐리게. 누르면 그날 일정으로. 여행 중엔 제목 위에 "DAY n · 그날 제목 앞부분" | 다른 탭에서는 칩 대신 지금/다음 한 줄(ticker) |
+| 앱 바로가기 | 오늘 탭 제목 아래 가로 줄 + 공략집 "앱 바로가기" 설명 카드. 안드로이드 링크 방식은 도쿄 PLAYBOOK 1-3절 표 그대로 | 🔴 **그랩**(`grab://open?screenType=BOOKING` intent)은 그 표에 없는 새 방식 — 폰에서 눌러 봐야 한다. 안 열리면 스토어로 빠진다 |
+| 오늘 경로 (그림 카드) | 오늘 탭 지금/다음 아래. 일정마다 대표 장소(`place` → `places[0]`), 장소 없는 쉬기·숙소·조식 = 그 시각의 숙소(`hubAt`), 카드 일정 = 오늘 계획(없으면 기본 배치)의 `route`. 숙소·공항(★·✈)에서 끊어 "나들이" 줄로. 바탕은 실제 좌표 + `geo.js` | 그날 숙소에서 3km 넘는 공항·다른 숙소(11/1 공항, 11/3 리버타운, 11/7 공항)는 그림 밖 화살표 + 거리 — 그래야 11/3 처럼 숙소를 여러 번 오가는 날이 푸라마 주변으로 크게 보인다. 22px 안으로 붙은 번호는 "3·4" 하나로(비스마켓·야시장), 이름표까지 틀에 들어가게 축척을 맞춘다 |
+| 지도 탭 경로 | 지역 버튼 아래 날짜 칩 → 번호 핀 + 빨간 점선. 여행 중엔 오늘 경로가 켜진 채로 열림, 같은 칩을 다시 누르거나 「경로 끄기」로 끔. 경로에 든 곳의 보통 핀은 감추고 나머지는 흐리게 | 화면에서 30px 안으로 붙은 핀은 하나로 묶고(누르면 확대), 숙소에 붙으면 "푸라마 외 3곳". 이름표는 오른쪽→왼쪽→아래→위 중 안 겹치는 쪽, 오른쪽 이름표가 들어가게 여백을 늘려 다시 맞춘다. 먼 곳은 「전체 보기」. 테마를 바꾸면(`setStyle`) 경로 선이 지워져서 `transformStyle` 로 옮겨 싣는다 |
 | 베트남어 읽어주기 | 폰에 베트남어 음성(`vi-*`)이 있을 때만 🔊 버튼 | 안드로이드는 구글 TTS 에 베트남어 음성 데이터가 있어야 한다 — **폰에서 눌러 봐야 안다** |
 
 ## 4. QA
@@ -90,7 +100,8 @@ python -m http.server 8771 --bind 127.0.0.1 --directory ../..   # 다른 터미�
 npm run data       # <script> 문법 + 금지 문법(?. ?? lookbehind .at structuredClone) + 데이터 정합성(TSV 대조·접두어·요일·시각 순서)
 QA_URL=http://127.0.0.1:8771/ npm run moments   # 출발 전 · 한국 자정 · 인천 · 기내 · 도착 · 자정 전후 · 숙소 바뀌는 12:00 · 자유일 맑음/비 · 귀국 날 · 끝난 뒤
 QA_URL=http://127.0.0.1:8771/ npm run widths    # 360/390/1280 × 낮/밤 × 5개 화면 + 큰 글씨, 가로 넘침 0
-QA_URL=http://127.0.0.1:8771/ npm run flows     # 체크·지출·체온·메모·보여주기·계획·추천·큰 글씨·장소·지도·공략집·가족 공유(실제 ntfy.sh)
+QA_URL=http://127.0.0.1:8771/ npm run flows     # 체크·지출·체온·메모·보여주기·계획·추천·큰 글씨·장소·지도·공략집·가족 공유(실제 ntfy.sh) + 오늘 경로(scenarios/route.js)
+QA_URL=http://127.0.0.1:8771/ node harness.js scenarios/route.js   # 경로만 따로: 그림 카드(이름표 밖·겹침 수) · 지도 핀(겹침 수) · 칩 켜기/끄기 · 테마 바꿔도 선 유지
 QA_URL=https://tklee2020.github.io/danang-hoian-p3x8/ npm run offline   # 서비스워커 + 한 번 본 지도 (github.io 에서만)
 python sheet.py out/w-360-light-plan-full       # 긴 화면 조각(-1.png …)을 한 장으로 이어 붙여 눈으로 본다
 ```
@@ -136,3 +147,17 @@ WRONG 은 데이터와 일정을 고치고, CONFIRMED 만 `{?}` 를 뗀다. 처�
   ③ 하네스가 주는 `ls` 값은 JSON 문자열이어야 한다(`'d'` 가 아니라 `'"d"'`).
   ④ 아래 고정 메뉴에 가린 입력칸은 puppeteer 클릭이 메뉴에 맞는다 — `scrollIntoView({block:'center'})` 뒤에 입력.
   ⑤ MapLibre 출처 표시는 출처 글이 들어온 뒤(load·idle)에야 펼쳐진다 — `styledata` 때 접으면 다시 펴진다. `foldAttr()` 를 load·idle 에.
+
+## 8. 2026-10-14 디자인 D 반영 (시안 → 실제)
+
+- 시안(`design/drafts/` vB·vD·apps·geo)은 진짜 `index.html` 위에 덧입힌 CSS·JS 였다. 실제 반영은 렌더 함수로 옮겼다:
+  날짜 칩 `renderChap()`(아이콘은 예보), DAY `renderStage()`(`todayIdx()`), 앱 `renderApps()`·`appsHTML()`, 경로 `routeFor()` → `routeSVG()`·`renderRoute()`, 지도 `renderMapDays()`·`mapRouteDraw()`.
+  계획을 정하면(`gotPlan`) 그림·지도 경로가 바로 바뀌고, 날짜가 바뀌면 1분 타이머가 다시 그린다.
+- 시안에서 고친 것: ① 시안의 경로는 숙소를 하루 한 번만 돌아왔다고 쳤다 → 일정의 쉬기·조식을 숙소로 넣어 "아침 한 번 + 해 질 녘 한 번"처럼 나들이가 나뉜다.
+  ② 11/3 은 리버타운 → 푸라마 23km 와 길 건너 300m 가 한 그림에 섞여 다 뭉개졌다 → 먼 숙소·공항은 그림 밖 화살표로.
+  ③ 비스마켓·야시장(90m)이 그림·지도 모두 겹쳤다 → 붙은 번호는 "3·4" 하나로, 이름표는 겹치지 않는 쪽(그림은 틀 밖으로 나간 이름표도 있었다).
+  ④ 11/5 기본 배치 "시내 반나절 또는 린응사"를 둘 다 이어 그렸다 → 첫 장만, 제목에 "(또는 린응사)".
+  ⑤ 지도 핀 흐리게(`opacity`)가 안 먹었다 — MapLibre 가 마커에 opacity 를 직접 적는다 → `!important`.
+- 제목 강조색은 시안의 `#C98A12` 가 파스텔 바탕에서 대비 2.2~2.7:1 이라 글자만 `--lan-txt #9A6408`(3.7~4.6:1) 로(배경·그림자는 그대로). 밤 화면은 시안 그대로 `--lan`.
+- 글꼴 Jua 는 Google Fonts 링크 대신 저장소 파일(오프라인). 한글이 많아 KS X 1001 + 페이지 글자로 줄였다 — ★✈ 같은 기호는 Jua 에 없어 다른 글꼴로 보인다(의도).
+- 🔴 폰에서 볼 것: 그랩 앱 바로가기(새 방식), 날짜 칩 아이콘이 예보로 바뀌는지(출발 2일 전부터), 지도 번호 핀을 눌러 확대·장소 카드.
