@@ -1,0 +1,16 @@
+{
+  "name": "trip-page-qa",
+  "private": true,
+  "description": "Headless Chrome QA for the trip page (uses the installed Chrome, no browser download)",
+  "scripts": {
+    "syntax": "node syntax-check.js",
+    "data": "node syntax-check.js && node data-check.js",
+    "moments": "node harness.js scenarios/moments.js",
+    "widths": "node harness.js scenarios/widths.js",
+    "flows": "node harness.js scenarios/flows.js",
+    "offline": "node offline.js"
+  },
+  "dependencies": {
+    "puppeteer-core": "^23.0.0"
+  }
+}
