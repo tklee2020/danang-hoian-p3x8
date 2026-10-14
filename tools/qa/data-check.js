@@ -61,6 +61,14 @@ TRIP.cards.forEach(c => { if (!(c.route || []).length) out.push('카드 ' + c.id
 Object.keys(TRIP.short || {}).forEach(k => { need(k, 'short'); if (TRIP.short[k].length > 9) out.push('short ' + k + ': 9자 넘음'); });
 (TRIP.apps || []).forEach(a => { uniq('app:' + a.n, '앱'); if (!/^https:\/\//.test(a.web || '')) out.push('앱 ' + a.n + ': web 주소'); if (a.and && !(a.and[0] === 'play' ? a.and.length === 2 : a.and.length === 3)) out.push('앱 ' + a.n + ': and 형식'); });
 if (!(TRIP.apps || []).length) out.push('앱 바로가기(apps) 없음');
+/* 숙소로 배달: 평점 기준(구글 4.2↑·리뷰 50↑), 배달K 가게 번호, 지역 */
+const DL = (TRIP.delivery || {}).hubs || {};
+if (!DL.hoian || !DL.danang) out.push('delivery.hubs 에 hoian·danang 이 있어야 해요');
+Object.keys(DL).forEach(h => { if (!TRIP.hubs[h]) out.push('delivery: 없는 지역 ' + h); (DL[h].list || []).forEach(x => {
+  uniq('dl:' + h + ':' + x.n, '배달');
+  if (!(x.rate >= 4.2 && x.cnt >= 50)) out.push('배달 ' + x.n + ': 평점 기준 미달 ' + x.rate + '/' + x.cnt);
+  if (!(x.shop > 0) || !(x.km > 0) || !x.menu || !x.baby || !x.pay || !x.hrs) out.push('배달 ' + x.n + ': 빈 칸');
+}); });
 const geoF = path.join(root, 'geo.js');
 if (!fs.existsSync(geoF)) out.push('geo.js 없음 (경로 그림 바탕)');
 else { const w = {}; try { new Function('window', fs.readFileSync(geoF, 'utf8'))(w); } catch (e) { out.push('geo.js: ' + e.message); }

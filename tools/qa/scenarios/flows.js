@@ -117,5 +117,16 @@ module.exports = { parallel: 1, scenarios: [
   /* 다른 코드의 폰에는 안 보인다 */
   { name: 'share-other', url: U + '#join=' + CODE.split('').reverse().join(''), now: FREE, ls: ls(FREE, {}, { me: 'g' }), steps: [
     { wait: 6000, eval: `'peers=' + document.querySelectorAll('#shareBox .peer').length + ' plan=' + ${T('#planTile .plan-now')}` }
+  ] },
+  /* 숙소로 배달: 호이안 날엔 호이안 먼저, 다낭 날엔 다낭 먼저 + 푸라마 반입 금지 안내 · 일정의 「저녁 후보 보기」에서 들어오기 */
+  { name: 'delivery', now: '2026-11-02T16:40:00+07:00', ls: ls('2026-11-02T16:40:00+07:00'), steps: [
+    { wait: 600, eval: `document.querySelector('#hero [data-cardseg=dinner], #tl [data-cardseg=dinner]') ? 'btn' : 'no btn'` },
+    { eval: `document.querySelector('#cardsTile [data-cardseg=dinner]').click(); var c = document.querySelector('#dlvCard'); c.scrollIntoView({ block: 'start' }); window.scrollBy(0, -10); [].slice.call(c.querySelectorAll('.grp-h')).map(function(e){ return e.textContent; }).join(' / ') + ' | first=' + c.querySelector('.dlv b').textContent + ' | apps=' + [].slice.call(c.querySelectorAll('.btnrow a')).map(function(a){ return a.textContent + '>' + a.getAttribute('href').slice(0, 40); }).join(', ') + ' | qbadge=' + c.querySelectorAll('.qbadge').length + ' overflow=' + (document.documentElement.scrollWidth - innerWidth)` },
+    { shot: 'f-delivery-hoian.png' }
+  ] },
+  { name: 'delivery-danang', now: '2026-11-04T16:20:00+07:00', w: 360, h: 780, ls: ls('2026-11-04T16:20:00+07:00'), steps: [
+    { wait: 600, eval: `document.querySelector('#cardsTile [data-cardseg=dinner]').click(); var c = document.querySelector('#dlvCard'); c.scrollIntoView({ block: 'start' }); window.scrollBy(0, -10); c.querySelector('.grp-h').textContent + ' | note=' + ((c.querySelector('.note') || {}).textContent || '-').slice(0, 40) + ' | first=' + c.querySelector('.dlv b').textContent + ' | rows=' + c.querySelectorAll('.dlv').length + ' overflow=' + (document.documentElement.scrollWidth - innerWidth)` },
+    { shot: 'f-delivery-danang-360.png' },
+    { eval: `document.querySelector('#dock [data-view=guide]').click(); [].slice.call(document.querySelectorAll('#appsSec .appi b')).map(function(e){ return e.textContent; }).join(',') + ' | q=' + document.querySelectorAll('.qlist li').length` }
   ] }
 ].concat(require('./route').scenarios) };   /* 오늘 경로 그림 카드 · 지도 경로 — scenarios/route.js */
