@@ -34,7 +34,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   await sleep(3000);
   const st = await page.evaluate(() => ({
     title: document.title, pill: (document.querySelector('#ddayPill') || {}).textContent, view: document.body.getAttribute('data-view'),
-    tl: document.querySelectorAll('#tl .ev').length, spots: typeof TRIP === 'object' ? TRIP.spots.length : 0,
+    tl: document.querySelectorAll('#tl .ev').length, spots: typeof TRIP === 'object' ? TRIP.spots.length : 0, geo: !!(window.GEO && window.GEO.sea), apps: document.querySelectorAll('#appRow a').length,
     wx: (document.querySelector('#wxTile .wx-d') || document.querySelector('#wxTile .lead') || {}).textContent, build: (document.querySelector('#ver1') || {}).textContent,
     fonts: [...document.fonts].filter(f => f.status === 'loaded').map(f => f.family).slice(0, 4)
   })).catch(e => 'eval failed ' + e.message);
