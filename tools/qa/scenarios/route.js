@@ -4,7 +4,7 @@
 const { ls } = require('./_fake');
 const NL = 'String.fromCharCode(10)';
 const H2 = '2026-11-02T08:30:00+07:00', M3 = '2026-11-03T12:05:00+07:00', F4 = '2026-11-04T07:10:00+07:00', D1 = '2026-11-01T14:30:00+07:00', D7 = '2026-11-07T11:05:00+07:00', PRE = '2026-10-20T21:00:00+09:00';
-const plan = { '2026-11-04': { cards: ['linhung'], time: '08:30', note: '', by: 'd', t: Date.parse(F4) - 600000 } };
+const pool = { '2026-11-04:am': { p: 'linhung', t: Date.parse(F4) - 600000, by: 'd' } };
 /* 그림 카드: 점 글자 · 먼 곳 수 · 이름표 밖/겹침 · 줄 */
 const CARD = `(function(){ var t = document.querySelector('#routeTile'); if (t.hidden) return 'route hidden';
   t.scrollIntoView({ block: 'start' }); window.scrollBy(0, -12);
@@ -50,15 +50,15 @@ const scenarios = [
   { name: 'route-day1', now: D1, w: 390, h: 844, ls: ls(D1, {}, { theme: 'light' }), steps: [{ wait: 1200, eval: CARD }, { wait: 300, shot: 'r-day1-card.png' }] },
   /* 11/7 귀국 날 — 냐벱 → 공항 */
   { name: 'route-day7', now: D7, w: 390, h: 844, ls: ls(D7, {}, { theme: 'light' }), steps: [{ wait: 1200, eval: CARD }, { wait: 300, shot: 'r-day7-card.png' }] },
-  /* 자유일: 계획이 없으면 기본 배치, 계획(린응사)을 정하면 그림·지도가 바뀐다 */
+  /* 자유일: 고른 게 없으면 기본 배치, 나들이(린응사)를 고르면 그림·지도가 바뀐다 */
   { name: 'route-free', now: F4, w: 390, h: 844, ls: ls(F4, { danang: [10, 15, 65, 70] }, { theme: 'light' }), steps: [
     { wait: 1200, eval: CARD },
-    { eval: `document.querySelector('[data-plancard=linhung]').click(); document.querySelector('#planForm button[type=submit]').click(); 1` },
+    { eval: `document.querySelector('[data-pick="2026-11-04:am|linhung"]').click(); 1` },
     { wait: 300, eval: CARD }, { shot: 'r-free-card.png' },
     { eval: toMap }, { waitFor: mapReady }, { wait: 2500, eval: scrollMap }, { eval: PINS }, { shot: 'r-free-map.png' }
   ] },
-  { name: 'route-free-dark', now: F4, w: 390, h: 844, dark: true, ls: ls(F4, {}, { theme: 'dark', plans: plan }), steps: [{ wait: 1200, eval: CARD }, { wait: 300, shot: 'r-free-card-dark.png' }] },
-  /* 11/5 계획 없음: 기본 배치 "시내 반나절 또는 린응사" — 첫 장만 그리고 다른 쪽은 제목에 */
+  { name: 'route-free-dark', now: F4, w: 390, h: 844, dark: true, ls: ls(F4, {}, { theme: 'dark', pool: pool }), steps: [{ wait: 1200, eval: CARD }, { wait: 300, shot: 'r-free-card-dark.png' }] },
+  /* 11/5 고른 것 없음: 기본 배치 "롯데마트 (또는 미술관 + 카페)" + 길 건너 저녁 — 첫 장만 그리고 다른 쪽은 제목에 */
   { name: 'route-free-def', now: '2026-11-05T07:00:00+07:00', w: 390, h: 844, ls: ls('2026-11-05T07:00:00+07:00'), steps: [{ wait: 1200, eval: CARD }, { wait: 300, shot: 'r-free-def-card.png' }] },
   /* 출발 전: 경로 카드·DAY 표시 없음, 지도 칩도 꺼진 채 */
   { name: 'route-before', now: PRE, w: 390, h: 844, ls: ls(PRE), steps: [

@@ -52,7 +52,13 @@ async function runScenario(b, sc){
   catch (e) { logs.push('goto: ' + e.message); }
   for (const st of (sc.steps || [])) {
     try {
+      /* 순서: 준비(위치·오프라인·새로고침·기다리기) → 행동(eval·click …) → 찍기. 10/27 전에는 eval 이 reload·wait 보다 먼저 돌아서
+         { reload: true, eval } 의 eval 이 새로고침 전 화면을 읽었다(PLAYBOOK 10절) */
       if (st.geo) await page.setGeolocation({ latitude: st.geo[0], longitude: st.geo[1], accuracy: st.geo[2] || 25 });
+      if (st.offline !== undefined) await page.setOfflineMode(st.offline);
+      if (st.reload) await page.reload({ waitUntil: st.reloadWait || 'domcontentloaded' });
+      if (st.waitFor) await page.waitForFunction(st.waitFor, { timeout: st.timeout || 40000, polling: 250 });
+      if (st.wait) await sleep(st.wait);
       if (st.eval) { const r = await page.evaluate(st.eval); if (r !== undefined) out.push(sc.name + ' > ' + (typeof r === 'string' ? r : JSON.stringify(r))); }
       if (st.click) await page.click(st.click);
       if (st.tap) await page.tap(st.tap);
@@ -66,10 +72,6 @@ async function runScenario(b, sc){
         for (let i = 1; i <= 8; i++) { await page.touchscreen.touchMove(x0 + dx * i / 8, y0 + (dy || 0) * i / 8); await sleep(16); }
         await page.touchscreen.touchEnd();
       }
-      if (st.offline !== undefined) await page.setOfflineMode(st.offline);
-      if (st.reload) await page.reload({ waitUntil: st.reloadWait || 'domcontentloaded' });
-      if (st.waitFor) await page.waitForFunction(st.waitFor, { timeout: st.timeout || 40000, polling: 250 });
-      if (st.wait) await sleep(st.wait);
       if (st.tall) {   /* 긴 화면: 1800px 씩 내려가며 여러 장 (name-1.png …). 한 장으로 길게 찍으면 GPU 타일 한도(8192px)에서 같은 내용이 반복된다 */
         const vp = page.viewport(), SEG = 1800;
         await page.setViewport(Object.assign({}, vp, { height: SEG })); await sleep(300);

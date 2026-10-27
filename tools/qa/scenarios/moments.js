@@ -26,7 +26,7 @@ const M = [
 ];
 const q = `(function(){ var $=function(s){ return document.querySelector(s); }, NL=String.fromCharCode(10), t=function(s){ var e=$(s); return e ? e.innerText.split(NL).join(' / ') : '-'; };
   return $('#ddayPill').textContent + ' | ' + t('#ticker').slice(0, 90) + ' | now=' + (($('.is-now .ev-tt')||{}).textContent||'-') + ' | day=' + (($('#days [aria-pressed=true]')||{}).getAttribute ? $('#days [aria-pressed=true]').getAttribute('aria-label') : '-') +
-    ' | clock=' + $('#ckL').textContent + '/' + $('#ckK').textContent + ' | stay=' + t('#stayTile .pill') + ' | ck=' + ($('#ckTile').hidden ? 'none' : t('#ckTile .pill')) + ' | fc=' + (($('.fc-head')||{}).textContent||'-') + ' | rec=' + document.querySelectorAll('.wc.is-rec').length +
+    ' | clock=' + $('#ckL').textContent + '/' + $('#ckK').textContent + ' | stay=' + t('#stayTile .pill') + ' | ck=' + ($('#ckTile').hidden ? 'none' : t('#ckTile .pill')) + ' | fc=' + (($('.fc-head')||{}).textContent||'-') + ' | rec=' + document.querySelectorAll('.cand.is-rec').length +
     ' | stage=' + ($('#stage').hidden ? '-' : $('#stage').textContent) + ' | chip=' + (($('#chap .on') || {}).textContent || '-') + ' | route=' + ($('#routeTile').hidden ? '-' : document.querySelectorAll('#routeTile .rr').length + '줄') +
     ' | overflow=' + (document.documentElement.scrollWidth - innerWidth); })()`;
 module.exports = { parallel: 1, scenarios: M.map(([n, now, pat]) => ({

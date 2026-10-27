@@ -1,4 +1,4 @@
-/* 기능 흐름: 체크 저장·배지, 지출(동→원), 체온·해열제 다음 시각, 메모, 기사에게 보여주기, 오늘 계획, 예보→카드 추천,
+/* 기능 흐름: 체크 저장·배지, 지출(동→원), 체온·해열제 다음 시각, 메모, 기사에게 보여주기, 로비 시각·한마디, 예보→나들이 정렬, 나들이 플랜 풀(pool.js),
    큰 글씨·테마, 장소 목록, 지도 핀, 공략집(확인 필요·앱 버전·앱 바로가기), 오늘 경로(route.js), 가족 공유(위치·계획 — 실제 ntfy.sh 로 암호화된 시험 값을 보낸다) */
 const { ls, NS } = require('./_fake');
 const U = process.env.QA_URL || 'http://localhost:8765/';
@@ -53,22 +53,21 @@ module.exports = { parallel: 1, scenarios: [
     { eval: `document.querySelector('[data-showx]').click(); document.querySelector('#dock [data-view=guide]').click(); document.querySelector('[data-phrase=ph17]').click(); ${T('#show')} + ' | say=' + document.querySelectorAll('[data-say]').length + ' phrases=' + document.querySelectorAll('[data-phrase]').length` },
     { shot: 'f-show-phrase.png' }
   ] },
-  /* 오늘 계획 (가족 코드 없이 — 이 폰에만) + 예보 → 추천 */
+  /* 예보 → 추천: 나들이 칸의 후보 정렬·배지 (숨기지 않음) + 로비 시각·한마디 (가족 코드 없이 — 이 폰에만) */
   { name: 'plan-sunny', now: FREE, ls: ls(FREE, { danang: [10, 15, 20, 30] }), steps: [
-    { wait: 600, eval: `${T('.fc-head')} + ' | rec=' + [].slice.call(document.querySelectorAll('.wc.is-rec h3')).map(function(e){ return e.textContent; }).join(',') + ' | seg=' + document.querySelector('#cardsTile [aria-pressed=true]').textContent` },
-    { eval: `document.querySelector('[data-plancard=linhung]').click(); 'form=' + !!document.querySelector('#planForm') + ' sel=' + document.querySelectorAll('#planCards [aria-pressed=true]').length + ' who=' + document.querySelectorAll('#planForm [data-me]').length` },
-    { eval: `document.querySelector('[data-pc=marble]').click(); document.querySelector('[data-pc=city]').click(); [].slice.call(document.querySelectorAll('#planCards [aria-pressed=true]')).map(function(e){ return e.textContent; }).join(',')` },
-    { eval: `document.querySelector('#planTime').value = '08:30'; document.querySelector('#planForm button[type=submit]').click(); ${T('#planTile')}.slice(0, 200) + ' || hero: ' + ${T('#hero .alt')}` },
+    { wait: 600, eval: `${T('.fc-head')} + ' | am=' + [].slice.call(document.querySelectorAll('#slot-2026-11-04-am .cand')).map(function(e){ return e.querySelector('b').textContent + (e.classList.contains('is-rec') ? '*' : ''); }).join(',') + ' | pool=' + ${T('#cardsTile .th')}` },
+    { eval: `document.querySelector('[data-planedit]').click(); 'form=' + !!document.querySelector('#planForm') + ' who=' + document.querySelectorAll('#planForm [data-me]').length` },
+    { eval: `document.querySelector('#planTime').value = '08:30'; document.querySelector('#planNote').value = '우비'; document.querySelector('#planForm button[type=submit]').click(); ${T('#planTile .lob')}.slice(0, 120) + ' || hero: ' + ${T('#hero .alt')}` },
     { shot: 'f-plan.png' }
   ] },
   { name: 'plan-rainy', now: FREE, ls: ls(FREE, { danang: [80, 70, 65, 40, 5] }), steps: [
-    { wait: 600, eval: `${T('.fc-head')} + ' | rec=' + [].slice.call(document.querySelectorAll('.wc.is-rec h3')).map(function(e){ return e.textContent; }).join(',') + ' | seg=' + document.querySelector('#cardsTile [aria-pressed=true]').textContent` },
+    { wait: 600, eval: `${T('.fc-head')} + ' | am=' + [].slice.call(document.querySelectorAll('#slot-2026-11-04-am .cand')).map(function(e){ return e.querySelector('b').textContent + (e.classList.contains('is-rec') ? '*' : ''); }).join(',') + ' | wx=' + ${T('#slot-2026-11-04-am .wxc')}` },
     { eval: `document.querySelector('[data-fchub=hoian]').click(); ${T('.fc-head')}` },
-    { eval: `document.querySelector('#cardsTile [data-cardseg=dinner]').click(); document.querySelectorAll('#cardsTile .sprow').length + ' dinner rows; ' + (document.querySelector('#cardsTile [data-cardseg=flood]').click(), document.querySelectorAll('#cardsTile .sprow').length) + ' flood rows'` }
+    { eval: `document.querySelector('#cardsTile [data-cardseg=dlv]').click(); document.querySelectorAll('#cardsTile .dlv').length + ' delivery rows; ' + (document.querySelector('#cardsTile [data-cardseg=flood]').click(), document.querySelectorAll('#cardsTile .sprow').length) + ' flood rows'` }
   ] },
   /* 새벽에 비가 온 맑은 아침 → 오행산 미끄럼 안내 */
   { name: 'plan-slip', now: FREE, ls: ls(FREE, { danang: [10, 15, 20, 30, 80] }), steps: [
-    { wait: 600, eval: `${T('#fcTile .note')}` }
+    { wait: 600, eval: `document.querySelector('[data-pkmore="2026-11-04:am"]').click(); ${T('#fcTile .note')} + ' | marble=' + ${T('[data-pkopen="2026-11-04:am|marble"]')} + ' last=' + [].slice.call(document.querySelectorAll('#slot-2026-11-04-am .cand b')).pop().textContent` }
   ] },
   { name: 'big-theme', now: FREE, ls: ls(FREE), steps: [
     { wait: 600, eval: `document.querySelector('#bigBtn').click(); [document.documentElement.hasAttribute('data-big'), getComputedStyle(document.documentElement).fontSize, getComputedStyle(document.querySelector('.now-title')).fontSize, localStorage.getItem('${NS}big'), 'overflow=' + (document.documentElement.scrollWidth - innerWidth)].join(' | ')` },
@@ -105,28 +104,28 @@ module.exports = { parallel: 1, scenarios: [
     { wait: 1500, eval: `'hash=' + location.hash + ' code=' + localStorage.getItem('${NS}lsCode').length + ' shared=' + ${T('#planTile .pill')}` },
     { eval: `document.querySelector('#dock [data-view=guide]').click(); document.querySelector('[data-ls=toggle]').click(); ${T('#toast')}` },
     { wait: 5000, eval: `document.querySelector('[data-ls=toggle]').textContent` },
-    { eval: `document.querySelector('#dock [data-view=plan]').click(); document.querySelector('#cardsTile [data-cardseg=rain]').click(); document.querySelector('[data-plancard=lotte]').click(); document.querySelector('#planTime').value = '09:00'; document.querySelector('#planNote').value = 'QA 우비'; document.querySelector('#planForm button[type=submit]').click(); 1` },
-    { waitFor: `/보냈어요|저장했어요/.test(document.querySelector('#toast').textContent)`, timeout: 25000 }, { eval: `${T('#toast')} + ' | ' + ${T('#planTile .plan-now')}` }
+    { eval: `document.querySelector('#dock [data-view=plan]').click(); document.querySelector('[data-pick="2026-11-04:pm|lotte"]').click(); document.querySelector('[data-planedit]').click(); document.querySelector('#planTime').value = '09:00'; document.querySelector('#planNote').value = 'QA 우비'; document.querySelector('#planForm button[type=submit]').click(); 1` },
+    { waitFor: `/보냈어요|저장했어요/.test(document.querySelector('#toast').textContent)`, timeout: 25000 }, { eval: `${T('#toast')} + ' | ' + ${T('#planTile .plan-now')} + ' | pick=' + ${T('#slot-2026-11-04-pm .pick b')}` }, { wait: 3000 }
   ] },
   { name: 'share-mom', url: U + '#join=' + CODE, now: FREE, ls: ls(FREE, {}, { me: 'm' }), steps: [
-    { waitFor: `!!document.querySelector('#planTile .plan-now') && !!document.querySelector('#shareBox .peer')`, timeout: 40000 }, { eval: `document.querySelector('#dock [data-view=guide]').click(); ${T('#shareBox .peer')} + ' || plan: ' + ${T('#planTile .plan-now')} + ' / ' + ${T('#planTile .plan-by')} + ' || hero: ' + ${T('#hero .alt')}` },
+    { waitFor: `!!document.querySelector('#planTile .plan-now') && !!document.querySelector('#shareBox .peer') && !!document.querySelector('#slot-2026-11-04-pm .pick')`, timeout: 40000 }, { eval: `document.querySelector('#dock [data-view=guide]').click(); ${T('#shareBox .peer')} + ' || plan: ' + ${T('#planTile .plan-now')} + ' / ' + ${T('#planTile .plan-by')} + ' || pick: ' + ${T('#slot-2026-11-04-pm .pick')} + ' || 11/5 lotte gone=' + !document.querySelector('[data-pick="2026-11-05:pm|lotte"]') + ' || hero: ' + ${T('#hero .alt')}` },
     { shot: 'f-share-mom.png' },
     { eval: `document.querySelector('[data-peer=d]').click(); 1` }, { waitFor: `document.querySelectorAll('.pmk').length > 0 && window.__map.loaded()` }, { wait: 3000, eval: `'view=' + document.body.getAttribute('data-view') + ' peerPins=' + document.querySelectorAll('.pmk').length + ' ' + ${T('.pmk')}` },
     { shot: 'f-share-map.png' }
   ] },
   /* 다른 코드의 폰에는 안 보인다 */
   { name: 'share-other', url: U + '#join=' + CODE.split('').reverse().join(''), now: FREE, ls: ls(FREE, {}, { me: 'g' }), steps: [
-    { wait: 6000, eval: `'peers=' + document.querySelectorAll('#shareBox .peer').length + ' plan=' + ${T('#planTile .plan-now')}` }
+    { wait: 6000, eval: `'peers=' + document.querySelectorAll('#shareBox .peer').length + ' plan=' + ${T('#planTile .plan-now')} + ' picks=' + document.querySelectorAll('#planTile .pick').length` }
   ] },
   /* 숙소로 배달: 호이안 날엔 호이안 먼저, 다낭 날엔 다낭 먼저 + 푸라마 반입 금지 안내 · 일정의 「저녁 후보 보기」에서 들어오기 */
   { name: 'delivery', now: '2026-11-02T16:40:00+07:00', ls: ls('2026-11-02T16:40:00+07:00'), steps: [
-    { wait: 600, eval: `document.querySelector('#hero [data-cardseg=dinner], #tl [data-cardseg=dinner]') ? 'btn' : 'no btn'` },
-    { eval: `document.querySelector('#cardsTile [data-cardseg=dinner]').click(); var c = document.querySelector('#dlvCard'); c.scrollIntoView({ block: 'start' }); window.scrollBy(0, -10); [].slice.call(c.querySelectorAll('.grp-h')).map(function(e){ return e.textContent; }).join(' / ') + ' | first=' + c.querySelector('.dlv b').textContent + ' | apps=' + [].slice.call(c.querySelectorAll('.btnrow a')).map(function(a){ return a.textContent + '>' + a.getAttribute('href').slice(0, 40); }).join(', ') + ' | qbadge=' + c.querySelectorAll('.qbadge').length + ' overflow=' + (document.documentElement.scrollWidth - innerWidth)` },
+    { wait: 600, eval: `document.querySelector('#hero [data-cardseg=dlv], #tl [data-cardseg=dlv]') ? 'btn' : 'no btn'` },
+    { eval: `document.querySelector('#cardsTile [data-cardseg=dlv]').click(); var c = document.querySelector('#dlvCard'); c.scrollIntoView({ block: 'start' }); window.scrollBy(0, -10); [].slice.call(c.querySelectorAll('.grp-h')).map(function(e){ return e.textContent; }).join(' / ') + ' | first=' + c.querySelector('.dlv b').textContent + ' | apps=' + [].slice.call(c.querySelectorAll('.btnrow a')).map(function(a){ return a.textContent + '>' + a.getAttribute('href').slice(0, 40); }).join(', ') + ' | qbadge=' + c.querySelectorAll('.qbadge').length + ' overflow=' + (document.documentElement.scrollWidth - innerWidth)` },
     { shot: 'f-delivery-hoian.png' }
   ] },
   { name: 'delivery-danang', now: '2026-11-04T16:20:00+07:00', w: 360, h: 780, ls: ls('2026-11-04T16:20:00+07:00'), steps: [
-    { wait: 600, eval: `document.querySelector('#cardsTile [data-cardseg=dinner]').click(); var c = document.querySelector('#dlvCard'); c.scrollIntoView({ block: 'start' }); window.scrollBy(0, -10); c.querySelector('.grp-h').textContent + ' | note=' + ((c.querySelector('.note') || {}).textContent || '-').slice(0, 40) + ' | first=' + c.querySelector('.dlv b').textContent + ' | rows=' + c.querySelectorAll('.dlv').length + ' overflow=' + (document.documentElement.scrollWidth - innerWidth)` },
+    { wait: 600, eval: `document.querySelector('#cardsTile [data-cardseg=dlv]').click(); var c = document.querySelector('#dlvCard'); c.scrollIntoView({ block: 'start' }); window.scrollBy(0, -10); c.querySelector('.grp-h').textContent + ' | note=' + ((c.querySelector('.note') || {}).textContent || '-').slice(0, 40) + ' | first=' + c.querySelector('.dlv b').textContent + ' | rows=' + c.querySelectorAll('.dlv').length + ' overflow=' + (document.documentElement.scrollWidth - innerWidth)` },
     { shot: 'f-delivery-danang-360.png' },
     { eval: `document.querySelector('#dock [data-view=guide]').click(); [].slice.call(document.querySelectorAll('#appsSec .appi b')).map(function(e){ return e.textContent; }).join(',') + ' | q=' + document.querySelectorAll('.qlist li').length` }
   ] }
-].concat(require('./route').scenarios) };   /* 오늘 경로 그림 카드 · 지도 경로 — scenarios/route.js */
+].concat(require('./route').scenarios, require('./pool').scenarios) };   /* 오늘 경로 그림 카드 · 지도 경로 — scenarios/route.js · 나들이 플랜 풀 — scenarios/pool.js */

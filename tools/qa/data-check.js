@@ -1,6 +1,6 @@
 /* TRIP 데이터 정합성 — 브라우저 없이 index.html 의 const TRIP 만 읽어서 검사해요.
    사용: node data-check.js [../../index.html]
-   잡는 것: 요일 오기, 시각 역전(한국 시각 tz:'K' 포함), 없는 장소·카드 참조, 중복 id, 저장 접두어가 옛 여행 것인지,
+   잡는 것: 요일 오기, 시각 역전(한국 시각 tz:'K' 포함), 없는 장소·플랜 참조, 나들이 칸·기본 배치·플랜 값(10/27), 중복 id, 저장 접두어가 옛 여행 것인지,
            spots 와 research TSV 불일치(평점·리뷰 수·좌표·이름), 좌표가 지도 범위 밖, 비행 시각과 일정 불일치, {?} 개수 */
 const fs = require('fs');
 const path = require('path');
@@ -34,7 +34,6 @@ TRIP.days.forEach((d, di) => {
     if (it.place) need(it.place, tag);
     (it.places || []).forEach(k => need(k, tag));
   });
-  (d.def || []).forEach(c => { if (!TRIP.cards.some(x => x.id === c)) out.push(`${d.date}: 기본 카드 ${c} 없음`); });
 });
 /* 비행 시각 ↔ 일정 */
 const find = (re) => { let r = null; TRIP.days.forEach(d => d.items.forEach(it => { if (re.test(it.title)) r = at(d.date, it.t, it.tz); })); return r; };
@@ -46,8 +45,37 @@ TRIP.stays.forEach(s => { need(s.key, '숙소'); if (!TRIP.hubs[s.hub] || TRIP.h
 Object.keys(TRIP.hubs).forEach(h => { const s = SP[TRIP.hubs[h].stay]; if (s && (s[7] !== TRIP.hubs[h].ll[0] || s[8] !== TRIP.hubs[h].ll[1])) out.push('hub ' + h + ': 좌표가 숙소 spot 과 달라요'); });
 const ids = {};
 const uniq = (id, what) => { if (ids[id]) out.push('중복 id ' + id + ' (' + what + ')'); ids[id] = 1; };
-TRIP.cards.forEach(c => { uniq('card:' + c.id, '카드'); if (!/^(sun|rain)$/.test(c.w)) out.push('카드 ' + c.id + ': w'); (c.places || []).forEach(k => need(k, '카드 ' + c.id)); });
-TRIP.dinners.forEach(g => g.keys.forEach(k => need(k, '저녁 ' + g.name)));
+/* 나들이 플랜 풀 (10/27): 플랜 값 · 칸(slot) · 칸마다 후보가 있는지 · 기본 배치(def)가 그 칸에 들어갈 수 있는지 */
+const PLN = {}, T_HUB = Date.parse(TRIP.hubSwitchISO);
+(TRIP.plans || []).forEach(p => {
+  const w = '플랜 ' + p.id; uniq('plan:' + p.id, '플랜'); PLN[p.id] = p;
+  if (!/^(hoian|danang|both)$/.test(p.area)) out.push(w + ': area');
+  if (!Array.isArray(p.slots) || !p.slots.length || p.slots.some(x => !/^(am|pm|eve)$/.test(x))) out.push(w + ': slots');
+  if (!/^(sun|rain|any)$/.test(p.w)) out.push(w + ': w');
+  if (!/^(easy|normal|big)$/.test(p.baby)) out.push(w + ': baby');
+  if (!p.dur || !(p.h >= 0) || !p.title || !p.sub) out.push(w + ': dur·h·title·sub');
+  (p.places || []).forEach(k => need(k, w));
+  (p.route || []).forEach(k => { need(k, w + ' route'); if (SP[k] && p.area !== 'both' && SP[k][1] !== p.area) out.push(w + ': route ' + k + ' 가 다른 지역'); });
+  if (!Array.isArray(p.route) || (!p.route.length && (p.places || []).length)) out.push(w + ': route 없음 (경로 그림에 안 나와요)');
+});
+const NP = (TRIP.plans || []).length;
+if (NP < 15 || NP > 25) out.push('플랜 수 ' + NP + ' — 15~25개로');
+const slotSeen = {}, slotCnt = { hoian: 0, danang: 0 };
+TRIP.days.forEach(d => d.items.forEach(it => {
+  if (!it.slot) return;
+  const key = d.date + ':' + it.slot, hub = at(d.date, it.t, it.tz) < T_HUB ? 'hoian' : 'danang';
+  if (!/^(am|pm|eve)$/.test(it.slot)) out.push(key + ': slot 값');
+  if (slotSeen[key]) out.push(key + ': 같은 칸이 두 번'); slotSeen[key] = 1; slotCnt[hub]++;
+  if (it.k !== 'card') out.push(key + ': 칸 항목은 k:card');
+  if (it.maxH != null && !(it.maxH > 0)) out.push(key + ': maxH');
+  const fit = p => (p.area === hub || p.area === 'both') && p.slots.indexOf(it.slot) >= 0;
+  if (!(TRIP.plans || []).some(fit)) out.push(key + ': 고를 플랜이 없어요');
+  (it.def || []).forEach(id => { if (!PLN[id]) out.push(key + ': 기본 배치 ' + id + ' 없음'); else if (!fit(PLN[id])) out.push(key + ': 기본 배치 ' + id + ' 가 이 칸(' + hub + '·' + it.slot + ')에 안 맞아요'); });
+}));
+['2026-11-01:eve', '2026-11-02:am', '2026-11-02:eve', '2026-11-03:am', '2026-11-03:pm', '2026-11-04:am', '2026-11-04:pm', '2026-11-04:eve', '2026-11-05:am', '2026-11-05:pm', '2026-11-05:eve', '2026-11-06:am', '2026-11-06:pm', '2026-11-06:eve', '2026-11-07:am']
+  .forEach(k => { if (!slotSeen[k]) out.push('나들이 칸 없음: ' + k); });
+const OL = TRIP.outlook || {};
+if (!/^\d{4}-\d\d-\d\d$/.test(OL.date || '') || !(OL.rows || []).length || !OL.short || !(OL.links || []).length || OL.links.some(l => !/^https:\/\//.test(l[1]))) out.push('outlook: 날짜·rows·short·links');
 TRIP.flood.alt.places.forEach(k => need(k, '침수 대안'));
 ['hoian', 'danang'].forEach(h => need(TRIP.sos[h].show, '비상 ' + h));
 Object.keys(TRIP.showVi || {}).forEach(k => need(k, 'showVi'));
@@ -57,7 +85,6 @@ TRIP.crew.forEach(c => uniq('crew:' + c.id, '사람'));
 TRIP.meds.forEach(x => { if (!(x.gapH > 0 && x.maxDay > 0)) out.push('약 ' + x.id + ': 간격·횟수'); });
 /* 디자인 D: 날짜 칩 아이콘 · 카드 대표 경로 · 짧은 이름 · 앱 바로가기 · 경로 그림 바탕(geo.js) */
 TRIP.days.forEach(d => { if (!d.ic) out.push(d.date + ': 날짜 칩 아이콘(ic) 없음'); });
-TRIP.cards.forEach(c => { if (!(c.route || []).length) out.push('카드 ' + c.id + ': route 없음 (경로 그림에 안 나와요)'); (c.route || []).forEach(k => need(k, '카드 ' + c.id + ' route')); });
 Object.keys(TRIP.short || {}).forEach(k => { need(k, 'short'); if (TRIP.short[k].length > 9) out.push('short ' + k + ': 9자 넘음'); });
 (TRIP.apps || []).forEach(a => { uniq('app:' + a.n, '앱'); if (!/^https:\/\//.test(a.web || '')) out.push('앱 ' + a.n + ': web 주소'); if (a.and && !(a.and[0] === 'play' ? a.and.length === 2 : a.and.length === 3)) out.push('앱 ' + a.n + ': and 형식'); });
 if (!(TRIP.apps || []).length) out.push('앱 바로가기(apps) 없음');
@@ -103,6 +130,8 @@ if (ns !== 'danang26:') out.push('NS 가 danang26: 이 아니에요: ' + ns);
 if (/20\d\d-\d\d-\d\d생|생년월일\s*[:：]\s*\d|\d{6}-\d{7}/.test(html)) out.push('생년월일·주민번호처럼 보이는 문자열이 있어요');
 
 const q = (m[1].match(/\{\?[^}]*\}/g) || []).length;
-note.push(`일정 ${TRIP.days.length}일 · 항목 ${TRIP.days.reduce((n, d) => n + d.items.length, 0)}개 · 장소 ${TRIP.spots.length}곳 · 카드 ${TRIP.cards.length}장 · {?} ${q}개`);
+note.push(`일정 ${TRIP.days.length}일 · 항목 ${TRIP.days.reduce((n, d) => n + d.items.length, 0)}개 · 장소 ${TRIP.spots.length}곳 · 플랜 ${NP}개 · 칸 호이안 ${slotCnt.hoian}·다낭 ${slotCnt.danang} · {?} ${q}개`);
+const by = {}; (TRIP.plans || []).forEach(p => p.slots.forEach(x => { const k = p.area + '·' + x; by[k] = (by[k] || 0) + 1; }));
+note.push('플랜 지역·시간대: ' + Object.keys(by).sort().map(k => k + ' ' + by[k]).join(' / '));
 console.log((out.length ? out.join('\n') : '문제 없음') + '\n' + note.join('\n'));
 process.exit(out.length ? 1 : 0);
