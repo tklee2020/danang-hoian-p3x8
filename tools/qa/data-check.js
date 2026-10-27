@@ -59,7 +59,7 @@ const PLN = {}, T_HUB = Date.parse(TRIP.hubSwitchISO);
   if (!Array.isArray(p.route) || (!p.route.length && (p.places || []).length)) out.push(w + ': route 없음 (경로 그림에 안 나와요)');
 });
 const NP = (TRIP.plans || []).length;
-if (NP < 15 || NP > 25) out.push('플랜 수 ' + NP + ' — 15~25개로');
+if (NP < 15 || NP > 40) out.push('플랜 수 ' + NP + ' — 15~40개로 (처음 15~25 → 10/27 재조사 합쳐 늘림)');
 const slotSeen = {}, slotCnt = { hoian: 0, danang: 0 };
 TRIP.days.forEach(d => d.items.forEach(it => {
   if (!it.slot) return;
@@ -108,6 +108,11 @@ const swS = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
 
 /* spots ↔ research TSV */
 const B = [[107.9, 15.75], [108.5, 16.25]];
+const KINDS = ['stay', 'food', 'cafe', 'sight', 'kids', 'spa', 'med', 'mart', 'transit'];   /* index.html 의 SK 와 같게 — kids 는 10/27 */
+TRIP.spots.forEach(r => { if (KINDS.indexOf(r[2]) < 0) out.push('spot ' + r[0] + ': 모르는 종류 ' + r[2]); });
+const SKs = (html.match(/var SK = \{([^\n]*)\};/) || [])[1] || '';
+KINDS.forEach(k => { if (SKs.indexOf(k + ':') < 0) out.push('SK 에 종류 ' + k + ' 없음 (지도·장소 아이콘)'); });
+['PLK', 'mapFilt'].forEach(n => { const m2 = n === 'PLK' ? html.match(/var PLK = \[([^\]]*)\]/) : html.match(/\$\('#mapFilt'\)\.innerHTML = \[([^\]]*)\]/); if (!m2 || m2[1].indexOf("'kids'") < 0) out.push(n + ' 에 kids 없음'); });
 TRIP.spots.forEach(r => { if (r[8] < B[0][0] || r[8] > B[1][0] || r[7] < B[0][1] || r[7] > B[1][1]) out.push('spot ' + r[0] + ': 좌표가 지도 범위 밖'); if (!TRIP.hubs[r[1]]) out.push('spot ' + r[0] + ': 지역'); });
 const tsvFile = path.join(root, 'research', '2026-10-14-google-places.tsv');
 if (fs.existsSync(tsvFile)){
@@ -133,5 +138,7 @@ const q = (m[1].match(/\{\?[^}]*\}/g) || []).length;
 note.push(`일정 ${TRIP.days.length}일 · 항목 ${TRIP.days.reduce((n, d) => n + d.items.length, 0)}개 · 장소 ${TRIP.spots.length}곳 · 플랜 ${NP}개 · 칸 호이안 ${slotCnt.hoian}·다낭 ${slotCnt.danang} · {?} ${q}개`);
 const by = {}; (TRIP.plans || []).forEach(p => p.slots.forEach(x => { const k = p.area + '·' + x; by[k] = (by[k] || 0) + 1; }));
 note.push('플랜 지역·시간대: ' + Object.keys(by).sort().map(k => k + ' ' + by[k]).join(' / '));
+const byw = {}; (TRIP.plans || []).forEach(p => { const k = p.area + '·' + p.w; byw[k] = (byw[k] || 0) + 1; });
+note.push('플랜 지역·날씨: ' + Object.keys(byw).sort().map(k => k + ' ' + byw[k]).join(' / '));
 console.log((out.length ? out.join('\n') : '문제 없음') + '\n' + note.join('\n'));
 process.exit(out.length ? 1 : 0);
