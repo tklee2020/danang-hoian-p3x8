@@ -1,7 +1,7 @@
 key	area	kind	ko	gname	rating	reviews	lat	lng	hub_km	hub_min	hub_line_m	addr	phone	note
 h_rivertown	hoian	stay	리버타운 호이안 리조트	RiverTown Hoi An Resort & Spa	4.8	3079	15.8758878	108.3195642	0.0	0	0	47 Thoại Ngọc Hầu	+84 235 3924 924	11/1~11/3 숙소
-h_morning	hoian	food	모닝글로리 오리지널	Morning Glory Original	4.3	8152	15.8766604	108.3276901	1.6	3	873	106 Nguyễn Thái Học	+84 235 2241 556	2층 에어컨, 11:00~22:00, 모닝글로리 오리지널
-h_mgsig	hoian	food	모닝글로리 시그니처	Morning Glory Signature	4.5	2081	15.8759067	108.326206	0.8	2	710	41 Nguyễn Phúc Chu	+84 235 3926 930	에어컨, 10:30~22:00, 모닝글로리 시그니처
+h_morning	hoian	food	모닝글로리 오리지널	Morning Glory Original	4.3	8152	15.8766604	108.3276901	1.6	3	873	106 Nguyễn Thái Học	+84 235 2241 556	11:00~, 2층 에어컨
+h_mgsig	hoian	food	모닝글로리 시그니처	Morning Glory Signature	4.5	2081	15.8759067	108.326206	0.8	2	710	41 Nguyễn Phúc Chu	+84 235 3926 930	안호이 강변, 10:30~
 h_missly	hoian	food	미스리	Miss Ly	4.2	3670	15.8778065	108.3311896	1.8	3	1262	22 Nguyễn Huệ	+84 905 234 864	11:00~
 h_whiterose	hoian	food	화이트로즈 레스토랑	White Rose Restaurant	4.3	2595	15.8829028	108.3249932	1.6	2	972	533 Hai Bà Trưng	+84 799 000 700	07:30~
 h_haicafe	hoian	food	하이카페	Hai Cafe Courtyard BBQ & Restaurant	4.5	1268	15.8769788	108.3279486	1.6	3	905	98 Nguyễn Thái Học / 111 Trần Phú	+84 235 3863 210	중정
@@ -9,19 +9,19 @@ h_mango	hoian	food	망고망고	Mango Mango	4.3	1209	15.8760412	108.3258525	0.7	
 h_phuong	hoian	food	반미프엉	Bánh Mì Phượng	4.3	16859	15.878499	108.3320488	1.9	3	1366	2B Phan Châu Trinh	+84 905 743 773	06:30~, 포장 위주
 h_khanh	hoian	food	마담칸 반미퀸	Madam Khanh - The Banh Mi Queen	4.6	12157	15.8805973	108.3279338	1.3	2	1037	115 Trần Cao Vân	+84 777 476 177	06:30~
 h_comlinh	hoian	food	껌린	Cơm Linh	4.6	4379	15.8785146	108.3295206	1.6	3	1104	42 Phan Châu Trinh	+84 904 210 800	10:30~20:00, 껌가·까오러우
-h_vys	hoian	food	비스마켓	Vy's Market Restaurant	4.5	2007	15.8754474	108.3260089	0.7	2	691	3 Nguyễn Hoàng (안호이)	+84 235 3926 926	실내 에어컨 푸드홀, 09:00~22:00, 비스마켓
+h_vys	hoian	food	비스마켓	Vy's Market Restaurant	4.5	2007	15.8754474	108.3260089	0.7	2	691	3 Nguyễn Hoàng (안호이)	+84 235 3926 926	09:00~, 넓은 푸드홀
 h_nu	hoian	food	누 이터리	Nữ Eatery	4.6	2592	15.8773009	108.3255071	1.0	3	655	10A Nguyễn Thị Minh Khai	+84 825 190 190	12:00~21:00 · 월 휴무(11/2 불가)
-h_phoxua	hoian	food	포슈아	Phố Xưa	4.4	4078	15.8783711	108.3299649	1.6	3	1146	35 Phan Châu Trinh	+84 983 803 889	에어컨, 09:00~21:00, 포슈아 쌀국수
-h_holo	hoian	food	호로콴	Hồ Lô Quán	4.5	3031	15.8833592	108.3261187	1.8	3	1087	20 Trần Cao Vân	+84 905 116 685	에어컨, 09:00~21:30, 호로콴 가정식
-h_redbean	hoian	food	레드빈 (라 시에스타)	Red Bean Hoi An Restaurant	5.0	1753	15.8799905	108.3163563	1.0	2	571	132 Hùng Vương	+84 235 3915 915	에어컨 리조트 식당·아기의자, 06:30~22:00, 라 시에스타
-h_cargo	hoian	food	카고클럽	The Cargo Club	4.3	2501	15.8765101	108.3274427	1.6	3	845	109 Nguyễn Thái Học	+84 235 3911 227	1층 에어컨 베이커리, 09:00~22:00, 디저트·양식
+h_phoxua	hoian	food	포슈아	Phố Xưa	4.4	4078	15.8783711	108.3299649	1.6	3	1146	35 Phan Châu Trinh	+84 983 803 889	09:00~, 쌀국수
+h_holo	hoian	food	호로콴	Hồ Lô Quán	4.5	3031	15.8833592	108.3261187	1.8	3	1087	20 Trần Cao Vân	+84 905 116 685	09:00~, 가정식
+h_redbean	hoian	food	레드빈 (라 시에스타)	Red Bean Hoi An Restaurant	5.0	1753	15.8799905	108.3163563	1.0	2	571	132 Hùng Vương	+84 235 3915 915	06:30~, 리조트 식당
+h_cargo	hoian	food	카고클럽	The Cargo Club	4.3	2501	15.8765101	108.3274427	1.6	3	845	109 Nguyễn Thái Học	+84 235 3911 227	09:00~, 강변 테라스·베이커리
 h_hoahien	hoian	food	호아히엔	Hoa Hiên	4.8	2832	15.8767695	108.3426072	3.0	4	2466	33 Trần Quang Khải	+84 903 112 237	09:00~, 강변 정원
-h_deckhouse	hoian	food	덱하우스 (안방)	The DeckHouse An Bang Beach	4.3	2789	15.9142883	108.3395524	5.7	9	4775	안방비치	+84 905 658 106	야외 바다 뷰 테라스, 07:00~22:00, 안방비치
-h_soulkitchen	hoian	food	소울키친 (안방)	Soul Kitchen	4.3	2114	15.9142105	108.3398502	5.7	10	4782	안방비치	+84 906 440 320	야외 바다 정원 테라스, 07:00~22:00, 안방비치
-h_yoon	hoian	food	윤식당 (한식)	윤식당	4.7	5272	15.8779461	108.3235015	0.6	1	479	73 Nguyễn Thị Minh Khai	+84 935 174 356	에어컨 한식, 12:00~21:00, 한식 가정식
+h_deckhouse	hoian	food	덱하우스 (안방)	The DeckHouse An Bang Beach	4.3	2789	15.9142883	108.3395524	5.7	9	4775	안방비치	+84 905 658 106	07:00~
+h_soulkitchen	hoian	food	소울키친 (안방)	Soul Kitchen	4.3	2114	15.9142105	108.3398502	5.7	10	4782	안방비치	+84 906 440 320	07:00~
+h_yoon	hoian	food	윤식당 (한식)	윤식당	4.7	5272	15.8779461	108.3235015	0.6	1	479	73 Nguyễn Thị Minh Khai	+84 935 174 356	12:00~
 h_caolauthanh	hoian	food	까오러우 탄	Cao lầu Thanh	4.6	2615	15.8816927	108.3285082	1.6	3	1154	26 Thái Phiên	+84 235 2211 909	07:00~19:00 · 일 14:30까지
 h_littlefaifo	hoian	food	리틀 파이포	Little Faifo	4.6	922	15.876603	108.3290244	1.8	3	1015	66 Nguyễn Thái Học	+84 235 3917 444	11:00~
-h_home	hoian	food	홈 호이안	HOME Hoi An	4.8	3099	15.8757943	108.3250571	0.6	2	588	14 La Hối (안호이)	+84 816 849 696	에어컨 룸, 11:30~22:00, 홈 호이안
+h_home	hoian	food	홈 호이안	HOME Hoi An	4.8	3099	15.8757943	108.3250571	0.6	2	588	14 La Hối (안호이)	+84 816 849 696	11:30~
 h_traque	hoian	food	짜꿰 채소마을 식당	Tra Que Vegetable Village Restaurant	4.5	864	15.9007548	108.3382496	4.1	7	3412	짜꿰	+84 911 381 626	08:00~
 h_babas	hoian	food	바바스 키친 (인도)	Baba's Kitchen	4.8	7282	15.8784041	108.3260167	1.0		745	115 Phan Châu Trinh	+84 235 3939 919	11:00~22:00, 안 매운 버터치킨·달·난
 h_bale	hoian	food	까오러우 바레	Quán Cao lầu Bá Lễ	4.7	2817	15.8794816	108.3294126	1.5		1127	49/3 Trần Hưng Đạo	+84 937 691 891	월~금 11:00~ · 토·일 08:30~, 현지식 까오러우·화이트로즈
@@ -43,8 +43,8 @@ h_cam	hoian	cafe	캄 커피 앤 모어	Cam Coffee n More	4.8	1247	15.8768922	108
 h_anabas	hoian	cafe	아나바스 (에어컨 별채)	Anabas Restaurant - Cá Rô Đồng Quán	4.8	2876	15.8783617	108.3304168	1.6		1193	29 Phan Châu Trinh	+84 935 619 681	09:00~22:30, 뒤 별채 에어컨 · 아기의자
 h_ube	hoian	cafe	우베베 호이안	Ube Bakery Hoi An	4.9	6910	15.8765755	108.3289023	1.3		1002	70 Nguyễn Thái Học	+84 898 188 245	09:00~20:30, 에어컨 · 망고빙수
 h_tron	hoian	cafe	쫀 호이안 (Trốn)	Trốn Hội An Coffee & Brunch	4.8	456	15.8796635	108.3241314	0.8		644	151 Trần Hưng Đạo	+84 988 001 056	07:00~17:00, 에어컨 실내 · 고양이·강아지 있음
-h_dahan	hoian	spa	다한스파 호이안 본점	dahan spa hoian	4.9	5076	15.9113651	108.3381581	5.3	8	4418	130 Lạc Long Quân	+84 941 185 762	에어컨·개별 룸, 10:00~22:00, 카톡 dahanspa 무료픽업
-h_mino	hoian	spa	미노스파	Mino Spa	4.8	1726	15.8745468	108.3242639	0.7	2	524	115 Ngô Quyền (안호이)	+84 905 517 867	에어컨·개별 룸, 09:00~22:00, 미노스파
+h_dahan	hoian	spa	다한스파 호이안 본점	dahan spa hoian	4.9	5076	15.9113651	108.3381581	5.3	8	4418	130 Lạc Long Quân	+84 941 185 762	10:00~, 2인↑ 무료 픽업 · 아기와 한 방 후기
+h_mino	hoian	spa	미노스파	Mino Spa	4.8	1726	15.8745468	108.3242639	0.7	2	524	115 Ngô Quyền (안호이)	+84 905 517 867	09:00~
 h_pandanus	hoian	spa	판다누스 스파	Pandanus Spa Hoi An	4.8	1064	15.8922155	108.3306524	2.8	4	2169	450b Hai Bà Trưng	+84 935 552 733	10:00~
 h_whiterosespa	hoian	spa	화이트로즈 스파	White Rose Spa	4.8	5208	15.882954	108.3250144	1.6	2	978	529 Hai Bà Trưng	+84 376 602 882	09:30~
 h_villade	hoian	spa	빌라 드 스파	Villa de Spa Hoian	4.7	825	15.8764648	108.3209772	0.2		164	26 Nguyễn Du	+84 706 012 250	10:30~22:30, 숙소에서 걸어서 · 취소는 2일 전부터 100%
@@ -65,16 +65,16 @@ h_winmart	hoian	mart	윈마트+ (훙브엉)	WinMart+	4.1	183	15.8792608	108.3205
 h_concung	hoian	mart	꼰꿍 (아기용품)	Con Cưng	4.4	61	15.8841388	108.3254388	1.7	3	1112	550 Hai Bà Trưng	+84 1800 6609	07:30~
 d_furama	danang	stay	푸라마 리조트 다낭	Furama Resort Danang	4.5	6579	16.0399456	108.2510681	0.0	0	0	105 Võ Nguyên Giáp	+84 236 3847 333	11/3~11/7 숙소
 d_airport	danang	transit	다낭 국제공항	Danang International Airport	4.2	14555	16.0569804	108.2025372	7.3	9	5521	T2 국제선		
-d_nhabep	danang	food	냐벱 미케비치점	Nhà Bếp (416 Võ Nguyên Giáp)	4.6	5634	16.0419366	108.2482737	0.7	2	372	416 Võ Nguyên Giáp	+84 236 3958 080	에어컨·아기의자, 10:00~21:00, 미케비치 370m 베트남식
-d_rang	danang	food	랑 (인도)	Rang	4.9	4182	16.043	108.247966	0.7	2	475	384 Võ Nguyên Giáp	+84 866 141 217	에어컨, 11:30~15:00 · 17:30~22:30, 인도 요리
+d_nhabep	danang	food	냐벱 미케비치점	Nhà Bếp (416 Võ Nguyên Giáp)	4.6	5634	16.0419366	108.2482737	0.7	2	372	416 Võ Nguyên Giáp	+84 236 3958 080	10:00~, 에어컨·한국어
+d_rang	danang	food	랑 (인도)	Rang	4.9	4182	16.043	108.247966	0.7	2	475	384 Võ Nguyên Giáp	+84 866 141 217	11:30~15:00 · 17:30~ (16:30 이른 저녁 불가)
 d_thiago	danang	food	티아고	Thìa Gỗ Restaurant	4.7	7696	16.0529867	108.2415777	2.2	4	1770	53 Phan Thúc Duyện	+84 236 3689 005	10:00~, 미쉐린 빕구르망
-d_burgerbros	danang	food	버거브로스	Burger Bros	4.3	3854	16.0486741	108.2463732	1.3	3	1093	30 An Thượng 4	+84 945 576 240	에어컨, 11:00~14:00 · 17:00~21:00, 수제버거
+d_burgerbros	danang	food	버거브로스	Burger Bros	4.3	3854	16.0486741	108.2463732	1.3	3	1093	30 An Thượng 4	+84 945 576 240	11:00~, 평일 14~17시 쉼 · 현금만
 d_ngonthihoa	danang	food	응온티호아	Ngon Thị Hoa	4.4	1826	16.0489044	108.2458626	1.3	3	1141	100 Lê Quang Đạo	+84 967 220 100	~22:00
-d_moc	danang	food	목 해산물	Mộc quán Seafood	4.8	32067	16.0640292	108.2415578	3.5	5	2864	26 Tô Hiến Thành	+84 905 665 058	에어컨 룸 예약 권장, 10:30~22:30, 해산물·크레이피시
-d_myhanh	danang	food	마이한 시푸드	My Hanh Seafood	4.4	4051	16.065402	108.24617	3.2	5	2879	03-05 Võ Nguyên Giáp		에어컨·야외 바다 뷰, 10:00~22:00, 해산물
-d_bepcuon	danang	food	벱꾸온	Bếp Cuốn Đà Nẵng	4.9	18640	16.0579628	108.2451505	2.6	4	2101	31-33 Trần Bạch Đằng	+84 702 689 989	에어컨 룸·아기의자, 10:30~21:00, 반쎄오·가정식
-d_gubgo	danang	food	굽고 (한식 구이)	굽고 GUPGO Korea BBQ	4.8	3847	16.0792015	108.2459614	4.9	7	4399	102 Võ Nguyên Giáp	+84 353 764 657	개별 룸·에어컨, 11:00~22:30, 한식 삼겹살·소고기 구이
-d_lotus	danang	food	연꽃식당 (한식)	연꽃식당 NHA HANG YONKOT	4.8	772	16.0621836	108.2455056	3.0	4	2543	29 Lâm Hoành	+84 708 471 248	에어컨, 11:00~21:30, 한식 한정식
+d_moc	danang	food	목 해산물	Mộc quán Seafood	4.8	32067	16.0640292	108.2415578	3.5	5	2864	26 Tô Hiến Thành	+84 905 665 058	10:30~
+d_myhanh	danang	food	마이한 시푸드	My Hanh Seafood	4.4	4051	16.065402	108.24617	3.2	5	2879	03-05 Võ Nguyên Giáp		09:00~
+d_bepcuon	danang	food	벱꾸온	Bếp Cuốn Đà Nẵng	4.9	18640	16.0579628	108.2451505	2.6	4	2101	31-33 Trần Bạch Đằng	+84 702 689 989	10:30~
+d_gubgo	danang	food	굽고 (한식 구이)	굽고 GUPGO Korea BBQ	4.8	3847	16.0792015	108.2459614	4.9	7	4399	102 Võ Nguyên Giáp	+84 353 764 657	11:30~, 룸
+d_lotus	danang	food	연꽃식당 (한식)	연꽃식당 NHA HANG YONKOT	4.8	772	16.0621836	108.2455056	3.0	4	2543	29 Lâm Hoành	+84 708 471 248	11:30~15:30 · 17:00~22:00
 d_temptation	danang	food	더 템테이션 (프렌치)	The Temptation	4.5	806	16.0734565	108.2431275	4.3	6	3822	125 Hồ Nghinh	+84 817 952 552	11:00~14:00 · 저녁 18:00~
 d_nhabepcho	danang	food	냐벱 한시장점	Nhà Bếp Chợ Hàn	4.7	6011	16.0687376	108.2243375	5.8	7	4291	22 Hùng Vương	+84 236 3966 268	09:00~
 d_4ps_hvt	danang	food	피자 4P's 호앙반투	Pizza 4P's Hoàng Văn Thụ	4.8	17125	16.0627429	108.2227982	5.5	7	3944	8 Hoàng Văn Thụ	+84 28 3622 0500	11:00~
@@ -92,12 +92,12 @@ d_olivia	danang	food	올리비아 프라임 스테이크	Olivia's Prime Steakhou
 d_pho29lotte	danang	food	퍼 29 롯데마트 2층	Phở 29 Tầng 2 Lotte Mart	4.4	189	16.0346723	108.2294559	2.8	3	2383	롯데마트 2층		10:00~
 d_indianaroma	danang	food	인디언 아로마 (인도)	Indian Aroma Restaurant	4.7	1961	16.0485206	108.237108	2.3		1771	69 Hoài Thanh	+84 236 3839 888	11:30~23:30, 미쉐린 빕구르망
 d_cosau	danang	food	미꽝 꼬사우	Mỳ Quảng Cô Sáu	4.5	1911	16.0661787	108.2296635	4.8		3707	397 Trần Hưng Đạo	+84 963 982 634	06:30~22:00, 현지 미꽝 · 미쉐린
-d_coba	danang	food	꼬바 퍼보	Cô Ba Phở bò	4.7	6729	16.0669705	108.2247188	5.4		4118	154 Bạch Đằng	+84 236 3996 268	에어컨·엘리베이터(유모차) 완비, 09:00~22:00, 맑은 양지 쌀국수
-d_anthoi	danang	food	안 터이	Ăn Thôi	4.8	8211	16.0682463	108.2248133	5.5		4216	114 Bạch Đằng	+84 987 824 285	에어컨·아기의자 완비, 10:30~21:30, 베트남 가정식
+d_coba	danang	food	꼬바 퍼보	Cô Ba Phở bò	4.7	6729	16.0669705	108.2247188	5.4		4118	154 Bạch Đằng	+84 236 3996 268	11:00~21:00, 소고기 쌀국수 — 아기 국물·면
+d_anthoi	danang	food	안 터이	Ăn Thôi	4.8	8211	16.0682463	108.2248133	5.5		4216	114 Bạch Đằng	+84 987 824 285	10:30~21:30(목 20:00), 미쉐린 빕구르망 · 번호표
 d_batuyet	danang	food	반쎄오 바뚜옛	Bánh Xèo Bà Tuyết	4.7	670	16.065578	108.222938	5.4		4142	25/16 Trần Quốc Toản	+84 905 987 661	11:00~20:00, 현지 반쎄오
 d_legia	danang	food	레 지아 (후에식 소고기 국수)	Lê Gia Bún Bò Huế	4.4	433	16.0548427	108.2441926	2.4		1812	19 Lê Quang Đạo	+84 974 318 825	06:30~13:00 · 16:30~21:00, 미쉐린 빕구르망
 d_bx76	danang	food	반쎄오 76	Bánh xèo 76	4.6	481	16.0416482	108.2400885	1.5		1189	85A Lê Văn Hưu	+84 982 390 642	10:00~21:00, 꽝응아이식 반쎄오 · 미쉐린 빕구르망
-d_beni2	danang	food	베 니 2	Bé Ni 2	4.8	14818	16.0668016	108.2449953	4.0		3056	228 Võ Nguyên Giáp	+84 773 515 685	노상·야외 포차, 16:00~02:00, 현지 로컬 해산물
+d_beni2	danang	food	베 니 2	Bé Ni 2	4.8	14818	16.0668016	108.2449953	4.0		3056	228 Võ Nguyên Giáp	+84 773 515 685	미쉐린 빕구르망 · 영업시간은 출처 하나뿐
 d_bavui	danang	food	바 부이 (닭죽·찹쌀밥)	Xôi, Bún măng gà bà Vui	4.6	305	16.063863	108.2209008	5.4		4179	55 Lê Hồng Phong	+84 236 3897 107	04:00~21:00, 닭죽 · 미쉐린 빕구르망 · 현지 식당
 d_43	danang	cafe	43 스페셜티 커피	XLIII Specialty Coffee	4.7	10210	16.0480872	108.2460233	1.2	2	1054	422 Ngô Thì Sĩ	+84 799 343 943	06:30~
 d_cong_at	danang	cafe	콩카페 안트엉점	Cộng Cà Phê An Thượng	4.3	708	16.0490059	108.2450413	1.5	3	1196	An Thượng 6	+84 775 761 114	07:30~
@@ -122,9 +122,9 @@ s_cathedral	danang	sight	다낭 대성당 (핑크성당)	Da Nang Cathedral	4.3	2
 s_fineart	danang	sight	다낭 미술관	Danang Fine Arts Museum	4.5	1682	16.0713022	108.2177205	6.8	9	4985	78 Lê Duẩn	+84 236 3865 663	08:00~
 s_cham	danang	sight	참 조각 박물관	Museum of Cham Sculpture	4.2	8276	16.0603007	108.2232677	5.1	6	3735	02 Đường 2 Tháng 9	+84 236 3572 935	07:00~
 s_museum	danang	sight	다낭 박물관	Da Nang Museum	4.3	3751	16.0745542	108.2239668	6.7	8	4816	31 Trần Phú		08:00~
-s_mikazuki	danang	sight	미카즈키 워터파크 365	Công Viên Nước Mikazuki 365	4.2	3456	16.0921811	108.1441576	19.9	18	12815	Nguyễn Tất Thành, Xuân Thiều	+84 236 3774 555	에어컨 실내 온천·키즈풀, 09:00~19:00, 미카즈키 워터파크
-s_lotte	danang	sight	롯데마트 다낭	Lotte Mart Da Nang	4.2	15605	16.0348373	108.2292584	2.8	3	2399	6 Nại Nam	+84 901 057 057	에어컨·키즈카페 완비, 08:00~22:00, 롯데마트 쇼핑
-s_vincom	danang	sight	빈컴 플라자	Vincom Plaza	4.2	14587	16.0714014	108.2299673	5.5	7	4162	910A Ngô Quyền	+84 934 919 341	에어컨·퍼니키즈 완비, 09:30~22:00, 빈컴 플라자
+s_mikazuki	danang	sight	미카즈키 워터파크 365	Công Viên Nước Mikazuki 365	4.2	3456	16.0921811	108.1441576	19.9	18	12815	Nguyễn Tất Thành, Xuân Thiều	+84 236 3774 555	09:00~19:00, 키 100cm 이하 무료 · 어른 평일 43만 동
+s_lotte	danang	sight	롯데마트 다낭	Lotte Mart Da Nang	4.2	15605	16.0348373	108.2292584	2.8	3	2399	6 Nại Nam	+84 901 057 057	07:30~22:00, 5층 플레이타임 키즈 클럽(운영 중)
+s_vincom	danang	sight	빈컴 플라자	Vincom Plaza	4.2	14587	16.0714014	108.2299673	5.5	7	4162	910A Ngô Quyền	+84 934 919 341	10:00~, 3층 퍼니키즈(옛 tiNiWorld 자리)
 s_bana	danang	sight	바나힐 썬월드	Sun World Ba Na Hills	4.5	73040	16.0265625	108.0328125	28.3	26	23372	Bà Nà	+84 1800 1000	08:00~
 s_apec	danang	sight	APEC 공원	APEC Park	4.4	1915	16.0581055	108.2232435	5.9	6	3594	Đường 2 Tháng 9		여행사 정차 코스 · 아기 볼거리 없음 — 플랜에서 뺌
 s_love	danang	sight	사랑의 부두	Cầu Tình Yêu - Love Pier	4.6	790	16.0629967	108.2298146	4.4	6	3425	Trần Hưng Đạo		
@@ -132,8 +132,8 @@ s_nightmkt	danang	sight	선짜 야시장	Chợ Đêm Sơn Trà	3.6	2153	16.06081
 s_con	danang	sight	꼰시장	Con Market	4.3	23390	16.0677927	108.2144834	6.5	8	4987	90 Hùng Vương		07:00~
 s_mykhe	danang	sight	미케비치	My Khe Beach	4.7	4737	16.0616944	108.2469346	2.8	4	2458			
 s_3dart	danang	sight	3D 아트 인 파라다이스	3D Art in Paradise Museum - Danang	4.4	3445	16.0954282	108.2431088	8.1		6228	Lô 10 Trần Nhân Tông	+84 911 641 100	08:30~18:00, 완전 실내·에어컨 · 1m 미만 무료 · 돌바닥 미끄러움
-p_dahan	danang	spa	다한스파 다낭점	dahan spa danang	4.9	10769	16.0383857	108.2494437	0.5	1	245	498/6 Võ Nguyên Giáp	+84 941 185 762	에어컨·개별 룸, 10:00~22:00, 카톡 dahanspa 무료픽업
-p_forest	danang	spa	포레스트 스파&네일	DANANG FOREST MASSAGE&NAIL	4.7	3510	16.0424993	108.2480458	0.7	1	430	396 Võ Nguyên Giáp	+84 775 123 919	에어컨·개별 룸, 10:30~22:30, 포레스트 스파
+p_dahan	danang	spa	다한스파 다낭점	dahan spa danang	4.9	10769	16.0383857	108.2494437	0.5	1	245	498/6 Võ Nguyên Giáp	+84 941 185 762	10:00~, 아기 동반 후기(침대에 같이 눕혀도 된다는 사전 안내)
+p_forest	danang	spa	포레스트 스파&네일	DANANG FOREST MASSAGE&NAIL	4.7	3510	16.0424993	108.2480458	0.7	1	430	396 Võ Nguyên Giáp	+84 775 123 919	10:30~
 p_mike	danang	spa	다낭 미케스파	다낭미케스파	4.4	906	16.0424367	108.248137	0.7	1	418	402 Võ Nguyên Giáp	+84 362 772 449	09:00~
 p_queen	danang	spa	퀸 스파	Queen Spa	4.9	3529	16.0597584	108.2363957	3.8	5	2704	144 Phạm Cự Lượng	+84 932 429 429	08:30~
 p_herbal	danang	spa	허벌 스파	Herbal Spa	4.9	7803	16.069025	108.237026	4.5	7	3565	201 Dương Đình Nghệ	+84 901 825 789	09:00~
@@ -155,14 +155,11 @@ k_funny	danang	kids	퍼니키즈 (빈컴 3층)	Funny Kids Vincom Đà Nẵng	4.6
 k_abc	danang	kids	ABC 키즈클럽	Abc kids club	4.1	398	16.0784569	108.222884	6.8		5235	20 Trần Phú	+84 935 446 025	08:00~22:00, 아이 평일 8만·주말 12만 동 · 보호자는 1메뉴 주문
 k_kubo	danang	kids	쿠보 키즈카페 (고마트 2층)	Kubo Nano GO! Đà Nẵng	4.1	41	16.0667392	108.2135158	6.5		4998	255 Hùng Vương (GO! 2층)	+84 236 3666 085	09:00~21:30 · 월 휴무, 리뷰 41 — 근거 약함
 k_helio	danang	kids	헬리오 센터 · 야시장	Helio Center	4.2	3210	16.036293	108.2247361	3.7		2843	01 Đường 2 Tháng 9	+84 905 335 358	07:00~23:00 · 야시장 17:00~, 1층 실내 키즈카페 5~6만 동
-d_thienkim	danang	food	티엔킴	Thìa Gỗ Restaurant Danang / Thien Kim	4.8	2950	16.068412	108.224851	5.3	11	4227	112-114 Bạch Đằng, Hải Châu	+84 236 3888 889	10:30~21:30, 에어컨·아기의자, 한강변 최고급 베트남 가정식
-d_babylon	danang	food	바빌론 스테이크	Babylon Steak Garden 1	4.7	3820	16.046892	108.244318	1.3	3	1057	422 Võ Nguyên Giáp, Ngũ Hành Sơn	+84 236 3555 588	10:00~22:00, 푸라마 5분, 실내 에어컨 룸·아기의자, 돌판 소고기 구이
-h_phomai	hoian	food	포마이 쌀국수	Phở Mai Hội An	4.8	1420	15.877812	108.329815	1.4	3	1117	54 Nguyễn Thái Học, Hội An	+84 905 123 456	10:00~21:30, 올드타운 안 실내 에어컨 쌀국수·아기의자
-h_ubebe	hoian	cafe	우베베 망고빙수	U Bebe Mango Dessert Hội An	4.9	980	15.876542	108.325514	0.8	2	640	15 Nguyễn Thái Học, Hội An	+84 935 987 654	09:00~22:00, 대형 망고빙수 카페, 매장 전체 빵빵한 에어컨·깨끗한 화장실
-d_ohoen	danang	food	오현조개죽	Cháo Nghêu O Hoèn	4.6	850	16.050412	108.245123	1.7	3	1326	18 An Thượng 2, Ngũ Hành Sơn	+84 905 456 789	06:00~21:00, 배달 추천, 맵지 않고 부드러운 조개죽·소고기죽·아기밥
-d_villadespa	danang	spa	빌라드스파 다낭점	Villa de Spa Danang	4.8	1850	16.036125	108.228512	3.1	6	2448	롯데마트 옆, Hải Châu	+84 236 3666 789	10:00~22:00, 에어컨, 롯데마트 옆, 키즈룸 놀이방·전담 보모 케어 서비스
-d_mimi	danang	food	다낭미미프루츠	다낭미미프루츠	4.9	450	16.0659963	108.2239196	5.1	10	4100	3 Trần Quốc Toản, Hải Châu	010-4010-5359	09:00~23:00, 배달, 컷팅 생망고·망고스틴 리조트 배달, 카톡 주문
-d_goyo	danang	spa	고요스파 다낭	다낭 고요스파(GOYOSPA)	4.9	620	16.0682679	108.2231759	5.4	11	4336	56 Nguyễn Thái Học, Hải Châu	+84 978 544 831	09:00~22:00, 에어컨, 한국인 매니저, 픽업·샌딩·짐보관
-h_apggu	hoian	food	압꾸정 (한식구이)	압꾸정	4.7	1100	15.8771195	108.3198989	0.2	1	142	80 Đào Duy Từ, Hội An	+84 935 375 480	11:00~22:00, 에어컨·아기의자, 리버타운 140m 도보 2분, 한식 삼겹살·된장찌개
-h_qq	hoian	food	QQ 레스토랑	QQ 레스토랑 호이안	4.9	2400	15.874458	108.3263141	0.9	2	739	69 Ngô Quyền, An Hội	+84 788 551 295	10:00~22:00, 에어컨, 안호이 강변, 평점 4.9 베트남 현지 가정식
-h_anthoi	hoian	food	안토이 호이안	Ăn Thôi Hội An 안토이 호이안	5	150	15.8752469	108.3260811	0.9	2	701	40 Nguyễn Phúc Tần, An Hội	+84 394 065 971	10:30~21:30, 에어컨·아기의자, 안호이, 베트남 가정식
+d_thienkim	danang	food	티엔킴	Nhà hàng Thiên Kim	4.4	3719	16.0666255	108.2246894	5.5	7	4092	166 Bạch Đằng, Hải Châu	+84 773 566 882	10:00~21:30, 박당 거리(한강변) 베트남 음식점
+d_ohoen	danang	food	오현 조개죽	Cháo nghêu O Hoèn	4.7	341	16.0507052	108.2449336	2.2	3	1364	8 An Thượng 37, Ngũ Hành Sơn	+84 967 345 441	06:30~22:00, 죽 전문 — 배달K 에도 있어요(🛵 배달)
+d_villadespa	danang	spa	빌라 드 스파 다낭	Villa de Spa massage Danang	4.4	930	16.0345042	108.229748	2.8	3	2357	1 Nại Nam, Hòa Cường	+84 775 155 992	10:30~23:00, 롯데마트 근처
+d_mimi	danang	cafe	미미 프루츠	Trái Cây My My	4.9	4419	16.0659963	108.2239196	5.5	7	4100	3 Trần Quốc Toản, Hải Châu	010-4010-5359	08:30~, 과일 디저트 · 한국 번호 {?리조트 배달}
+d_goyo	danang	spa	고요스파 다낭	다낭 고요스파(GOYOSPA)	4.9	907	16.0682679	108.2231759	6.0	8	4336	56 Nguyễn Thái Học, Hải Châu	+84 978 544 831	10:30~23:00, 시내(한시장 쪽)
+h_apggu	hoian	food	압꾸정 (한식 구이)	APGGUJUNG(압꾸정) BBQ Restaurant	4.7	561	15.8771195	108.3198989	0.4	1	142	80 Đào Duy Từ	+84 935 375 480	11:15~, 리버타운 140m · 한식 고기구이
+h_qq	hoian	food	QQ 레스토랑	Nhà Hàng QQ	4.9	7237	15.874458	108.3263141	0.9	2	739	69 Ngô Quyền (안호이)	+84 788 551 295	11:00~22:00, 베트남 음식점
+h_anthoi	hoian	food	안토이 호이안	Ăn Thôi Hội An 안토이 호이안	4.9	4642	15.8752469	108.3260811	0.8	2	701	40 Nguyễn Phúc Tần (안호이)	+84 394 065 971	10:30~21:30, 베트남 음식점

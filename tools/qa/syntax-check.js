@@ -16,6 +16,12 @@ while ((m = re.exec(html))) {
     const k = code.search(r);
     if (k >= 0 && !/\?\.\d/.test(code.slice(k, k + 3))) { bad++; console.log('블록 ' + n + ': 금지 문법 ' + name + ' — "' + code.slice(Math.max(0, k - 30), k + 20).replace(/\n/g, ' ') + '"'); }
   });
+  /* 맨 앞 칸의 같은 이름 function 두 번 — 문법은 통과하지만 뒤 것이 앞 것을 조용히 덮는다(10/27 copyText) */
+  const seen = {};
+  (m[1].match(/^function [\w$]+/gm) || []).forEach(f => { if (seen[f]) { bad++; console.log('블록 ' + n + ': 같은 이름 두 번 — ' + f); } seen[f] = 1; });
 }
+/* </html> 뒤에 붙은 내용 — 브라우저가 본문 끝에 글자로 보여 준다(10/27 장소 11줄) */
+const tail = html.slice(html.lastIndexOf('</html>') + 7);
+if (html.indexOf('</html>') < 0 || tail.trim()) { bad++; console.log('</html> 뒤 내용: "' + tail.trim().slice(0, 80).replace(/\s+/g, ' ') + '"'); }
 console.log(bad ? bad + '건 문제' : 'script 블록 ' + n + '개 문법 통과');
 process.exit(bad ? 1 : 0);
