@@ -163,3 +163,25 @@ d_goyo	danang	spa	고요스파 다낭	다낭 고요스파(GOYOSPA)	4.9	907	16.06
 h_apggu	hoian	food	압꾸정 (한식 구이)	APGGUJUNG(압꾸정) BBQ Restaurant	4.7	561	15.8771195	108.3198989	0.4	1	142	80 Đào Duy Từ	+84 935 375 480	11:15~, 리버타운 140m · 한식 고기구이
 h_qq	hoian	food	QQ 레스토랑	Nhà Hàng QQ	4.9	7237	15.874458	108.3263141	0.9	2	739	69 Ngô Quyền (안호이)	+84 788 551 295	11:00~22:00, 베트남 음식점
 h_anthoi	hoian	food	안토이 호이안	Ăn Thôi Hội An 안토이 호이안	4.9	4642	15.8752469	108.3260811	0.8	2	701	40 Nguyễn Phúc Tần (안호이)	+84 394 065 971	10:30~21:30, 베트남 음식점
+d_heart	danang	spa	하트 스파	하트 스파	5.0	12042	16.0612265	108.2453635	2.9	4	2444	46 Lâm Hoành, Sơn Trà	+84 934 484 752	08:00~02:00(다음 날 새벽), 핫 베드스톤 스파 · 구글에 온라인 예약 · 같은 이름 2호점(하트스파 2)은 다른 곳
+d_missteak	danang	food	Missteak	Missteak	4.8	2247	16.0477983	108.2438195	1.5	3	1167	99 Mai Thúc Lân, Ngũ Hành Sơn	+84 777 963 327	11:30~22:45, 스테이크 전문점
+d_blackpearl	danang	food	Black Pearl	Black Pearl - World Foods	4.9	2581	16.0490291	108.2437284	1.7	3	1279	75 Hoàng Kế Viêm, Ngũ Hành Sơn	+84 376 000 786	11:00~22:00, 해산물 전문 · 구글 가격대 ₫100만 이상
+d_vietnom	danang	food	Vietnom Local Eatery	Vietnom Local Eatery	4.9	1793	16.0478143	108.2438148	1.5	3	1169	97 Mai Thúc Lân, Ngũ Hành Sơn	+84 389 742 095	08:30~22:00, 베트남 음식점 · 구글 가격대 ₫10~20만
+d_jojo	danang	food	조조씨푸드	Zô Zô Seafood	4.9	7332	16.0570085	108.2451723	2.5	3	1999	56-58 Trần Bạch Đằng, An Hải		11:00~24:00, 해산물 전문 · 구글 가격대 ₫100만 이상 · 전화 구글에 없음
+d_butcher	danang	food	Butcher Grilled	Butcher Grilled	4.8	1035	16.0498714	108.2470794	1.7	3	1183	121 Hoàng Kế Viêm, Ngũ Hành Sơn	+84 358 466 068	스테이크 전문점 · {?영업시간} 구글에 영업시간이 없어요
+d_yuga	danang	cafe	유가네 과일 미케비치점	유가네 과일 미케비치점	4.7	611	16.0686784	108.2433004	3.9	6	3301	153 Hồ Nghinh, An Hải	+84 931 925 000	08:00~23:00, 과일 가게(구글 분류는 커피숍)
+d_banhmi	danang	food	반미코티엔	반미코티엔	4.2	2082	16.0696404	108.223545	6.2	8	4422	Kiệt 80/10 Trần Phú, Hải Châu	+84 947 275 486	08:00~20:00, 반미(샌드위치) 가게 · 평점 4.2 기준선
+d_lapin	danang	cafe	라핀 베이커리	라핀 베이커리 카페	4.3	1272	16.0632356	108.2414973	3.4	5	2784	A17-2 Võ Văn Kiệt, An Hải	+84 904 367 450	07:00~24:00, 제과점
+d_seven	danang	cafe	Seven Days Coffee	Seven Days Coffee	4.9	149	16.0384973	108.2496724	0.5	1	220	498 Võ Nguyên Giáp, Ngũ Hành Sơn	+84 902 202 270	07:00~20:00, 커피 전문점 · 리뷰 149개(적은 편)
+d_yla	danang	cafe	Ý Là Cafe Roastery	Ý Là Cafe Roastery	4.9	183	16.0381327	108.2487806	0.6	2	317	71 Trần Văn Thành, Ngũ Hành Sơn	+84 933 381 408	07:30~19:00, 카페 · 리뷰 183개(적은 편)
+d_roost	danang	cafe	Roost Coffee Roasters	Roost Coffee Roasters | Da Nang	4.8	526	16.0433923	108.2440618	1.2	2	841	57 Bà Huyện Thanh Quan, Ngũ Hành Sơn	+84 914 002 628	07:00~21:00, 커피 로스터리
+d_comptoir	danang	food	Le Comptoir	Le Comptoir	4.9	2476	16.0426746	108.2454296	0.9	2	675	16 Chế Lan Viên, Ngũ Hành Sơn	+84 708 040 560	17:00~21:00(저녁만), 프랑스 음식점
+d_happybites	danang	food	Happy Bites Burger Bar	Happy Bites Burger Bar	4.9	710	16.0397054	108.2456953	0.7	1	575	57 Hồ Xuân Hương, Ngũ Hành Sơn	+84 369 704 868	12:00~22:00, 햄버거 전문점
+h_coffeehub	hoian	cafe	Hoi An Coffee Hub	Hoi An Coffee Hub	4.9	1146	15.8764324	108.3306808	2.3	3	1190	Hẻm 11 Nguyễn Thái Học, Old Town	+84 913 786 626	08:00~18:30, 커피숍 · 골목 안
+h_uncle	hoian	food	Uncle Huan	Uncle Huan Coffee & Restaurant	4.9	1002	15.8766043	108.3287167	1.8	3	982	61 Lê Lợi, Old Town	+84 905 417 794	07:00~23:00, 커피 + 식사
+h_alittle	hoian	food	A Little Kitchen	A Little Kitchen Restaurant - Bếp Nhỏ	4.8	1750	15.878264	108.3280851	1.4	2	949	71/2 Phan Châu Trinh, Old Town	+84 935 592 397	11:00~21:00, 베트남 음식점
+h_marou	hoian	cafe	Maison Marou	Maison Marou Café Hoi An	4.7	506	15.8781247	108.3284383	1.5	2	981	42 Lê Lợi	+84 1900 636996	초콜릿 카페 · {?영업시간} 구글에 영업시간이 없어요
+h_met	hoian	food	MẸT Hội An	MẸT Hội An	4.9	9069	15.8785902	108.3280774	1.5	2	959	56 Phan Châu Trinh	+84 977 218 556	10:00~22:30, 베트남 음식점
+h_allday	hoian	food	All Day Bánh Mì	All Day Bánh Mì - Serving History in Every Bite - Hoi An	4.8	6306	15.8769637	108.3251206	0.7	2	606	25 Công Nữ Ngọc Hoa	+84 933 012 266	09:00~21:00, 반미(샌드위치) 가게
+h_pause	hoian	food	Pause and Enjoy	Pause and Enjoy Restaurant	4.9	5490	15.8741287	108.3263267	0.9	2	749	15/4 Nguyễn Hoàng (야시장 거리, 안호이)	+84 834 176 771	베트남 음식점 · {?영업시간} 구글에 영업시간이 없어요
+h_me	hoian	cafe	Mê Hội An Rooftop	Mê Hội An Rooftop Coffee & Kitchen	4.9	2904	15.8771366	108.3269249	1.5	2	799	166 Trần Phú, Old Town	+84 374 099 375	08:00~22:30, 커피 + 식사

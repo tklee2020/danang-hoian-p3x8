@@ -30,7 +30,7 @@
 | `geo.js` | 경로 그림 카드의 바탕(OSM 해안선·강·섬, `window.GEO`, © OpenStreetMap contributors · ODbL). `node tools/geo_build.js <coast.json> <river.json> [water.json]` 로 만든다(받는 질의는 그 파일 머리) |
 | `design/drafts/` | 디자인 시안 A~D(로컬 전용 — `.git/info/exclude`). 반영이 끝났으니 지워도 된다 |
 | `manifest.webmanifest`, `icon-*.png`, `apple-touch-icon.png` | 홈 화면 앱. 아이콘은 `python tools/make_icons.py`(등불) |
-| `research/` | 접수 뒤 조사 5건 + 구글 지도 직접 조회 `2026-10-14-google-places.tsv`(처음 121곳 → 10/27 156곳, 파일 이름은 그대로) + 확정 일정 `2026-10-14-route-draft.md` + 10/27 재조사 `2026-10-27-{food,spa,cafe-sight-kids,live-summary}.md` |
+| `research/` | 접수 뒤 조사 5건 + 구글 지도 직접 조회 `2026-10-14-google-places.tsv`(처음 121곳 → 10/27 156곳 → 10/28 186곳, 파일 이름은 그대로) + 확정 일정 `2026-10-14-route-draft.md` + 10/27 재조사 `2026-10-27-{food,spa,cafe-sight-kids,live-summary}.md` |
 | `tools/qa/` | 헤드리스 크롬 QA (3절) |
 
 ## 2. 데이터 (`const TRIP`)
@@ -55,7 +55,7 @@
 | `lists[]` | 체크리스트 4개(`pre`·`pack`·`move`·`home`). **항목 id 를 바꾸면 체크 기록이 끊긴다** — 다른 목록으로 옮겨도 id 가 같으면 체크는 남는다 |
 | `memoFields` | "내 폰 전용 메모"의 칸 이름만(내용은 localStorage) |
 | `phrases[]` `driverLead` `showVi` | 베트남어 표현 `[id, 한국어, 베트남어]`, 기사에게 보여주기 첫 줄, 주소 칸이 한글뿐인 곳의 베트남어 표기 |
-| `spots[]` | 장소 156곳(10/27) — **TSV 에서 만든 것**. 종류 = stay·food·cafe·sight·kids(10/27, 아기 놀이)·spa·med·mart·transit — 새 종류는 `SK`·`PLK`·지도 필터·`.mk--종류` 색·`data-check` 의 `KINDS` 를 같이. 한 줄에 한 곳 `[key, 지역, 종류, 이름, 구글 이름, 평점, 리뷰 수, 위도, 경도, 도로 km, 직선 m, 주소, 전화, 메모]` |
+| `spots[]` | 장소 186곳(10/28) — **TSV 에서 만든 것**. 종류 = stay·food·cafe·sight·kids(10/27, 아기 놀이)·spa·med·mart·transit — 새 종류는 `SK`·`PLK`·지도 필터·`.mk--종류` 색·`data-check` 의 `KINDS` 를 같이. 한 줄에 한 곳 `[key, 지역, 종류, 이름, 구글 이름, 평점, 리뷰 수, 위도, 경도, 도로 km, 직선 m, 주소, 전화, 메모]` |
 
 - `{?}` / `{?메모}` = 확인 필요 배지. 공략집 맨 아래 "확인 필요"에 자동으로 모인다. 출처로 확인한 것만 지운다.
 - **장소를 고치려면 TSV 와 `spots` 를 같이** — `npm run data` 가 둘이 다르면 알려 준다.
@@ -277,3 +277,19 @@ WRONG 은 데이터와 일정을 고치고, CONFIRMED 만 `{?}` 를 뗀다. 처�
   하트 스파 · Missteak · Black Pearl · Vietnom Local Eatery · 조조씨푸드 · Butcher Grilled · 유가네 과일 · 반미코티엔 · 라핀 베이커리 · Seven Days Coffee ·
   Hoi An Coffee Hub · Uncle Huan · Ý Là Cafe · A Little Kitchen(Bếp Nhỏ) · Roost Coffee · Maison Marou · MẸT Hội An · All Day Bánh Mì · Pause and Enjoy ·
   Mê Hội An Rooftop · Le Comptoir · Happy Bites Burger Bar.
+
+## 13. 2026-10-28 사용자 구글맵 목록 22곳 추가 (BUILD 10/28 10:25)
+
+12절 끝의 「페이지에 없는 22곳」을 구글 재조회(Claude in Chrome, 같은 도메인 iframe — 리뷰 수·요일별 영업시간·주소·전화·좌표)해 `spots` 와 TSV 에 넣었다. 장소 164 → **186곳**, `{?}` 45 → 51개.
+
+- **조회 방법**: 목록(maps.app.goo.gl/xpc4xnam66RdU2n97)의 평점·리뷰 수를 먼저 읽고, 각 곳을 `/maps/search/<이름 + 지역>` iframe 으로 열어 **검색 결과가 목록이면 목록의 리뷰 수와 가장 가까운 항목을 골랐다**(같은 이름 다른 지점 걸러내기). 22곳 전부 리뷰 수가 목록과 일치.
+  거리는 기존 행과 같은 방법(OSRM 도로 km·분 + 직선 m, 그 지역 기준 숙소에서).
+- **기준**: 구글 4.2↑·리뷰 50↑ — 22곳 모두 통과(반미코티엔 4.2 가 기준선, Seven Days 149·Ý Là 183 은 리뷰가 적은 편이라 메모에 적음). 시설(에어컨·아기의자 등)은 출처가 없어 `TRIP.feat` 에 넣지 않았다.
+- **지역**: 다낭 14(하트 스파·Missteak·Black Pearl·Vietnom·조조씨푸드·Butcher Grilled·유가네 과일·반미코티엔·라핀·Seven Days·Ý Là·Roost·Le Comptoir·Happy Bites),
+  호이안 8(Coffee Hub·Uncle Huan·A Little Kitchen·Maison Marou·MẸT·All Day Bánh Mì·Pause and Enjoy·Mê Rooftop). Ý Là 와 Le Comptoir 는 이름에 호이안이 없고 실제로 다낭이다(좌표로 확인).
+- **영업시간이 구글에 없는 3곳** — Butcher Grilled · Maison Marou · Pause and Enjoy: 메모에 `{?영업시간}`. 조조씨푸드는 전화가 없다. 하트 스파는 같은 이름 2호점(하트스파 2, 리뷰 5,045)이 따로 있어 **본점 46 Lâm Hoành(12,042)** 으로 했다.
+- **플랜 후보**(위치·시간대가 맞는 곳에만, 플랜 메모에 한 줄씩 적음): `d_anthuong` ← Missteak·Vietnom·Black Pearl·Butcher(모두 150~200m) · `d_localnear` ← 조조씨푸드·Le Comptoir·Happy Bites(그랩 0.5~2.5 km — `go` 문구도 고침) ·
+  `d_beach` ← Seven Days·Ý Là·Roost · `linhung` ← 라핀·유가네 과일 · `city`·`d_kidsclub` ← 반미코티엔 · `h_oldtown` ← Coffee Hub·Marou·Mê·Uncle Huan · `h_oldeats` ← A Little Kitchen·MẸT·Pause and Enjoy·All Day Bánh Mì.
+  **하트 스파는 어느 플랜에도 안 넣었다**(`d_spa` 는 「길 건너 걸어서」, 하트는 차로 4분) — 마사지 플랜을 하나 더 만들지는 사용자 결정.
+- **고친 것**: 장소 카드 메모가 `esc` 만 거쳐 `{?…}` 가 글자 그대로 보였다(10/28 이전 `d_mimi` 의 `{?리조트 배달}` 도) → `rich()` 로. 스크린샷으로 발견.
+- **검증**: `npm run data`(spots↔TSV 일치) · moments 21 · widths(넘침 0) · pool 통과.
