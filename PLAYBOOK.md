@@ -30,7 +30,7 @@
 | `geo.js` | 경로 그림 카드의 바탕(OSM 해안선·강·섬, `window.GEO`, © OpenStreetMap contributors · ODbL). `node tools/geo_build.js <coast.json> <river.json> [water.json]` 로 만든다(받는 질의는 그 파일 머리) |
 | `design/drafts/` | 디자인 시안 A~D(로컬 전용 — `.git/info/exclude`). 반영이 끝났으니 지워도 된다 |
 | `manifest.webmanifest`, `icon-*.png`, `apple-touch-icon.png` | 홈 화면 앱. 아이콘은 `python tools/make_icons.py`(등불) |
-| `research/` | 접수 뒤 조사 5건 + 구글 지도 직접 조회 `2026-10-14-google-places.tsv`(처음 121곳 → 10/27 156곳 → 10/28 186곳, 파일 이름은 그대로) + 확정 일정 `2026-10-14-route-draft.md` + 10/27 재조사 `2026-10-27-{food,spa,cafe-sight-kids,live-summary}.md` |
+| `research/` | 접수 뒤 조사 5건 + 구글 지도 직접 조회 `2026-10-14-google-places.tsv`(처음 121곳 → 10/27 156곳 → 10/28 191곳, 파일 이름은 그대로) + 확정 일정 `2026-10-14-route-draft.md` + 10/27 재조사 `2026-10-27-{food,spa,cafe-sight-kids,live-summary}.md` |
 | `tools/qa/` | 헤드리스 크롬 QA (3절) |
 
 ## 2. 데이터 (`const TRIP`)
@@ -55,7 +55,7 @@
 | `lists[]` | 체크리스트 4개(`pre`·`pack`·`move`·`home`). **항목 id 를 바꾸면 체크 기록이 끊긴다** — 다른 목록으로 옮겨도 id 가 같으면 체크는 남는다 |
 | `memoFields` | "내 폰 전용 메모"의 칸 이름만(내용은 localStorage) |
 | `phrases[]` `driverLead` `showVi` | 베트남어 표현 `[id, 한국어, 베트남어]`, 기사에게 보여주기 첫 줄, 주소 칸이 한글뿐인 곳의 베트남어 표기 |
-| `spots[]` | 장소 186곳(10/28) — **TSV 에서 만든 것**. 종류 = stay·food·cafe·sight·kids(10/27, 아기 놀이)·spa·med·mart·transit — 새 종류는 `SK`·`PLK`·지도 필터·`.mk--종류` 색·`data-check` 의 `KINDS` 를 같이. 한 줄에 한 곳 `[key, 지역, 종류, 이름, 구글 이름, 평점, 리뷰 수, 위도, 경도, 도로 km, 직선 m, 주소, 전화, 메모]` |
+| `spots[]` | 장소 191곳(10/28) — **TSV 에서 만든 것**. 종류 = stay·food·cafe·sight·kids(10/27, 아기 놀이)·spa·med·mart·transit — 새 종류는 `SK`·`PLK`·지도 필터·`.mk--종류` 색·`data-check` 의 `KINDS` 를 같이. 한 줄에 한 곳 `[key, 지역, 종류, 이름, 구글 이름, 평점, 리뷰 수, 위도, 경도, 도로 km, 직선 m, 주소, 전화, 메모]` |
 
 - `{?}` / `{?메모}` = 확인 필요 배지. 공략집 맨 아래 "확인 필요"에 자동으로 모인다. 출처로 확인한 것만 지운다.
 - **장소를 고치려면 TSV 와 `spots` 를 같이** — `npm run data` 가 둘이 다르면 알려 준다.
@@ -293,3 +293,14 @@ WRONG 은 데이터와 일정을 고치고, CONFIRMED 만 `{?}` 를 뗀다. 처�
   **하트 스파는 어느 플랜에도 안 넣었다**(`d_spa` 는 「길 건너 걸어서」, 하트는 차로 4분) — 마사지 플랜을 하나 더 만들지는 사용자 결정.
 - **고친 것**: 장소 카드 메모가 `esc` 만 거쳐 `{?…}` 가 글자 그대로 보였다(10/28 이전 `d_mimi` 의 `{?리조트 배달}` 도) → `rich()` 로. 스크린샷으로 발견.
 - **검증**: `npm run data`(spots↔TSV 일치) · moments 21 · widths(넘침 0) · pool 통과.
+
+## 14. 2026-10-28 발마사지 후보 5곳 (BUILD 10/28 14:40)
+
+사용자: 마사지는 **발마사지 위주**. 구글 후기를 「발마사지」로 검색해 읽은 조사는 `research/2026-10-28-foot-massage.md`(다낭 6·호이안 9곳 정리).
+
+- **장소 5곳 추가**(186 → 191곳, `{?}` 51 → 56): 다낭 `p_lasen`(Lá sen 4.8/958) · `p_panda`(Panda Spa 발·바디 4.8/3,037) · `p_kop`(Kop Spa 4.8/3,144, 24시간) /
+  호이안 `h_aron`(아론스파 4.9/4,293, 리버타운 260m) · `h_herbalhoian`(허벌스파 호이안 5.0/1,467). 다낭에 이미 있는 `p_herbal`(허벌 스파, 다낭)과는 다른 곳.
+- **`d_spa` 플랜**: 후보에 위 다낭 3곳 + 메모 한 줄. 이 플랜은 「걸어서 3~6분」(다한스파·포레스트)이라 `go` 를 「걸어서 3~6분 (발마사지 후보는 그랩 5분)」으로 고쳤다.
+  호이안엔 마사지 플랜이 없어 호이안 2곳은 장소 탭에만 있다(만들지는 사용자 결정).
+- **`{?발마사지 메뉴·가격}`**: 공식 메뉴·가격은 못 찾았다. 후기의 단편 값(Lá sen 발 60분 20만동 등)은 메모에 「후기」로 밝혀 적었다. 출발 전 사실 확인(6절)에서 스파 몇 곳의 발 메뉴·가격을 같이 확인하면 떼어도 된다.
+- 하트 스파(`d_heart`)는 핫 베드스톤 위주라 발마사지 기준에선 후보 가치가 낮다 — 장소 탭에만 둔다.

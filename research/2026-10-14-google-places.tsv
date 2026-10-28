@@ -185,3 +185,8 @@ h_met	hoian	food	MẸT Hội An	MẸT Hội An	4.9	9069	15.8785902	108.3280774	1
 h_allday	hoian	food	All Day Bánh Mì	All Day Bánh Mì - Serving History in Every Bite - Hoi An	4.8	6306	15.8769637	108.3251206	0.7	2	606	25 Công Nữ Ngọc Hoa	+84 933 012 266	09:00~21:00, 반미(샌드위치) 가게
 h_pause	hoian	food	Pause and Enjoy	Pause and Enjoy Restaurant	4.9	5490	15.8741287	108.3263267	0.9	2	749	15/4 Nguyễn Hoàng (야시장 거리, 안호이)	+84 834 176 771	베트남 음식점 · {?영업시간} 구글에 영업시간이 없어요
 h_me	hoian	cafe	Mê Hội An Rooftop	Mê Hội An Rooftop Coffee & Kitchen	4.9	2904	15.8771366	108.3269249	1.5	2	799	166 Trần Phú, Old Town	+84 374 099 375	08:00~22:30, 커피 + 식사
+p_lasen	danang	spa	라 센 스파	Lá sen Spa	4.8	958	16.0487061	108.2455019	1.4	3	1141	21 An Thượng 5, Ngũ Hành Sơn	+84 905 892 538	09:00~23:00, 푸라마에서 가장 가까운 발마사지 후보 · 후기 한 건: 발 60분 20만동(차·망고 제공) · {?발마사지 메뉴·가격}
+p_panda	danang	spa	Panda Spa 발·바디	Panda Spa Body & Foot Massage Danang	4.8	3037	16.0561522	108.2453775	2.4	3	1902	229 Nguyễn Văn Thoại (1호점), An Hải	+84 708 185 397	09:00~23:45, 발마사지 후기 많음 — 1층 유리 전용룸·한약 족욕·한국어 메뉴판 · 발 30분만도 가능(후기) · {?발마사지 메뉴·가격}
+p_kop	danang	spa	Kop Spa	Kop Spa	4.8	3144	16.0531955	108.2461029	2.1	3	1566	77 Đỗ Bí, Ngũ Hành Sơn	+84 905 766 302	24시간 영업(구글), 후기: 발 90분(핫스톤·눈찜질 포함) · {?발마사지 메뉴·가격}
+h_aron	hoian	spa	아론스파	아론스파 호이안	4.9	4293	15.8769155	108.3217433	0.3	1	260	38A Đào Duy Từ	+84 903 060 874	09:00~22:00, 리버타운 바로 옆 · 발마사지 60분 후기 · {?발마사지 메뉴·가격}
+h_herbalhoian	hoian	spa	허벌스파 호이안	허벌스파 호이안	5.0	1467	15.8784312	108.3239504	0.7	2	548	139 Phan Châu Trinh	+84 796 813 888	10:00~22:00, 발마사지 후기 · 당일 예약으로 간 후기 있음(끝나고 과일·푸딩) · {?발마사지 메뉴·가격}
