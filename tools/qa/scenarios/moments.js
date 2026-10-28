@@ -37,14 +37,19 @@ const M = [
   ['g-pre', '2026-10-30T10:00:00+09:00', SUN, { me: 'g', simple: true, big: true }],
   ['g-free', '2026-11-04T07:00:00+07:00', SUN, { me: 'g', simple: true, big: true }],
   ['g-free-360', '2026-11-04T07:00:00+07:00', SUN, { me: 'g', simple: true, big: true }, 360],
-  ['a-pre-ck', '2026-10-30T10:00:00+09:00', SUN, { me: 'a' }]     /* 이모 몫 할 일 수 */
+  ['a-pre-ck', '2026-10-30T10:00:00+09:00', SUN, { me: 'a' }],    /* 이모 몫 할 일 수 */
+  /* 본인 기준 호칭 — 같은 순간(11/4 20:30, 다음 = 21:15 이모 도착)을 사람마다: 아빠 「처제」(imo-night) · 엄마 「유리」 · 할머니 「유리」 */
+  ['m-rel', '2026-11-04T20:30:00+07:00', SUN, { me: 'm' }],
+  ['h-rel', '2026-11-04T20:30:00+07:00', SUN, { me: 'h', simple: true, big: true }],
+  ['none-rel', '2026-11-04T20:30:00+07:00', SUN, { me: null }]
 ];
 const q = `(function(){ var $=function(s){ return document.querySelector(s); }, NL=String.fromCharCode(10), t=function(s){ var e=$(s); return e ? e.innerText.split(NL).join(' / ') : '-'; };
   return $('#ddayPill').textContent + ' | ' + t('#ticker').slice(0, 90) + ' | now=' + (($('.is-now .ev-tt')||{}).textContent||'-') + ' | day=' + (($('#days [aria-pressed=true]')||{}).getAttribute ? $('#days [aria-pressed=true]').getAttribute('aria-label') : '-') +
     ' | clock=' + $('#ckL').textContent + '/' + $('#ckK').textContent + ' | stay=' + t('#stayTile .pill') + ' | ck=' + ($('#ckTile').hidden ? 'none' : t('#ckTile .pill')) + ' | fc=' + (($('.fc-head')||{}).textContent||'-') + ' | rec=' + document.querySelectorAll('.cand.is-rec').length +
     ' | stage=' + ($('#stage').hidden ? '-' : $('#stage').textContent) + ' | chip=' + (($('#chap .on') || {}).textContent || '-') + ' | route=' + ($('#routeTile').hidden ? '-' : document.querySelectorAll('#routeTile .rr').length + '줄') +
     ' | who=' + ($('#who').hidden ? '-' : 'open') + ' | me=' + (($('.whoBtn') || {}).textContent || '-') + ' | simple=' + document.documentElement.hasAttribute('data-simple') +
-    ' | cks=' + document.querySelectorAll('#ckLists input[data-ck]').length + ' | apps=' + Array.prototype.map.call(document.querySelectorAll('#appRow .app span'), function(e){ return e.textContent; }).filter(function(x){ return /Claude|Gemini/.test(x); }).join(',') +
+    ' | cks=' + document.querySelectorAll('#ckLists input[data-ck]').length + ' | memo=' + document.querySelectorAll('#memoBox [data-memo]').length +
+    ' | p8=' + ((document.querySelector('[data-ck=p8]') || { closest: function(){ return null; } }).closest('label') || { textContent: '-' }).textContent.slice(0, 40) + ' | apps=' + Array.prototype.map.call(document.querySelectorAll('#appRow .app span'), function(e){ return e.textContent; }).filter(function(x){ return /Claude|Gemini/.test(x); }).join(',') +
     ' | overflow=' + (document.documentElement.scrollWidth - innerWidth); })()`;
 module.exports = { parallel: 1, scenarios: M.map(([n, now, pat, extra, w]) => ({
   name: n, now, w: w || 390, h: w ? 780 : 844, ls: ls(now, pat, extra),

@@ -83,6 +83,15 @@ TRIP.lists.forEach(l => l.groups.forEach(g => g.items.forEach(it => uniq('ck:' +
 TRIP.phrases.forEach(g => g.list.forEach(p => { uniq('ph:' + p[0], '표현'); if (!p[1] || !p[2]) out.push('표현 ' + p[0] + ': 빈 칸'); }));
 TRIP.crew.forEach(c => uniq('crew:' + c.id, '사람'));
 TRIP.days.forEach((d, di) => d.items.forEach(it => (it.only || []).forEach(id => { if (!TRIP.crew.some(c => c.id === id)) out.push(`D${di + 1} ${it.t}: only 에 없는 사람 ${id}`); })));
+{ const ids = TRIP.crew.map(c => c.id), STR = [];
+  (function walk(v){ if (typeof v === 'string') STR.push(v); else if (v && typeof v === 'object') Object.keys(v).forEach(k => walk(v[k])); })(TRIP);
+  STR.forEach(S => {
+    (S.match(/\{@[a-z](?::[^}]*)?\}/g) || []).forEach(t => { if (ids.indexOf(t.charAt(2)) < 0) out.push('호칭 ' + t + ': 없는 사람'); });
+    const open = (S.match(/\[\[/g) || []).length, ok = S.match(/\[\[([a-z]):([^|\]]*)\|([^\]]*)\]\]/g) || [];
+    if (open !== ok.length) out.push('본인/다른 사람 [[x:…|…]] 모양이 깨짐: ' + S.slice(0, 40));
+    ok.forEach(t => { if (ids.indexOf(t.charAt(2)) < 0) out.push('호칭 ' + t.slice(0, 20) + ': 없는 사람'); });
+  });
+  Object.keys(TRIP.rel || {}).forEach(v => { if (ids.indexOf(v) < 0) out.push('rel: 없는 사람 ' + v); }); }
 TRIP.crew.forEach(c => { const t = c.trip; if (!t) return; const a = ['departISO', 'arriveISO', 'backISO', 'endISO'].map(k => Date.parse(t[k]));
   if (a.some(isNaN) || !(a[0] < a[1] && a[1] < a[2] && a[2] < a[3])) out.push('crew ' + c.id + ': trip 시각 순서가 이상해요');
   if (!TRIP.days.some(d => d.date === t.start)) out.push('crew ' + c.id + ': trip.start 가 일정 날짜가 아니에요'); });
