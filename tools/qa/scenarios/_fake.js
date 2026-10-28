@@ -22,6 +22,7 @@ const fx = now => JSON.stringify({ r: 0.0518, _t: Date.parse(now) });
 /* 기본 ls: 예보·환율을 넣어 실제 API 를 안 부르게 */
 function ls(now, pat, extra){
   const o = {}; o[NS + 'wx'] = wx(now, pat || {}); o[NS + 'fx'] = fx(now);
+  o[NS + 'me'] = '"d"';   /* 처음 열면 「누구세요?」 창이 화면을 덮으므로 기본은 아빠 폰 — 창을 볼 땐 extra { me: null } */
   Object.keys(extra || {}).forEach(k => { o[NS + k] = JSON.stringify(extra[k]); });
   return o;
 }

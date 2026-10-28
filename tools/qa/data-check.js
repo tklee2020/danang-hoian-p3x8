@@ -82,6 +82,10 @@ Object.keys(TRIP.showVi || {}).forEach(k => need(k, 'showVi'));
 TRIP.lists.forEach(l => l.groups.forEach(g => g.items.forEach(it => uniq('ck:' + it[0], '체크리스트'))));
 TRIP.phrases.forEach(g => g.list.forEach(p => { uniq('ph:' + p[0], '표현'); if (!p[1] || !p[2]) out.push('표현 ' + p[0] + ': 빈 칸'); }));
 TRIP.crew.forEach(c => uniq('crew:' + c.id, '사람'));
+TRIP.days.forEach((d, di) => d.items.forEach(it => (it.only || []).forEach(id => { if (!TRIP.crew.some(c => c.id === id)) out.push(`D${di + 1} ${it.t}: only 에 없는 사람 ${id}`); })));
+TRIP.crew.forEach(c => { const t = c.trip; if (!t) return; const a = ['departISO', 'arriveISO', 'backISO', 'endISO'].map(k => Date.parse(t[k]));
+  if (a.some(isNaN) || !(a[0] < a[1] && a[1] < a[2] && a[2] < a[3])) out.push('crew ' + c.id + ': trip 시각 순서가 이상해요');
+  if (!TRIP.days.some(d => d.date === t.start)) out.push('crew ' + c.id + ': trip.start 가 일정 날짜가 아니에요'); });
 TRIP.meds.forEach(x => { if (!(x.gapH > 0 && x.maxDay > 0)) out.push('약 ' + x.id + ': 간격·횟수'); });
 /* 디자인 D: 날짜 칩 아이콘 · 카드 대표 경로 · 짧은 이름 · 앱 바로가기 · 경로 그림 바탕(geo.js) */
 TRIP.days.forEach(d => { if (!d.ic) out.push(d.date + ': 날짜 칩 아이콘(ic) 없음'); });

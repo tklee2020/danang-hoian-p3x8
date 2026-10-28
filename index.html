@@ -686,13 +686,33 @@ body:not([data-view="plan"]) .top .chap{display:none}
 .sos-sheet__links{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 .sos-sheet__links button{font-size:.8125rem;padding:9px 6px}
 .show__actions{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap}
+/* 누구세요? — 처음 열 때 · 맨 위 이름 버튼 · 합류 전 사람에게 붙는 날짜 메모 */
+.who{position:fixed;top:0;right:0;bottom:0;left:0;z-index:85;display:flex;padding:calc(16px + env(safe-area-inset-top,0px)) var(--gutter) calc(16px + env(safe-area-inset-bottom,0px));background:rgba(10,23,34,.5);overflow-y:auto}
+.who__c{width:100%;max-width:440px;margin:auto;background:var(--card);color:var(--ink);border-radius:20px;padding:20px 16px 16px;box-shadow:var(--glass-sh)}
+.who__k{font-size:0.875rem;font-weight:800;color:var(--sea-ink)}
+.who__t{margin-top:4px;font-size:1.625rem;font-weight:900;letter-spacing:-.01em}
+.who__s{margin-top:6px;font-size:0.9375rem;line-height:1.5;color:var(--ink-2)}
+.who__g{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.who__g .btn{flex-direction:column;gap:2px;min-height:60px;font-size:1.0625rem}
+.who__g .btn small{font-size:0.75rem;font-weight:700;opacity:.85}
+.who__g .btn:last-child:nth-child(odd){grid-column:1 / -1}
+.who__f{margin-top:12px;font-size:0.8125rem;color:var(--ink-3);text-align:center}
+.who .more{margin-top:10px}
+.whoBtn{display:inline-flex;align-items:center;gap:4px;min-height:32px;margin-top:6px;padding:2px 10px;border:0;border-radius:999px;background:var(--chip);color:var(--chip-ink);font:inherit;font-size:0.875rem;font-weight:800;vertical-align:middle;cursor:pointer}
+.who__simple{width:100%;margin-top:12px}
+/* 간단히 보기(할아버지·할머니 기본) — 지금·다음 · 오늘 일정 · 숙소(기사에게 보여주기) · 비상 · 시계·날씨 · 내 체크 목록만 남긴다 */
+[data-simple] #appRow,[data-simple] #routeTile,[data-simple] #fcTile,[data-simple] #planTile,[data-simple] #cardsTile,[data-simple] #expTile,[data-simple] #fevTile,
+[data-simple] #btnCopyPlan,[data-simple] #expSec,[data-simple] #fevSec,[data-simple] #dock [data-view="map"],[data-simple] #dock [data-view="places"],
+[data-simple] [data-pkgo],[data-simple] [data-go="cards"],[data-simple] [data-cardseg]{display:none!important}
+.whoN{display:block;margin-top:4px;font-size:0.875rem;font-weight:700;color:var(--ink-2)}
 .show__actions .btn{flex:1;min-width:120px;padding:10px 14px;font-size:.9375rem;text-align:center;text-decoration:none}
 .th-actions{display:flex;gap:6px;align-items:center}
 </style>
 <script>
-(function(){var m=null,b=null;try{m=JSON.parse(localStorage.getItem('danang26:theme'));b=JSON.parse(localStorage.getItem('danang26:big'));}catch(e){}
+(function(){var m=null,b=null,s=null;try{m=JSON.parse(localStorage.getItem('danang26:theme'));b=JSON.parse(localStorage.getItem('danang26:big'));s=JSON.parse(localStorage.getItem('danang26:simple'));}catch(e){}
 if(m==='light'||m==='dark')document.documentElement.setAttribute('data-theme',m);
-if(b===true)document.documentElement.setAttribute('data-big','');})();
+if(b===true)document.documentElement.setAttribute('data-big','');
+if(s===true)document.documentElement.setAttribute('data-simple','');})();
 </script>
 </head>
 <body data-view="plan">
@@ -832,6 +852,7 @@ if(b===true)document.documentElement.setAttribute('data-big','');})();
   </div>
 </nav>
 <div class="show" id="show" hidden role="dialog" aria-modal="true" aria-label="크게 보여주기"></div>
+<div class="who" id="who" hidden role="dialog" aria-modal="true" aria-label="누구세요"></div>
 
 <div class="sos-sheet" id="sosSheet" hidden role="dialog" aria-modal="true" aria-label="비상 연락 및 긴급 지원">
   <div class="sos-sheet__backdrop" data-sosx></div>
@@ -856,9 +877,11 @@ if(b===true)document.documentElement.setAttribute('data-big','');})();
    ================================================================ */
 const TRIP = {
   title: '다낭 · 호이안', titleEm: '호이안',
-  sub: '2026.11.1(일) – 11.7(토) · 어른 4 + 13개월 아기 · 이모 11/4 밤 합류',
+  sub: '13개월 용준이와 함께하는 7일',
+  whoTitle: '용준이와 함께하는 다낭 · 호이안',   /* 처음 열 때 「누구세요?」 창 머리 */
   start: '2026-11-01', end: '2026-11-07',
   departISO: '2026-11-01T11:10:00+09:00',   /* KE457 인천 출발 */
+  fly: 'KE457',                              /* 출발 전 띠의 편명 — 사람마다 다르면 crew[].trip.fly */
   arriveISO: '2026-11-01T14:15:00+07:00',   /* 다낭 도착 */
   backISO: '2026-11-07T15:45:00+07:00',     /* KE458 다낭 출발 */
   endISO: '2026-11-07T22:05:00+09:00',      /* 인천 도착 */
@@ -866,11 +889,15 @@ const TRIP = {
   crew: [
     { id: 'd', name: '아빠', tag: '빠', color: '#BFE3F5' },
     { id: 'm', name: '엄마', tag: '엄', color: '#FFD9C7' },
-    { id: 'g', name: '할아버지', tag: '할', color: '#C9EEDD' },
-    { id: 'h', name: '할머니', tag: '머', color: '#FFF1BF' },
-    { id: 'a', name: '이모', tag: '이', color: '#E6D9F7' }   /* 11/4 밤 합류 → 11/7 */
+    { id: 'g', name: '할아버지', tag: '할', color: '#C9EEDD', simple: true },   /* simple: 고르면 큰 글씨 + 간단히 보기 */
+    { id: 'h', name: '할머니', tag: '머', color: '#FFF1BF', simple: true },
+    /* trip: 여행 시각이 가족과 다른 사람 — 이 사람을 고른 폰은 출발 전 띠·지금/다음·귀국을 이 시각으로 센다(only 항목은 그 사람에게만) */
+    { id: 'a', name: '유리 이모', tag: '유', color: '#E6D9F7',
+      trip: { start: '2026-11-04', fly: 'WE201', departISO: '2026-11-04T18:15:00+09:00', arriveISO: '2026-11-04T21:15:00+07:00',
+              backISO: '2026-11-07T14:15:00+07:00', endISO: '2026-11-07T20:40:00+09:00',
+              chip: '11/4 밤 합류', before: '가족 일정이에요 — 유리 이모는 11/4(수) 밤에 와요' } }
   ],
-  baby: { name: '아기', mo: 13 },
+  baby: { name: '용준', mo: 13 },
   hubs: {
     hoian: { name: '호이안', stay: 'h_rivertown', short: '리버타운', city: 'Hội An', ll: [15.8758878, 108.3195642], zoom: 14.6 },
     danang: { name: '다낭', stay: 'd_furama', short: '푸라마', city: 'Đà Nẵng', ll: [16.0399456, 108.2510681], zoom: 13.2 }
@@ -881,7 +908,7 @@ const TRIP = {
       facts: ['올드타운 서쪽 강변(깜포) — 강물이 불면 주변 도로가 영향받을 수 있어요 {?침수 대응·객실 층}', '아기 침대·유아 의자·전자레인지 {?}', '안방비치 셔틀 시각 {?}'] },
     { key: 'd_furama', hub: 'danang', name: '푸라마 리조트 다낭', from: '2026-11-03', to: '2026-11-07', nights: 4, in: '14:00', out: '11:00', bf: '06:30~10:30',
       brief: '길 건너에 냐벱 370m · 다한스파 250m · K마켓 200m · 약국 550m',
-      facts: ['**11/4 밤부터 이모** — 인원 추가(엑스트라 베드 + 조식) 1박 1,492,230동(아고다 문의 답). 베트남은 숙소가 외국인 투숙객 여권을 바로 신고해야 해서 **등록 없이 같이 자는 건 안 돼요** {?3박 등록 확정}',
+      facts: ['**11/4 밤부터 유리 이모** — 인원 추가(엑스트라 베드 + 조식) 1박 1,492,230동(아고다 문의 답). 베트남은 숙소가 외국인 투숙객 여권을 바로 신고해야 해서 **등록 없이 같이 자는 건 안 돼요** {?3박 등록 확정}',
               '키즈클럽(Little Nemo)은 만 4~12세 — 13개월은 못 가요 (공식 안내 PDF 2026-03)', '베이비시터 08:30~18:00 · 1명 250,000동++/시간 · 24시간 전 예약(키즈클럽·내선 3308)', '레이트 체크아웃(13시) {?}', '아기 침대·유아 의자·전자레인지 {?}', '수영장은 온수가 아니라 흐린 날 차갑다는 후기'] }
   ],
 
@@ -917,20 +944,21 @@ const TRIP = {
       { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 2, title: '오후 나들이', memo: ['체크인 뒤 가볍게 — 저녁 17시 전'], def: ['d_beach'] },
       { t: '17:00', approx: true, k: 'food', title: '저녁 — 리조트 식당 또는 길 건너', memo: ['**랑**(인도 요리, 저녁은 17:30부터 {?브레이크 타임}) · **냐벱**'], places: ['d_rang', 'd_nhabep'] }
     ] },
-    { date: '2026-11-04', label: '수', ic: '🌴', title: '다낭 자유 1 — 밤에 이모 도착', free: true, defNote: '기본 배치: 실내(롯데마트 또는 미술관+카페) + 안트엉 저녁 — 이모 오기 전에 나들이 · 10/27 전망 비·소나기(9~11mm)', items: [
+    { date: '2026-11-04', label: '수', ic: '🌴', title: '다낭 자유 1 — 밤에 유리 이모 도착', free: true, defNote: '기본 배치: 실내(롯데마트 또는 미술관+카페) + 안트엉 저녁 — 유리 이모 오기 전에 나들이 · 10/27 전망 비·소나기(9~11mm)', items: [
       { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 나들이 고르기', memo: ['06:30~10:30'] },
       { t: '08:00', approx: true, k: 'card', slot: 'am', maxH: 4, title: '오전 나들이', memo: ['아침에 나갔다가 12시 전후에 돌아와요'], def: ['lotte', 'museum'] },
       { t: '12:00', approx: true, k: 'rest', title: '리조트 — 낮잠 · 수영장' },
       { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 1.5, title: '오후 (골라도 되고 비워도 돼요)', memo: ['낮잠 뒤 16:30 저녁 전까지'] },
+      { t: '18:15', tz: 'K', k: 'flight', only: ['a'], title: '**WE201 출발** — 인천 **T1** → 다낭 T2', memo: ['파라타항공 · 이 시각이면 WE201 — 인천 T1 에 15:15쯤(3시간 전). 가족 KE 와 다른 터미널', '다낭 도착은 현지 21:15 — 폰 시계가 2시간 뒤로 바뀌어요'] },
       { t: '16:30', k: 'card', slot: 'eve', title: '저녁 나들이 (16:30~17:00 출발)', memo: ['비 오는 저녁은 그랩이 잘 안 잡혀요 — **돌아올 차를 식사 전에** 생각해 둬요'], def: ['d_anthuong'], dinner: true },
-      { t: '23:00', approx: true, k: 'flight', title: '**이모 도착** — 다낭공항 T2 → 그랩 → 푸라마', memo: ['항공편·도착 시각 {?}',
-          '밤에는 한국발 비행기가 몰려 입국 줄이 길어요 — 내려서 30~60분',
+      { t: '21:15', k: 'flight', title: '**유리 이모 도착** — 파라타항공 · 다낭공항 T2 → 그랩 → 푸라마', memo: ['인천 **T1**(가족과 다른 터미널) 18:15 출발 → 다낭 21:15 — 이 시각이면 **WE201**',
+          '밤에는 한국발 비행기가 몰려 입국 줄이 길어요 — 내려서 30~60분, 푸라마엔 22:30~23:00쯤',
           '그랩 7 km · 15~20분 — 밤 할증 {?요금}. 차에 타면 가족 위치 공유 켜기',
           '푸라마 정문 → **프런트에서 여권 보여 주고 투숙 등록 → 카드키** 받아 방으로. 미리 등록해 두면 아무도 마중 안 나가도 돼요',
           '엑스트라 베드는 **저녁 6시 전에** 깔아 달라고 미리 부탁 (아기 재운 뒤엔 방에 사람 들이기 어려워요)'] }
     ] },
-    { date: '2026-11-05', label: '목', ic: '🌴', title: '다낭 자유 2 — 이모와 함께', free: true, defNote: '기본 배치: 리조트 데이 + 길 건너 저녁 — 이모가 늦게 온 다음 날 · 어른 5명이라 스파 교대가 쉬워요 · 10/27 전망 비가 가장 많은 날(13~28mm). 맑으면 시내 반나절·린응사', items: [
-      { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 나들이 고르기', memo: ['06:30~10:30 · 이모는 늦잠 자도 10:30까지'] },
+    { date: '2026-11-05', label: '목', ic: '🌴', title: '다낭 자유 2 — 유리 이모와 함께', free: true, defNote: '기본 배치: 리조트 데이 + 길 건너 저녁 — 유리 이모가 늦게 온 다음 날 · 어른 5명이라 스파 교대가 쉬워요 · 10/27 전망 비가 가장 많은 날(13~28mm). 맑으면 시내 반나절·린응사', items: [
+      { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 나들이 고르기', memo: ['06:30~10:30 · 유리 이모는 늦잠 자도 10:30까지'] },
       { t: '08:00', approx: true, k: 'card', slot: 'am', maxH: 4, title: '오전 나들이', memo: ['아침에 나갔다가 12시 전후에 돌아와요'], def: ['resort'] },
       { t: '12:00', approx: true, k: 'rest', title: '리조트 — 낮잠 · 수영장' },
       { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 1.5, title: '오후 (골라도 되고 비워도 돼요)', memo: ['낮잠 뒤 16:30 저녁 전까지'] },
@@ -943,13 +971,15 @@ const TRIP = {
       { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 1.5, title: '오후 (골라도 되고 비워도 돼요)', memo: ['낮잠 뒤 16:30 저녁 전까지'] },
       { t: '16:30', k: 'card', slot: 'eve', title: '마지막 저녁 (16:30~17:00 출발)', memo: ['용다리 불쇼는 21:00(아기에겐 한국 23시)이라 넣지 않았어요. 보고 싶으면 아기 재운 뒤 어른 몇 명만 그랩으로 {?금요일 운영}'], def: ['d_thiago'], dinner: true }
     ] },
-    { date: '2026-11-07', label: '토', ic: '🏠', title: '귀국 — 13:00 차량, 15:45 비행기', defNote: '11:00 체크아웃 전 짧게 — 숙소에서 쉬기·짐 싸기', items: [
+    { date: '2026-11-07', label: '토', ic: '🏠', title: '귀국 — 11:45 차량, 15:45 비행기', defNote: '11:00 체크아웃 전 짧게 — 숙소에서 쉬기·짐 싸기', items: [
       { t: '06:30', k: 'food', title: '조식', memo: ['06:30~10:30'] },
       { t: '08:30', approx: true, k: 'card', slot: 'am', maxH: 2, title: '오전 (11:00 체크아웃 전)', memo: ['짐은 전날 밤에 거의 싸 두고'], def: ['rest'] },
-      { t: '11:00', k: 'stay', title: '**11:00 체크아웃**', memo: ['13시까지 레이트 체크아웃 요청 {?}'], place: 'd_furama' },
-      { t: '11:30', approx: true, k: 'food', title: '점심 — 리조트 또는 냐벱', places: ['d_nhabep'] },
-      { t: '13:00', k: 'move', title: '**13:00 예약 차량(카시트)** → 다낭공항 **T2 국제선**', memo: ['7 km · 15~20분 — 13:20쯤 공항', '이모가 같은 차면 어른 5 + 아기 + 짐 하나 더 — 업체에 미리 알려요 {?이모 귀국편}', '유모차는 탑승구에서 맡겨요'], place: 'd_airport' },
+      { t: '11:00', k: 'stay', title: '**11:00 체크아웃**', memo: ['짐은 로비에 맡기고 11:45 차까지 리조트에서 — 차가 일러서 레이트 체크아웃은 필요 없어요'], place: 'd_furama' },
+      { t: '11:45', k: 'move', title: '**11:45 예약 차량(카시트)** → 다낭공항 **T2 국제선** — 유리 이모 비행기에 맞춰 다 같이', memo: ['7 km · 15~20분 — 12:05쯤 공항 (유리 이모 14:15 출발 2시간 전)', '어른 5 + 아기 + 짐 — 업체에 인원·짐 미리 알려요', '유모차는 탑승구에서 맡겨요'], place: 'd_airport' },
+      { t: '12:05', approx: true, k: 'food', title: '공항 — 체크인 뒤 점심', memo: ['유리 이모는 제주항공, 가족은 대한항공 카운터 — 체크인부터 해요', '점심은 공항에서 — 가족 비행기까지 3시간 넘게 남아요. 아기 낮잠은 유모차에서'] },
+      { t: '14:15', k: 'flight', title: '**유리 이모 출발** — 제주항공 · 다낭 T2 → 인천 T1', memo: ['이 시각이면 **7C2212** · 인천 T1 20:40 도착 — 가족(T2 22:05)과 터미널이 달라 집까지는 따로'] },
       { t: '15:45', k: 'flight', title: '**KE458 출발** — 다낭 T2 → 인천 T2', memo: ['인천 도착은 한국 시각 22:05'] },
+      { t: '20:40', tz: 'K', k: 'flight', only: ['a'], title: '인천공항 **T1** 도착', memo: ['가족(KE458)은 T2 22:05 — 집까지는 따로'] },
       { t: '22:05', tz: 'K', k: 'flight', title: '인천공항 T2 도착', memo: ['아기는 자는 시간 — 집까지 이동은 미리 정해 둔 대로'] }
     ] }
   ],
@@ -997,7 +1027,7 @@ const TRIP = {
       memo: ['⏱ 08:30 로비 → 08:45 한시장(어른 둘, 30분)·나머지는 카페 → 09:30 핑크성당(겉) → 10:00 원더러스트 → 11:00 점심 → 12:00 리조트', '한시장은 좁고 더워요 — 어른 둘만 들어가고 나머지는 카페(**CCCP 커피** 에어컨)', '핑크성당은 겉만(일요일 휴무)', '점심: **피자 4P’s 인도차이나**(웹 예약 booking.pizza4ps.com) 또는 **냐벱 한시장점**', '카페 대안: **탄 커피**(유모차에서 아기 낮잠 후기)', '점심 대안: **반미코티엔**(구글 4.2 · 08:00~20:00, 원더러스트 옆 60m) — 간단히 반미'], places: ['s_han', 's_cathedral', 'd_wonderlust', 'd_cccp', 'd_tan', 'd_4ps_bd', 'd_nhabepcho', 'd_banhmi'], route: ['s_han', 's_cathedral', 'd_wonderlust', 'd_4ps_bd'] },
     { id: 'bana', area: 'danang', slots: ['am'], w: 'sun', cond: true, baby: 'big', dur: '반나절 (07:30~13:00)', h: 5.5, title: '바나힐', sub: '골든브릿지 + 프렌치빌리지 광장만 · 12시 하산', go: '28 km · 차로 45~50분 · 카시트 예약차 반일 대절', when: '07:30 출발',
       memo: ['⏱ 07:30 출발 → 08:20 케이블카(25분) → 골든브릿지 → 프렌치빌리지 광장 → 11:15 내려오는 케이블카 → 12:50 리조트',
-             '**전날 예보 + 당일 아침 정상 라이브캠**을 보고 가요', '성인 100만 동 × 4 (11/5 부터는 이모까지 × 5)', '케이블카 25분 — 호이안역 방면(환승 없음)', '정상은 5~8도 낮고 안개 잦음 → 얇은 긴팔', '유모차 지참'], places: ['s_bana'], route: ['s_bana'] },
+             '**전날 예보 + 당일 아침 정상 라이브캠**을 보고 가요', '성인 100만 동 × 4 (11/5 부터는 유리 이모까지 × 5)', '케이블카 25분 — 호이안역 방면(환승 없음)', '정상은 5~8도 낮고 안개 잦음 → 얇은 긴팔', '유모차 지참'], places: ['s_bana'], route: ['s_bana'] },
     { id: 'resort', area: 'danang', slots: ['am', 'pm'], w: 'rain', baby: 'easy', dur: '자유', h: 0, title: '리조트 데이', sub: '수영장 · 키즈클럽 · 해변 산책', go: '걸어서',
       memo: ['⏱ 오전 수영장·해변 → 아기 낮잠 때 어른 둘씩 스파(90분) 교대 → 16:30 저녁', '키즈클럽(Little Nemo)은 만 4~12세라 아기는 못 가요 — 어른끼리 쉬려면 **베이비시터**(08:30~18:00, 시간당 25만 동++, 24시간 전 예약)', '1층 놀이 공간·지하 볼풀은 개월 제한을 프런트에 물어봐요', '수영장은 온수가 아니라 흐린 날 차갑다는 후기', '걸어서 3~5분 **핑크망고**(망고빙수) · 어른 마사지는 「어른 마사지 교대」를 오후에'], places: ['d_pinkmango'], route: ['d_pinkmango'] },
     { id: 'lotte', area: 'danang', slots: ['am', 'pm'], w: 'rain', baby: 'normal', dur: '2~3시간', h: 3, title: '롯데마트', sub: '쇼핑 + 5층 키즈카페 + 2층 퍼 29', go: '2.8 km · 차로 8~10분', when: '07:30~',
@@ -1102,8 +1132,8 @@ const TRIP = {
     rows: [
       ['11/1 다낭공항 → 리버타운', '29 km · 45~50분', '예약차'],
       ['11/3 리버타운 → 푸라마 (오행산 경유 선택)', '23 km · 35~40분', '예약차'],
-      ['11/4 밤 이모: 다낭공항 → 푸라마', '7 km · 15~20분', '그랩'],
-      ['11/7 푸라마 → 다낭공항', '7 km · 15~20분', '예약차'],
+      ['11/4 밤 유리 이모: 다낭공항 → 푸라마', '7 km · 15~20분', '그랩'],
+      ['11/7 푸라마 → 다낭공항 (11:45 다 같이)', '7 km · 15~20분', '예약차'],
       ['바나힐 가는 날', '28 km · 45~50분', '예약차 반일'],
       ['미카즈키 가는 날', '20 km · 30~35분', '예약차 반일'],
       ['호이안 안', '0.5~1.3 km · 걸어서 8~15분', '도보'],
@@ -1112,7 +1142,7 @@ const TRIP = {
       ['푸라마 ↔ 한시장·시내·린응사', '6~11 km · 15~25분', '그랩 7인승']
     ],
     notes: ['베트남 법(2026-07-01 시행)의 카시트 의무는 택시·그랩을 면제하고, 그랩 앱에는 카시트 옵션이 없어요 — 그래서 30분 넘게 빨리 달리는 구간만 예약차로 막아요',
-            '어른 4 + 카시트 + 캐리어 + 유모차는 7인승 한 대에 안 들어가요 → **16인승 1대** 또는 **7인승 2대**. 11/7 에 이모까지 타면 어른 5',
+            '어른 4 + 카시트 + 캐리어 + 유모차는 7인승 한 대에 안 들어가요 → **16인승 1대** 또는 **7인승 2대**. 11/7 은 유리 이모까지 어른 5',
             '그랩 7인승은 어른 5 + 아기(안고)까지 한 대 — 짐 없는 나들이라면',
             '16인승은 카시트를 못 다는 업체가 있어요 — 예약 전에 "3점식 벨트 좌석 + 카시트"를 글로 확인받기 {?}',
             '카시트: 대절 상품 옵션 {?요금} > 현지 대여 {?} > 한국에서 지참. 13개월은 뒤보기 장착',
@@ -1149,49 +1179,52 @@ const TRIP = {
   lists: [
     { id: 'pre', title: '출발 전', sub: '날짜순 할 일 — 챙길 것은 아래 「짐 싸기」', groups: [
       { name: '오늘 · 내일 (10/27~28)', items: [
-        ['pa1', '이모 — 푸라마 인원 추가를 정해서 아고다로 확정 (11/4~7 · 밤 도착 등록 · 베드 미리 설치)'],
-        ['pa2', '이모 항공편(도착·귀국 시각)을 가족방에 공유 → 11/7 같은 차 탈지 정하기'],
-        ['p4', '아고다 두 예약의 무료 취소·변경 기한 확인 — 리버타운은 **10/27~29 큰비** 뒤 수위를 보고 판단'],
-        ['p1', '소아과 — 여행 일정 알리고 돌 무렵 접종(MMR·수두·A형간염 등)이 끝났는지 + 해열제 용량(체중)·상비약'],
-        ['p6', '예약 차량 — 구간 3개 + 카시트("3점식 벨트 좌석" 글로 확인) + 11/7 이모 인원·짐'],
-        ['p5', '리버타운·푸라마에 문의 (아기 침대·유아 의자·침수 대응·레이트 체크아웃·키즈클럽 연령·배달 음식 받는 곳)'] ] },
+        ['pa1', '유리 이모 — 푸라마 인원 추가를 정해서 아고다로 확정 (11/4~7 · 밤 도착 등록 · 베드 미리 설치)', ['d', 'm']],
+        ['pa2', '유리 이모 항공편 받음(11/4 21:15 도착 · 11/7 14:15 출발) → 11/7 은 11:45 예약차로 다 같이 공항', ['d', 'm']],
+        ['p4', '아고다 두 예약의 무료 취소·변경 기한 확인 — 리버타운은 **10/27~29 큰비** 뒤 수위를 보고 판단', ['d', 'm']],
+        ['p1', '소아과 — 여행 일정 알리고 돌 무렵 접종(MMR·수두·A형간염 등)이 끝났는지 + 해열제 용량(체중)·상비약', ['d', 'm']],
+        ['p6', '예약 차량 — 구간 3개 + 카시트("3점식 벨트 좌석" 글로 확인) + 11/7 은 11:45 · 어른 5 + 짐', ['d', 'm']],
+        ['p5', '리버타운·푸라마에 문의 (아기 침대·유아 의자·침수 대응·레이트 체크아웃·키즈클럽 연령·배달 음식 받는 곳)', ['d', 'm']] ] },
       { name: '10/30(금)까지', items: [
-        ['p2', '여행자보험 — 아기 포함, 태풍·홍수 결항·중단 담보 {?} · 이모는 따로'],
-        ['p3', '여권 만료일이 모두 2027-05-07 이후인지 (이모 포함)'],
-        ['p7', '그랩 앱 설치 · 전화번호 인증 · 카드 등록 (이모도 — 밤에 혼자 타요)'],
-        ['p7b', '배달K 앱 설치 · 가입(카카오톡 또는 전화번호)'],
-        ['p8', 'eSIM (이모 것도)'],
-        ['p9', '환전 — 트래블 카드 + 현금 일부(잔돈)'],
-        ['r1', '예약 — 11/6 티아고 16:30 어른 5 + 아기 의자 (전화·Zalo · 공략집 「미리 예약할 곳」)'],
-        ['r2', '예약 — (하려면) 11/2 호이안 어른 스파 교대 15:30 · 카톡 dahanspa 또는 미노스파 전화'],
-        ['pb1', '구글 지도 다낭·호이안 오프라인 저장 · 구글 번역 베트남어 오프라인 팩'],
-        ['p11', '인천 도착(밤 10시) 뒤 집까지 이동 정하기'] ] },
+        ['p2', '여행자보험 — 아기 포함, 태풍·홍수 결항·중단 담보 {?} · 유리 이모는 따로', ['d', 'm', 'a']],
+        ['p3', '여권 만료일이 모두 2027-05-07 이후인지 (유리 이모 포함)'],
+        ['p7', '그랩 앱 설치 · 전화번호 인증 · 카드 등록 (유리 이모도 — 밤에 혼자 타요)', ['d', 'm', 'a']],
+        ['p7b', '배달K 앱 설치 · 가입(카카오톡 또는 전화번호)', ['d', 'm']],
+        ['p8', 'eSIM (유리 이모 것도)'],
+        ['p9', '환전 — 트래블 카드 + 현금 일부(잔돈)', ['d', 'm', 'a']],
+        ['r1', '예약 — 11/6 티아고 16:30 어른 5 + 아기 의자 (전화·Zalo · 공략집 「미리 예약할 곳」)', ['d', 'm']],
+        ['r2', '예약 — (하려면) 11/2 호이안 어른 스파 교대 15:30 · 카톡 dahanspa 또는 미노스파 전화', ['d', 'm']],
+        ['pb1', '구글 지도 다낭·호이안 오프라인 저장 · 구글 번역 베트남어 오프라인 팩', ['d', 'm', 'a']],
+        ['p11', '인천 도착(밤 10시) 뒤 집까지 이동 정하기', ['d', 'm', 'a']] ] },
       { name: '10/29부터 매일', items: [
-        ['p12', '태풍 · 호이안 수위 · 항공편 확인 (공략집 → 침수·태풍)'],
+        ['p12', '태풍 · 호이안 수위 · 항공편 확인 (공략집 → 침수·태풍)', ['d', 'm']],
         ['p13', '온라인 사전입국신고 {?의무 여부}'] ] },
       { name: '10/31(토) 출발 전날', items: [
-        ['p10', '가족 폰 5대(이모 포함)에 이 페이지 홈 화면 추가 + 가족 코드 연결 + 누구 폰 고르기 (공략집)'],
-        ['pc1', '대한항공 — 아기 기내식 신청·좌석 확인 {?신청 마감}'],
-        ['pc2', '와이파이에서 이 앱을 열고 지도 탭에서 두 숙소 주변을 넘겨 보기 (오프라인 저장)'],
+        ['p10', '가족 폰 5대(유리 이모 포함)에 이 페이지 홈 화면 추가 + 처음 열 때 누구인지 고르기 + 가족 코드 연결 (공략집)', ['d', 'm', 'a']],
+        ['pc1', '대한항공 — 아기 기내식 신청·좌석 확인 {?신청 마감}', ['d', 'm']],
+        ['pc2', '와이파이에서 이 앱을 열고 지도 탭에서 두 숙소 주변을 넘겨 보기 (오프라인 저장)', ['d', 'm', 'a']],
         ['pc3', '「짐 싸기」 목록 마무리 · 기내 가방은 따로'],
-        ['pc4', '폰·보조배터리 충전 · 인천 T2 08:20 도착에 맞춰 집 나설 시각 정하기'] ] } ] },
+        ['pc4', '폰·보조배터리 충전 · 인천 T2 08:20 도착에 맞춰 집 나설 시각 정하기', ['d', 'm', 'g', 'h']] ] },
+      { name: '11/4(수) 유리 이모 출발 날', who: ['a'], items: [
+        ['pa3', '폰·보조배터리 충전 · 인천 **T1** 에 15:15쯤(출발 3시간 전) 닿게 집 나서기 — 파라타항공 18:15'],
+        ['pa4', '다낭 21:15 도착 → 그랩 → 푸라마 프런트에서 여권 보여 주고 투숙 등록'] ] } ] },
     { id: 'pack', title: '짐 싸기', sub: '아기 짐부터 · 기저귀·물티슈는 현지 마트에서도 사요', groups: [
       { name: '서류 · 돈', items: [
-        ['b8', '여권 5개(이모는 본인 것) · 현금 동 잔돈 (1만·2만·5만 섞어서)'],
-        ['k1', '트래블 카드 + 해외 결제 되는 신용카드 1장'],
-        ['k2', '숙소·항공·차량 예약 화면 캡처 (인터넷 안 될 때)'] ] },
-      { name: '아기 — 먹기', items: [
+        ['b8', '여권 5개(유리 이모는 본인 것) · 현금 동 잔돈 (1만·2만·5만 섞어서)'],
+        ['k1', '트래블 카드 + 해외 결제 되는 신용카드 1장', ['d', 'm', 'a']],
+        ['k2', '숙소·항공·차량 예약 화면 캡처 (인터넷 안 될 때)', ['d', 'm']] ] },
+      { name: '아기 — 먹기', who: ['d', 'm'], items: [
         ['b1', '분유·이유식 전량 + 하루치 여유 (현지 재고 근거 없음)'],
         ['k3', '젖병·빨대컵·젖병 솔·세제·분유 소분 케이스'],
         ['k4', '보온병(분유 물) · 휴대용 전기포트 {?객실 포트}'],
         ['k5', '아기 간식 · 숟가락 · 턱받이'],
         ['k6', '휴대용 의자 벨트 (식당에 유아 의자가 없을 때)'] ] },
-      { name: '아기 — 잠 · 씻기', items: [
+      { name: '아기 — 잠 · 씻기', who: ['d', 'm'], items: [
         ['k7', '애착 인형·이불 · 수면 조끼 · 백색소음(폰 앱도 OK)'],
         ['k8', '기저귀 2~3일분 · 물티슈 · 기저귀 버릴 비닐'],
         ['b3', '수영 기저귀 · 아기 수영복·모자'],
         ['k9', '아기 샴푸·로션 · 손톱깎이 · 콧물 흡입기'] ] },
-      { name: '아기 — 나들이', items: [
+      { name: '아기 — 나들이', who: ['d', 'm'], items: [
         ['b4', '아기띠 + 휴대용 유모차'],
         ['b5', '유모차 레인커버 · 우비'],
         ['b2', '아기용 모기 기피제 · 모기 패치 · 아기 침대 모기장 (올해 다낭은 뎅기열이 많아요)'],
@@ -1199,40 +1232,41 @@ const TRIP = {
         ['k11', '여벌옷 하루 2~3벌 · 얇은 긴팔·긴바지 (모기·에어컨)'],
         ['k12', '카시트 — 예약 차량에 없을 때만 (뒤보기) {?차량 카시트}'] ] },
       { name: '약', items: [
-        ['b7', '해열제 2종(아세트아미노펜·이부프로펜 계열) · 체온계'],
-        ['k13', '아기 상비약 — 소아과에서 받은 것(설사·발진·모기 물림) · 밴드'],
-        ['k14', '어른 — 지사제·소화제·진통제·멀미약 · 할아버지·할머니 평소 약 8일분'] ] },
+        ['b7', '해열제 2종(아세트아미노펜·이부프로펜 계열) · 체온계', ['d', 'm']],
+        ['k13', '아기 상비약 — 소아과에서 받은 것(설사·발진·모기 물림) · 밴드', ['d', 'm']],
+        ['k14', '어른 — 지사제·소화제·진통제·멀미약 · 할아버지·할머니 평소 약 8일분', ['d', 'm']],
+        ['k14g', '평소 드시는 약 8일분 (약 봉투째)', ['g', 'h']] ] },
       { name: '어른', items: [
         ['b6', '얇은 긴팔 (바나힐 · 에어컨)'],
         ['k15', '린응사용 어깨·무릎 가리는 옷'],
         ['k16', '수영복 · 젖어도 되는 샌들 · 우산 · 모자 · 선크림'],
         ['k17', '충전기 · 멀티탭 · 보조배터리(기내로만) · 변환 플러그 1개'],
         ['k18', '지퍼백·비닐(젖은 옷) · 폰 방수팩'] ] },
-      { name: '기내 가방 (5시간)', items: [
+      { name: '기내 가방 (5시간)', who: ['d', 'm'], items: [
         ['k19', '분유·물·젖병 — 아기 음식은 액체 제한 예외, 보안검색에서 꺼내 보여요'],
         ['k20', '기저귀 4~5개 · 물티슈 · 여벌옷(아기 + 안는 사람) · 얇은 담요'],
         ['k21', '이착륙 때 물릴 젖병·빨대컵 (귀 압력)'],
         ['k22', '작은 장난감 · 간식'] ] } ] },
-    { id: 'move', title: '11/3 호이안 → 다낭 이동 날', sub: '12:00 체크아웃 전에', groups: [
+    { id: 'move', who: ['d', 'm', 'g', 'h'], title: '11/3 호이안 → 다낭 이동 날', sub: '12:00 체크아웃 전에', groups: [
       { name: '', items: [
-        ['m1', '금고 — 여권 5개 · 현금'],
-        ['m2', '냉장고 — 이유식 · 분유 물 · 간식'],
+        ['m1', '금고 — 여권 5개 · 현금', ['d', 'm']],
+        ['m2', '냉장고 — 이유식 · 분유 물 · 간식', ['d', 'm']],
         ['m3', '충전기 · 어댑터 · 보조배터리'],
         ['m4', '욕실 — 젖은 수영복·수영 기저귀(비닐에)'],
-        ['m5', '유모차 · 아기띠 · 차에서 쓸 것(물·기저귀·여벌옷)은 따로 작은 가방에'],
-        ['m6', '예약 차량 — 기사 연락 · 카시트 달려 있는지'],
-        ['m7', '방 번호로 달아 둔 것 정산'] ] } ] },
-    { id: 'home', title: '11/7 귀국 날', sub: '11:00 체크아웃 · 13:00 차량 · 15:45 비행기', groups: [
+        ['m5', '유모차 · 아기띠 · 차에서 쓸 것(물·기저귀·여벌옷)은 따로 작은 가방에', ['d', 'm']],
+        ['m6', '예약 차량 — 기사 연락 · 카시트 달려 있는지', ['d', 'm']],
+        ['m7', '방 번호로 달아 둔 것 정산', ['d', 'm']] ] } ] },
+    { id: 'home', title: '11/7 귀국 날', sub: '11:00 체크아웃 · 11:45 차량 · 15:45 비행기', groups: [
       { name: '', items: [
-        ['h1', '금고 — 여권 5개'],
-        ['h2', '기내 가방 — 분유·이유식·기저귀·여벌옷·담요'],
+        ['h1', '금고 — 여권 5개', ['d', 'm']],
+        ['h2', '기내 가방 — 분유·이유식·기저귀·여벌옷·담요', ['d', 'm']],
         ['h3', '냉장고 · 욕실 · 충전기'],
-        ['h4', '레이트 체크아웃 되는지 프런트에 다시 묻기 {?}'],
-        ['h5', '남은 동 정리 (지출 기록 마무리)'],
-        ['h6', '13:00 예약 차량 — 기사 연락 · 카시트'],
-        ['h7', '유모차는 탑승구에서 맡기기'],
+        ['h4', '체크아웃 11:00 — 짐은 로비에 맡기고 11:45 차 기다리기'],
+        ['h5', '남은 동 정리 (지출 기록 마무리)', ['d', 'm', 'a']],
+        ['h6', '11:45 예약 차량 — 기사 연락 · 카시트 · 어른 5', ['d', 'm']],
+        ['h7', '유모차는 탑승구에서 맡기기', ['d', 'm']],
         ['h8', '인천 도착 뒤 이동 — 정해 둔 대로'],
-        ['h9', '이모 — 같은 차로 가는지 · 비행기 시각 다시 확인'] ] } ] }
+        ['h9', '유리 이모 — 제주항공 14:15 시각 다시 확인', ['d', 'm', 'a']] ] } ] }
   ],
 
   /* 내 폰 전용 메모의 칸 이름 (내용은 폰에만 저장) */
@@ -1266,7 +1300,8 @@ const TRIP = {
     { e: '🦜', n: '파파고', d: '한국어 ↔ 베트남어 대화·사진 번역. 안드로이드는 스토어의 「열기」를 한 번 거쳐요(웹에서 바로 여는 걸 앱이 막아 둠).', web: 'https://papago.naver.com/', and: ['play', 'com.naver.labs.translator'], ios: 1147874819 },
     { e: '🔍', n: '구글 렌즈', s: '렌즈', d: '간판·메뉴를 비추면 번역·검색. 안드로이드는 스토어의 「열기」를 거쳐요(구글 번역 → 카메라도 같은 기능).', web: 'https://lens.google/', and: ['play', 'com.google.ar.lens'], ios: 284815942 },
     { e: '✈️', n: '대한항공', d: 'KE457·KE458 모바일 체크인·탑승권. 앱이 있으면 앱, 없으면 웹으로 열려요.', web: 'https://www.koreanair.com/' },
-    { e: '🤖', n: 'Claude', d: '사진 찍어 「이거 뭐야?」, 비 와서 일정이 바뀌면 동선 다시 짜기.', web: 'https://claude.ai/new', and: ['claude.ai/new', 'https', 'com.anthropic.claude'] },
+    { e: '🤖', n: 'Claude', d: '사진 찍어 「이거 뭐야?」, 비 와서 일정이 바뀌면 동선 다시 짜기.', web: 'https://claude.ai/new', and: ['claude.ai/new', 'https', 'com.anthropic.claude'], who: ['d'] },
+    { e: '✨', n: 'Gemini', d: '사진 찍어 「이거 뭐야?」, 메뉴판·간판 물어보기, 비 와서 일정이 바뀌면 동선 다시 짜기. 안드로이드는 스토어의 「열기」를 거쳐요.', web: 'https://gemini.google.com/app', and: ['play', 'com.google.android.apps.bard'], ios: 6477489729, who: ['m', 'g', 'h', 'a'] },
     { e: '💳', n: '트래블월렛', d: '트래블월렛 카드 잔액 확인·충전.', web: 'https://www.travel-wallet.com/', and: ['play', 'com.mobiletoong.travelwallet'], ios: 1460769945 },
     { e: '🆘', n: '해외안전여행', s: '해외안전', d: '외교부 해외안전여행 — 영사콜센터·현지 안전 공지. 급한 전화는 오늘 탭 🚑 비상 연락처에.', web: 'https://www.0404.go.kr/' }
   ],
@@ -1516,7 +1551,7 @@ const TRIP = {
 <script>
 (function(){
 'use strict';
-var BUILD = '10/28 16:48';
+var BUILD = '10/29 00:27';
 var NS = 'danang26:';
 var OFF_L = 7, OFF_K = 9;   /* 현지(베트남) UTC+7 · 한국 UTC+9 */
 
@@ -1566,7 +1601,9 @@ var IC = {
 var EXT = 'target="_blank" rel="noopener"';
 
 /* ---------- 여행 시간 ---------- */
-var T_DEP = Date.parse(TRIP.departISO), T_ARR = Date.parse(TRIP.arriveISO), T_BACK = Date.parse(TRIP.backISO), T_END = Date.parse(TRIP.endISO), T_HUB = Date.parse(TRIP.hubSwitchISO);
+/* 누구 폰(me) — 여행 시각이 다른 사람(crew[].trip)을 고른 폰은 출발·도착·귀국을 그 사람 것으로 센다. 그 사이를 바꾸면 새로고침(setMe) */
+var MEID = crew(load('me', null)) ? load('me', null) : null, MYT = MEID ? crew(MEID).trip || null : null, MY = MYT || TRIP;
+var T_DEP = Date.parse(MY.departISO), T_ARR = Date.parse(MY.arriveISO), T_BACK = Date.parse(MY.backISO), T_END = Date.parse(MY.endISO), T_HUB = Date.parse(TRIP.hubSwitchISO);
 /* 비행기가 뜨기 전·돌아오는 비행기가 뜬 뒤는 한국 날짜, 그 사이는 현지 날짜 */
 function zoneOff(ms){ return (ms < T_DEP || ms >= T_BACK) ? OFF_K : OFF_L; }
 function today(){ var n = Date.now(); return dIn(n, zoneOff(n)); }
@@ -1575,6 +1612,32 @@ function dayByDate(date){ for (var i = 0; i < TRIP.days.length; i++) if (TRIP.da
 function todayIdx(){ var t = today(); for (var i = 0; i < TRIP.days.length; i++) if (TRIP.days[i].date === t) return i; return -1; }
 function crew(id){ for (var i = 0; i < TRIP.crew.length; i++) if (TRIP.crew[i].id === id) return TRIP.crew[i]; return null; }
 function me(){ var m = load('me', null); return crew(m) ? m : null; }
+/* who 가 있는 목록·묶음·항목·앱은 그 사람에게만(아직 안 골랐으면 전부) */
+function okWho(w){ return !w || !MEID || w.indexOf(MEID) >= 0; }
+/* 사람을 바꾸면 새로고침 — 여행 시각·목록·앱·간단히 보기가 전부 그 사람 기준으로 다시 그려진다. true = 새로고침 중 */
+function setMe(id){
+  var c = crew(id); if (!c || id === me()) return false;
+  save('me', id); save('simple', !!c.simple); if (c.simple) save('big', true); save('meToast', 1);
+  location.reload(); return true;
+}
+function setSimple(v){
+  save('simple', !!v);
+  if (v) document.documentElement.setAttribute('data-simple', ''); else document.documentElement.removeAttribute('data-simple');
+  toast(v ? '간단히 보기 — 꼭 필요한 것만 보여요' : '전부 보기로 바꿨어요');
+  if (!$('#who').hidden) openWho();
+}
+/* 처음 열면 누구인지 고른다 — 그 이름으로 가족 공유·나들이 기록이 남고, trip 이 있는 사람은 그 사람 일정으로 */
+function openWho(){
+  var m = me(), el = $('#who');
+  el.innerHTML = '<div class="who__c"><p class="who__k">' + esc(TRIP.whoTitle) + '</p><h2 class="who__t">누구세요?</h2>' +
+    '<p class="who__s">고른 사람에 맞춰 비행기·일정·할 일·짐이 보여요. 할아버지·할머니는 큰 글씨로 꼭 필요한 것만 보여요.</p><div class="who__g">' +
+    TRIP.crew.map(function(c){ return '<button class="btn ' + (m === c.id ? 'btn--pri' : 'btn--sec') + '" type="button" data-whoset="' + c.id + '"' + (m === c.id ? ' aria-pressed="true"' : '') + '>' + esc(c.name) + (c.trip ? '<small>' + esc(c.trip.chip) + '</small>' : c.simple ? '<small>큰 글씨 · 간단히</small>' : '') + '</button>'; }).join('') + '</div>' +
+    (m ? '<button class="btn btn--sec who__simple" type="button" data-simplet aria-pressed="' + document.documentElement.hasAttribute('data-simple') + '">' +
+        (document.documentElement.hasAttribute('data-simple') ? '🔍 간단히 보기 켜짐 — 끄고 전부 보기' : '🔍 간단히 보기 켜기 (꼭 필요한 것만)') + '</button>' +
+        '<button class="more" type="button" data-whox>닫기</button>'
+      : '<p class="who__f">잘못 골랐으면 맨 위 이름 버튼을 눌러 바꿀 수 있어요</p>') + '</div>';
+  el.hidden = false;
+}
 
 /* ---------- 장소(spots) ---------- */
 var SP = {}, SPK = [];
@@ -1687,7 +1750,7 @@ function copyTodaySchedule(){
   var staySpot = SP[hub.stay];
   var lines = [];
   lines.push('[' + d.date + '(' + d.label + ') ' + (curDay + 1) + '일차 일정]');
-  d.items.forEach(function(it){
+  d.items.filter(seen).forEach(function(it){
     var tm = (it.approx ? '~' : '') + it.t + (it.end ? '–' + it.end : '') + (it.tz === 'K' ? ' 한국' : '');
     var pid = it.slot ? pickAt(it._slot.key) : '';
     lines.push('• ' + tm + ' ' + plain(it.title) + (pid ? ' — ' + plain(PL[pid].title) : ''));
@@ -1706,7 +1769,10 @@ function showPhrase(id){
 /* ---------- 일정 ---------- */
 var KIND = { flight: '비행', move: '이동', stay: '숙소', food: '식사', walk: '산책', rest: '휴식', spa: '마사지', shop: '장보기', card: '나들이' };
 var ALL = [];
-TRIP.days.forEach(function(d, di){ d.items.forEach(function(it, ii){ it._at = at(d.date, it.t, it.tz); it._end = it.end ? at(d.date, it.end, it.tz) : null; it._id = 'it-' + di + '-' + ii; it._day = di; ALL.push(it); }); });
+/* seen: 일정 목록에 보이는 것(only 는 그 사람만). forMe: 지금·다음·출발 전 띠에 쓰는 것 — trip 이 있는 사람은 합류~귀국 사이 가족 일정 + 자기 only */
+function seen(it){ return !it.only || it.only.indexOf(MEID) >= 0; }
+function forMe(it){ return it.only ? seen(it) : !MYT || (it._at >= T_ARR && it._at <= T_BACK); }
+TRIP.days.forEach(function(d, di){ d.items.forEach(function(it, ii){ it._at = at(d.date, it.t, it.tz); it._end = it.end ? at(d.date, it.end, it.tz) : null; it._id = 'it-' + di + '-' + ii; it._day = di; if (forMe(it)) ALL.push(it); }); });
 var curDay = 0, openSet = {}, allOpen = false;
 function nowState(){
   var now = Date.now(), cur = null, next = null;
@@ -1720,7 +1786,8 @@ function timeTxt(it){ return (it.approx ? '~' : '') + it.t + (it.end ? '–' + i
 function renderTitle(){
   var t = esc(TRIP.title), em = TRIP.titleEm;
   if (em && TRIP.title.indexOf(em) >= 0) t = t.replace(esc(em), '<em>' + esc(em) + '</em>');
-  $('#planT').innerHTML = t; $('#subT').textContent = TRIP.sub;
+  var c = crew(me());
+  $('#planT').innerHTML = t; $('#subT').innerHTML = esc(TRIP.sub) + (c ? '<br><button class="whoBtn" type="button" data-whoopen aria-label="누구 폰인지 바꾸기 — 지금 ' + esc(c.name) + '">👤 ' + esc(c.name) + ' · 바꾸기</button>' : '');
 }
 function renderDays(){
   var ti = todayIdx();
@@ -1728,7 +1795,7 @@ function renderDays(){
     return '<button type="button" data-day="' + i + '" aria-pressed="' + (i === curDay) + '"' + (i === ti ? ' class="is-today"' : '') + ' aria-label="' + md(d.date) + ' ' + d.label + '요일"><small>' + d.label + '</small><b>' + (+d.date.slice(8)) + '</b></button>';
   }).join('');
   var d = TRIP.days[curDay];
-  $('#dayT').innerHTML = '<b>' + md(d.date) + '(' + d.label + ') · ' + (curDay + 1) + '일차</b> — ' + rich(d.title);
+  $('#dayT').innerHTML = '<b>' + md(d.date) + '(' + d.label + ') · ' + (curDay + 1) + '일차</b> — ' + rich(d.title) + (MYT && d.date < MYT.start ? '<span class="whoN">' + esc(MYT.before) + '</span>' : '');
   $('#tlH').textContent = curDay === ti ? '오늘 일정' : '일정';
 }
 function evHTML(it, st){
@@ -1750,7 +1817,7 @@ function evHTML(it, st){
 }
 function renderTL(){
   var st = nowState(), d = TRIP.days[curDay];
-  $('#tl').innerHTML = d.items.map(function(it){ return evHTML(it, st); }).join('');
+  $('#tl').innerHTML = d.items.filter(seen).map(function(it){ return evHTML(it, st); }).join('');
   var b = $('#tlAll'); b.textContent = allOpen ? '모두 접기' : '모두 펼치기'; b.setAttribute('aria-pressed', String(allOpen));
   var tm = $('#tmr');
   if (curDay < TRIP.days.length - 1){
@@ -1943,13 +2010,13 @@ function etaTxt(ms){ var m = Math.round(ms / 60000); return m < 0 ? '' : m < 120
 function renderHero(){
   var st = nowState(), h = '', now = Date.now(), tdy = today();
   if (st.phase === 'before'){
-    var dd = dayDiff(tdy, TRIP.start), d0 = TRIP.days[0], left = listLeft('pre');
+    var dd = dayDiff(tdy, MY.start), d0 = dayByDate(MY.start), i0 = TRIP.days.indexOf(d0), left = listLeft('pre');
     h = th('출발 전', '', true) + '<article class="card now"><div class="meta"><span class="tag now">' + (dd > 0 ? 'D-' + dd : 'D-DAY') + '</span>' +
-      '<span class="time">' + md(TRIP.start) + '(' + d0.label + ') 출발</span></div>' +
+      '<span class="time">' + md(MY.start) + '(' + d0.label + ') 출발</span></div>' +
       '<h2 class="now-title">' + (dd > 0 ? dd + '일 남았어요' : '오늘 출발해요!') + '</h2>' +
-      '<ul class="pts">' + d0.items.slice(0, 3).map(function(it){ return '<li><b class="num">' + it.t + '</b> ' + rich(it.title) + '</li>'; }).join('') + '</ul>' +
+      '<ul class="pts">' + ALL.filter(function(it){ return it._day === i0; }).slice(0, 3).map(function(it){ return '<li><b class="num">' + it.t + '</b> ' + rich(it.title) + '</li>'; }).join('') + '</ul>' +
       '<div class="acts"><button class="btn btn--pri" type="button" data-go="ck">' + (left ? '할 일 ' + left + '개 남음' : '할 일 다 했어요 ✓') + '</button>' +
-      '<button class="btn btn--sec" type="button" data-day="0">1일차 일정</button></div></article>';
+      '<button class="btn btn--sec" type="button" data-day="' + i0 + '">' + (i0 + 1) + '일차 일정</button></div></article>';
   } else if (st.phase === 'during'){
     var c = st.cur, n = st.next, sv = c.slot ? slotView(c) : null, cm = sv ? sv.memo : c.memo || [], pk = sv ? sv.places : itemPlaces(c), day = TRIP.days[c._day], p = plans()[day.date];
     h = th('지금 · 다음', '', true) + '<article class="card now"><div class="meta"><span class="tag now">지금</span><span class="time">' + timeTxt(c) + '</span><span class="cat">' + KIND[c.k] + '</span></div>' +
@@ -1973,11 +2040,11 @@ function renderHero(){
   $('#hero').innerHTML = h;
 }
 function renderTicker(){
-  var st = nowState(), tdy = today(), dd = dayDiff(tdy, TRIP.start), tk = $('#ticker'), pill = $('#ddayPill');
+  var st = nowState(), tdy = today(), dd = dayDiff(tdy, MY.start), tk = $('#ticker'), pill = $('#ddayPill');
   if (st.phase === 'before'){
-    pill.textContent = (dd > 0 ? 'D-' + dd : 'D-DAY') + ' · ' + md(TRIP.start) + ' 출발';
+    pill.textContent = (dd > 0 ? 'D-' + dd : 'D-DAY') + ' · ' + md(MY.start) + ' 출발';
     var todo = nextTodo();
-    tk.innerHTML = '<i class="dot live" aria-hidden="true"></i><span><b>' + (dd > 0 ? dd + '일 남았어요' : '오늘 출발!') + '</b> · ' + md(TRIP.start) + '(' + TRIP.days[0].label + ') ' + ALL[1].t + ' KE457' +
+    tk.innerHTML = '<i class="dot live" aria-hidden="true"></i><span><b>' + (dd > 0 ? dd + '일 남았어요' : '오늘 출발!') + '</b> · ' + md(MY.start) + '(' + wday(MY.start) + ') ' + hmIn(T_DEP, OFF_K) + ' ' + MY.fly +
       (todo ? '<span class="tk-sub">다음 할 일: ' + esc(plain(todo)) + '</span>' : '') + '</span>';
     tk.setAttribute('data-go', todo ? 'ck' : 'plan');
   } else if (st.phase === 'during'){
@@ -2016,7 +2083,8 @@ function renderChap(){
 }
 function renderStage(){
   var i = todayIdx(), el = $('#stage');
-  el.hidden = i < 0 || nowState().phase === 'after';
+  var ph = nowState().phase;
+  el.hidden = i < 0 || ph === 'after' || (!!MYT && ph === 'before');   /* 합류 전인 사람에겐 가족의 DAY 를 안 띄운다 */
   el.textContent = i < 0 ? '' : 'DAY ' + (i + 1) + ' · ' + plain(TRIP.days[i].title.split(' — ')[0]);
 }
 
@@ -2036,10 +2104,10 @@ function appA(a, cls, inner, label){
   return '<a class="' + cls + '" href="' + esc(h) + '"' + (/^intent:/.test(h) ? '' : ' ' + EXT) + (label ? ' aria-label="' + esc(a.n) + ' 열기"' : '') + '>' + inner + '</a>';
 }
 function renderApps(){
-  $('#appRow').innerHTML = TRIP.apps.map(function(a){ return appA(a, 'app', '<i aria-hidden="true">' + a.e + '</i><span>' + esc(a.s || a.n) + '</span>', true); }).join('');
+  $('#appRow').innerHTML = TRIP.apps.filter(function(a){ return okWho(a.who); }).map(function(a){ return appA(a, 'app', '<i aria-hidden="true">' + a.e + '</i><span>' + esc(a.s || a.n) + '</span>', true); }).join('');
 }
 function appsHTML(){
-  return TRIP.apps.map(function(a){ return appA(a, 'appi', '<i aria-hidden="true">' + a.e + '</i><span class="appi__t"><b>' + esc(a.n) + '</b><small>' + esc(a.d) + '</small></span><span class="appi__x" aria-hidden="true">↗</span>'); }).join('');
+  return TRIP.apps.filter(function(a){ return okWho(a.who); }).map(function(a){ return appA(a, 'appi', '<i aria-hidden="true">' + a.e + '</i><span class="appi__t"><b>' + esc(a.n) + '</b><small>' + esc(a.d) + '</small></span><span class="appi__x" aria-hidden="true">↗</span>'); }).join('');
 }
 
 /* ---------- 오늘 경로 — 오늘 탭 그림 카드와 지도 탭 번호 핀이 같은 계산을 써요 ----------
@@ -2480,20 +2548,20 @@ function renderSOS(){
 
 /* ---------- 체크리스트 ---------- */
 function listById(id){ for (var i = 0; i < TRIP.lists.length; i++) if (TRIP.lists[i].id === id) return TRIP.lists[i]; return null; }
-function listItems(l){ var a = []; l.groups.forEach(function(g){ g.items.forEach(function(it){ a.push(it); }); }); return a; }
+function listItems(l){ var a = []; if (!okWho(l.who)) return a; l.groups.forEach(function(g){ if (okWho(g.who)) g.items.forEach(function(it){ if (okWho(it[2])) a.push(it); }); }); return a; }
 function listLeft(id){ var done = load('ck', {}); return listItems(listById(id)).filter(function(it){ return !done[it[0]]; }).length; }
 /* 지금 볼 목록: 출발 전 → 출발 전 / 11/2 저녁~11/3 체크인 → 이동 날 / 11/6 저녁~ → 귀국 날 */
 function miniListId(){
   var now = Date.now();
   if (now < T_DEP) return 'pre';
-  if (now >= at('2026-11-02', '18:00') && now < at('2026-11-03', '14:00')) return 'move';
+  if (!MYT && now >= at('2026-11-02', '18:00') && now < at('2026-11-03', '14:00')) return 'move';
   if (now >= at('2026-11-06', '18:00') && now < T_BACK) return 'home';
   return null;
 }
 function ckRow(id, html, on){ return '<label class="ck__i"><input type="checkbox" data-ck="' + id + '"' + (on ? ' checked' : '') + '><span class="ck__box"></span><span class="ck__t">' + html + '</span></label>'; }
 var miniId;
 function renderCkTile(){
-  miniId = miniListId();
+  miniId = miniListId(); if (miniId && !listItems(listById(miniId)).length) miniId = null;
   var box = $('#ckTile'); box.hidden = !miniId; if (!miniId) { updateDock(); return; }
   var l = listById(miniId), done = load('ck', {}), all = listItems(l);
   var n = all.filter(function(it){ return done[it[0]]; }).length, left = all.filter(function(it){ return !done[it[0]]; }), show = left.slice(0, 4);
@@ -2507,9 +2575,12 @@ function renderCkTile(){
 }
 function renderCk(){
   var done = load('ck', {});
-  $('#ckLists').innerHTML = TRIP.lists.map(function(l){
+  $('#ckLists').innerHTML = TRIP.lists.filter(function(l){ return listItems(l).length; }).map(function(l){
     var all = [], h = '';
-    l.groups.forEach(function(g){ h += '<div class="ck__g">' + (g.name ? '<h4>' + esc(g.name) + '</h4>' : '') + g.items.map(function(it){ all.push(it[0]); return ckRow(it[0], rich(it[1]), done[it[0]]); }).join('') + '</div>'; });
+    l.groups.forEach(function(g){
+      var its = okWho(g.who) ? g.items.filter(function(it){ return okWho(it[2]); }) : []; if (!its.length) return;
+      h += '<div class="ck__g">' + (g.name ? '<h4>' + esc(g.name) + '</h4>' : '') + its.map(function(it){ all.push(it[0]); return ckRow(it[0], rich(it[1]), done[it[0]]); }).join('') + '</div>';
+    });
     var n = all.filter(function(k){ return done[k]; }).length;
     return '<section class="tile ck" data-list="' + l.id + '">' + th(esc(l.title), '<span class="pill ck__n">' + n + '/' + all.length + '</span>') +
       '<div class="card"><p class="ck__sub">' + esc(l.sub) + '</p><div class="ck__bar"><i style="width:' + (all.length ? n / all.length * 100 : 0) + '%"></i></div>' + h +
@@ -2661,7 +2732,7 @@ var TOP = {};
 (function(){
   function add(k){ if (SP[k]) TOP[k] = 1; }
   TRIP.stays.forEach(function(s){ add(s.key); });
-  ALL.forEach(function(it){ itemPlaces(it).forEach(add); });
+  TRIP.days.forEach(function(d){ d.items.forEach(function(it){ itemPlaces(it).forEach(add); }); });
   TRIP.plans.forEach(function(p){ (p.places || []).forEach(add); });
   TRIP.flood.alt.places.forEach(add);
   add(TRIP.sos.hoian.show); add(TRIP.sos.danang.show);
@@ -3056,7 +3127,7 @@ function go(g){
 }
 function toggleEv(h){
   var id = h.getAttribute('data-ev'), li = h.closest('.ev');
-  if (allOpen){ allOpen = false; openSet = {}; ALL.forEach(function(it){ openSet[it._id] = 1; }); }
+  if (allOpen){ allOpen = false; openSet = {}; TRIP.days.forEach(function(d){ d.items.forEach(function(it){ openSet[it._id] = 1; }); }); }
   if (openSet[id]) delete openSet[id]; else openSet[id] = 1;
   li.classList.toggle('is-open', !!openSet[id]); h.setAttribute('aria-expanded', String(!!openSet[id]));
   var b = $('#tlAll'); b.textContent = '모두 펼치기'; b.setAttribute('aria-pressed', 'false');
@@ -3104,7 +3175,11 @@ document.addEventListener('click', function(e){
   }
   if ((b = t.closest('#bigBtn, [data-bigtoggle]'))) { setBig(!document.documentElement.hasAttribute('data-big')); return; }
   /* 누구 폰 */
-  if ((b = t.closest('[data-me]'))) { save('me', b.getAttribute('data-me')); share.paint(); share.sendPool(); if (planEdit){ keepPlanForm(); renderPlan(); } toast(crew(me()).name + ' 폰으로 기억했어요'); return; }
+  if ((b = t.closest('[data-whoopen]'))) { openWho(); return; }
+  if ((b = t.closest('[data-whox]'))) { $('#who').hidden = true; return; }
+  if ((b = t.closest('[data-simplet]'))) { setSimple(!document.documentElement.hasAttribute('data-simple')); return; }
+  if ((b = t.closest('[data-whoset]'))) { if (setMe(b.getAttribute('data-whoset'))) return; $('#who').hidden = true; renderTitle(); share.paint(); share.sendPool(); if (planEdit){ keepPlanForm(); renderPlan(); } toast(crew(me()).name + ' 폰으로 기억했어요'); return; }
+  if ((b = t.closest('[data-me]'))) { if (setMe(b.getAttribute('data-me'))) return; renderTitle(); share.paint(); share.sendPool(); if (planEdit){ keepPlanForm(); renderPlan(); } toast(crew(me()).name + ' 폰으로 기억했어요'); return; }
   /* 오늘 계획 */
   if ((b = t.closest('[data-pkd]'))) { pkDate = b.getAttribute('data-pkd'); planEdit = false; renderPlan(); renderCards(); return; }
   if ((b = t.closest('[data-babyc]'))) { babyC = b.getAttribute('data-babyc'); save('babyc', babyC); renderPlan(); toast('👶 ' + BABYC[babyC][0] + ' — ' + BABYC[babyC][2] + ' 보여요'); return; }
@@ -3234,6 +3309,7 @@ try { if (window.speechSynthesis){ findVoice(); speechSynthesis.onvoiceschanged 
   renderTitle();
   var st = nowState(), lastDay = today(), lastHub = hubAt(Date.now());
   if (st.phase === 'during'){ var ti0 = todayIdx(); curDay = ti0 >= 0 ? ti0 : st.cur._day; }   /* 자정 뒤엔 새 날짜의 일정을 먼저 */
+  else if (st.phase === 'before' && MYT) curDay = Math.max(0, TRIP.days.indexOf(dayByDate(MY.start)));   /* 합류할 사람은 자기 출발일부터 */
   $('#bigBtn').setAttribute('aria-pressed', String(document.documentElement.hasAttribute('data-big')));
   share.init();
   renderChap(); renderStage(); renderApps();
@@ -3259,6 +3335,8 @@ try { if (window.speechSynthesis){ findVoice(); speechSynthesis.onvoiceschanged 
     fetchWx();
   }, 60000);
   document.addEventListener('visibilitychange', function(){ if (!document.hidden){ tickClock(); renderTicker(); renderHero(); renderWx(); renderFc(); fetchWx(); } });
+  if (!me()) openWho();
+  else if (load('meToast', 0)){ save('meToast', 0); setTimeout(function(){ toast(crew(me()).name + ' 폰으로 기억했어요' + (document.documentElement.hasAttribute('data-simple') ? ' · 간단히 보기' : '')); }, 500); }
   if ('serviceWorker' in navigator && /github\.io$/.test(location.hostname)) navigator.serviceWorker.register('sw.js').catch(function(){});
 })();
 })();
