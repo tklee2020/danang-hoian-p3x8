@@ -1,4 +1,4 @@
-/* 오늘 경로 — 그림 카드(오늘 탭)와 지도 탭 날짜 칩·번호 핀·점선. flows.js 에도 들어가 있고 따로도 돌려요: node harness.js scenarios/route.js
+/* 경로 — 그림 카드(일정 탭 그날 아래 「경로 그림」 — 10/30 재구성으로 오늘 탭에서 옮김)와 지도 탭 날짜 칩·번호 핀·점선. flows.js 에도 들어가 있고 따로도 돌려요: node harness.js scenarios/route.js
    보는 것: 번호·묶음("3·4" = 비스마켓·야시장), 먼 곳 화살표(11/1 공항 · 11/3 리버타운 · 11/7 공항), 이름표가 그림 밖으로 나가거나 서로 겹치지 않는지,
             지도 핀·이름표 겹침 0, 날짜 칩 켜기·끄기, 테마를 바꿔도 경로 선이 남는지, 오늘 계획을 바꾸면 경로도 바뀌는지 */
 const { ls } = require('./_fake');
@@ -6,7 +6,8 @@ const NL = 'String.fromCharCode(10)';
 const H2 = '2026-11-02T08:30:00+07:00', M3 = '2026-11-03T12:05:00+07:00', F4 = '2026-11-04T07:10:00+07:00', D1 = '2026-11-01T14:30:00+07:00', D7 = '2026-11-07T11:05:00+07:00', PRE = '2026-10-20T21:00:00+09:00';
 const pool = { '2026-11-04:am': { p: 'linhung', t: Date.parse(F4) - 600000, by: 'd' } };
 /* 그림 카드: 점 글자 · 먼 곳 수 · 이름표 밖/겹침 · 줄 */
-const CARD = `(function(){ var t = document.querySelector('#routeTile'); if (t.hidden) return 'route hidden';
+const PS = k => `(function(){ var b = document.createElement('button'); b.setAttribute('data-psheet', '${k}'); document.body.appendChild(b); b.click(); b.remove(); return 1; })()`;
+const CARD = `(function(){ document.querySelector('#dock [data-view=days]').click(); var t = document.querySelector('#routeTile'); if (t.hidden) return 'route hidden'; t.querySelector('#rtDet').open = true;
   t.scrollIntoView({ block: 'start' }); window.scrollBy(0, -12);
   var svg = t.querySelector('svg.rmap'); if (!svg) return 'no svg | ' + t.innerText.split(${NL}).join(' / ');
   var sb = svg.getBoundingClientRect(), L = [].slice.call(t.querySelectorAll('.rm-l, .rm-far rect, .rm-stop')).map(function(e){ return e.getBoundingClientRect(); }), out = 0, ov = 0;
@@ -32,9 +33,9 @@ const scenarios = [
   { name: 'route-hoian', now: H2, w: 390, h: 844, ls: ls(H2, {}, { theme: 'light' }), steps: [
     { wait: 1200, eval: `'chap=' + [].slice.call(document.querySelectorAll('#chap button')).map(function(b){ return b.className + ':' + b.innerText.split(${NL}).join(''); }).join(' ') + ' stage=' + document.querySelector('#stage').textContent + ' apps=' + document.querySelectorAll('#appRow a').length + ' font=' + document.fonts.check('16px Jua')` },
     { shot: 'r-hoian-top.png' },
-    { eval: `document.querySelector('#chap [data-chap="2"]').click(); 'chap→day ' + document.querySelector('#days [aria-pressed=true]').getAttribute('aria-label') + ' view=' + document.body.getAttribute('data-view')` },
+    { eval: `document.querySelector('#chap [data-chap="1"]').click(); 'chap→day ' + document.querySelector('#days [aria-pressed=true]').getAttribute('aria-label') + ' view=' + document.body.getAttribute('data-view')` },
     { eval: CARD }, { wait: 300, shot: 'r-hoian-card.png' },
-    { eval: `document.querySelector('#routeTile [data-rmgo]').click(); document.body.getAttribute('data-view')` },
+    { eval: `document.querySelector('#btnRoute').click(); document.body.getAttribute('data-view')` },
     { waitFor: mapReady }, { wait: 2500, eval: scrollMap }, { eval: PINS }, { shot: 'r-hoian-map.png' },
     /* 11/3: 숙소를 여러 번 오가는 날 — 푸라마 주변만 보이고 리버타운은 "화면 밖" */
     { eval: `document.querySelector('[data-rmday="2026-11-03"]').click(); 1` }, { waitFor: mapReady }, { wait: 2500, eval: PINS }, { shot: 'r-move-map.png' },
@@ -53,7 +54,7 @@ const scenarios = [
   /* 자유일: 고른 게 없으면 기본 배치, 나들이(린응사)를 고르면 그림·지도가 바뀐다 */
   { name: 'route-free', now: F4, w: 390, h: 844, ls: ls(F4, { danang: [10, 15, 65, 70] }, { theme: 'light' }), steps: [
     { wait: 1200, eval: CARD },
-    { eval: `document.querySelector('[data-pick="2026-11-04:am|linhung"]').click(); 1` },
+    { eval: `${PS('s|2026-11-04:am')}; var b, n = 0; while ((b = document.querySelector('#psBody [data-pkmore]')) && n++ < 9) b.click(); document.querySelector('[data-pick="2026-11-04:am|linhung"]').click(); 1` },
     { wait: 300, eval: CARD }, { shot: 'r-free-card.png' },
     { eval: toMap }, { waitFor: mapReady }, { wait: 2500, eval: scrollMap }, { eval: PINS }, { shot: 'r-free-map.png' }
   ] },

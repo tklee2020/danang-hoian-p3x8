@@ -1,17 +1,22 @@
-/* 기능 흐름: 체크 저장·배지, 지출(동→원), 체온·해열제 다음 시각, 메모, 기사에게 보여주기, 로비 시각·한마디, 예보→나들이 정렬, 나들이 플랜 풀(pool.js),
-   큰 글씨·테마, 장소 목록, 지도 핀, 공략집(확인 필요·앱 버전·앱 바로가기), 오늘 경로(route.js), 가족 공유(위치·계획 — 실제 ntfy.sh 로 암호화된 시험 값을 보낸다) */
+/* 기능 흐름: 체크 저장·배지, 지출(동→원), 체온·해열제 다음 시각, 메모, 기사에게 보여주기, 로비 시각·한마디, 예보→나들이 정렬, 고르기 시트(pool.js),
+   큰 글씨·테마, 장소 목록, 지도 핀, 더보기(확인 필요·앱 버전·앱 바로가기), 경로(route.js), 가족 공유(위치·계획 — 실제 ntfy.sh 로 암호화된 시험 값을 보낸다)
+   10/30 재구성: 메뉴 4개(오늘·일정·지도·더보기) — 챙길 것·기록은 더보기 → LOG, 고르기는 시트(PS) */
 const { ls, NS } = require('./_fake');
 const U = process.env.QA_URL || 'http://localhost:8765/';
 const CODE = 'QA' + Array.from({ length: 8 }, () => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random() * 32)]).join('');
 const NL = 'String.fromCharCode(10)';
 const T = s => `(function(){ var e=document.querySelector('${s}'); return e ? e.innerText.split(${NL}).join(' / ') : '-'; })()`;
 const FREE = '2026-11-04T07:10:00+07:00', PRE = '2026-10-20T21:00:00+09:00';
+const LOG = `document.querySelector('#dock [data-view=guide]').click(); document.querySelector('#moreMenu [data-go=ck]').click()`;
+const PAGE = k => `document.querySelector('#dock [data-view=guide]').click(); document.querySelector('#moreMenu [data-go=${k}]').click()`;
+const PS = k => `(function(){ var b = document.createElement('button'); b.setAttribute('data-psheet', '${k}'); document.body.appendChild(b); b.click(); b.remove(); return 1; })()`;
+const CANDS = `[].slice.call(document.querySelectorAll('#psBody .cand')).map(function(e){ return e.querySelector('b').textContent + (e.classList.contains('is-rec') ? '*' : ''); }).join(',')`;
 module.exports = { parallel: 1, scenarios: [
   { name: 'ck', now: PRE, ls: ls(PRE), steps: [
-    { wait: 600, eval: `'badge=' + document.querySelector('#dockLog').textContent + ' hero=' + document.querySelector('#hero .btn--pri').textContent + ' mini=' + document.querySelector('#ckTile [data-mini-list]').getAttribute('data-mini-list')` },
-    { eval: `document.querySelector('#ckTile input[data-ck=p1]').click(); document.querySelector('#dock [data-view=log]').click(); document.querySelector('#ckLists input[data-ck=b1]').click(); [document.querySelector('#dockLog').textContent, document.querySelector('[data-list=pre] .ck__n').textContent, document.querySelector('#ckLists input[data-ck=p1]').checked, ${T('#ticker')}].join(' | ')` },
+    { wait: 600, eval: `'badge=' + document.querySelector('#dockLog').textContent + ' hero=' + document.querySelector('#hero .btn--pri').textContent + ' ckTile=' + (document.querySelector('#ckTile').hidden ? 'hidden' : 'shown') + ' todo=' + ${T('#hero .nowc__todo')}` },
+    { eval: `${LOG}; document.querySelector('#ckLists input[data-ck=p1]').click(); document.querySelector('#ckLists input[data-ck=b1]').click(); [document.querySelector('#dockLog').textContent, document.querySelector('[data-list=pre] .ck__n').textContent, document.querySelector('#ckLists input[data-ck=p1]').checked, ${T('#ticker')}].join(' | ')` },
     { reload: true, wait: 800, eval: `[document.querySelector('#ckLists input[data-ck=b1]').checked, localStorage.getItem('${NS}ck'), document.querySelector('#hero .btn--pri').textContent].join(' | ')` },
-    { eval: `document.querySelector('#dock [data-view=log]').click(); 'lists=' + document.querySelectorAll('#ckLists .ck').length` }, { shot: 'f-ck.png' }
+    { eval: `${LOG}; 'lists=' + document.querySelectorAll('#ckLists .ck').length + ' open=' + document.querySelectorAll('#ckLists section.ck').length + ' folded=' + document.querySelectorAll('#ckLists details.ck').length` }, { shot: 'f-ck.png' }
   ] },
   { name: 'exp', now: FREE, ls: ls(FREE), steps: [
     { wait: 600, eval: `document.querySelector('#expTile [data-go]').click(); document.body.getAttribute('data-view') + ' ' + document.querySelector('#fxPill').textContent` },
@@ -21,7 +26,7 @@ module.exports = { parallel: 1, scenarios: [
     { eval: `document.querySelector('[data-ecat="카페"]').click(); document.querySelector('#eConv').textContent` },
     { eval: `document.querySelector('#expForm button[type=submit]').click(); ${T('#expList')}.slice(0, 260)` },
     { reload: true, wait: 800, eval: `${T('#expTile')} + ' || ' + localStorage.getItem('${NS}exp').length` },
-    { eval: `document.querySelector('#dock [data-view=log]').click(); 1` }, { shot: 'f-exp.png' }
+    { eval: `${LOG}; 1` }, { shot: 'f-exp.png' }
   ] },
   /* 체온: 5시간 전 아세트아미노펜(4시간 간격) → 지금 가능 / 방금 이부프로펜(6시간) → 6시간 뒤 */
   { name: 'fev', now: FREE, ls: ls(FREE, {}, { fev: [{ t: Date.parse(FREE) - 5 * 3600000, temp: 38.6, med: 'acet' }] }), steps: [
@@ -37,7 +42,7 @@ module.exports = { parallel: 1, scenarios: [
     { wait: 600, eval: `${T('#fevTile')}` }
   ] },
   { name: 'memo', now: PRE, ls: ls(PRE), steps: [
-    { wait: 600, eval: `document.querySelector('#dock [data-view=log]').click(); document.querySelectorAll('[data-memo]').length` },
+    { wait: 600, eval: `${PAGE('memo')}; document.querySelectorAll('[data-memo]').length` },
     { eval: `document.querySelector('#mf0').scrollIntoView({ block: 'center' }); 1` }, { type: ['#mf0', 'QA-TEST-123'] },
     { eval: `document.querySelector('#mfFree').scrollIntoView({ block: 'center' }); 1` }, { type: ['#mfFree', 'memo free text'] },
     { reload: true, wait: 700, eval: `document.querySelector('#mf0').value + ' | ' + document.querySelector('#mfFree').value + ' | inSource=' + (document.documentElement.outerHTML.indexOf('QA-TEST-123') >= 0 && !document.querySelector('#mf0').value)` }
@@ -46,7 +51,7 @@ module.exports = { parallel: 1, scenarios: [
     { wait: 600, eval: `document.querySelector('#stayTile [data-show]').click(); 'open=' + !document.querySelector('#show').hidden + ' | ' + ${T('#show')}` },
     { shot: 'f-show-stay.png' },
     { eval: `document.querySelector('[data-showx]').click(); 'closed=' + document.querySelector('#show').hidden + ' scroll=' + (scrollY > 0)` },
-    { eval: `document.querySelector('#dock [data-view=places]').click(); document.querySelector('[data-plarea=danang]').click(); document.querySelector('[data-plkind=all]').click(); document.querySelector('#sp-d_airport [data-show]').click(); ${T('#show')}` },
+    { eval: `${PAGE('places')}; document.querySelector('[data-plarea=danang]').click(); document.querySelector('[data-plkind=all]').click(); document.querySelector('#sp-d_airport [data-show]').click(); ${T('#show')}` },
     { shot: 'f-show-airport.png' },
     { eval: `history.back(); 1` }, { wait: 300, eval: `'back-closed=' + document.querySelector('#show').hidden + ' view=' + document.body.getAttribute('data-view')` },
     { eval: `document.querySelector('#sp-d_nhabep [data-show]').click(); ${T('#show')}` },
@@ -55,29 +60,29 @@ module.exports = { parallel: 1, scenarios: [
   ] },
   /* 예보 → 추천: 나들이 칸의 후보 정렬·배지 (숨기지 않음) + 로비 시각·한마디 (가족 코드 없이 — 이 폰에만) */
   { name: 'plan-sunny', now: FREE, ls: ls(FREE, { danang: [10, 15, 20, 30] }), steps: [
-    { wait: 600, eval: `${T('.fc-head')} + ' | am=' + [].slice.call(document.querySelectorAll('#slot-2026-11-04-am .cand')).map(function(e){ return e.querySelector('b').textContent + (e.classList.contains('is-rec') ? '*' : ''); }).join(',') + ' | pool=' + ${T('#cardsTile .th')}` },
-    { eval: `document.querySelector('[data-planedit]').click(); 'form=' + !!document.querySelector('#planForm') + ' who=' + document.querySelectorAll('#planForm [data-me]').length` },
-    { eval: `document.querySelector('#planTime').value = '08:30'; document.querySelector('#planNote').value = '우비'; document.querySelector('#planForm button[type=submit]').click(); ${T('#planTile .lob')}.slice(0, 120) + ' || hero: ' + ${T('#hero .alt')}` },
+    { wait: 600, eval: `${PS('s|2026-11-04:am')}; ${T('.fc-head')} + ' | am=' + ${CANDS} + ' | sheet=' + ${T('#psBody .ps__t')}` },
+    { eval: `document.querySelector('[data-psx]').click(); document.querySelector('#dock [data-view=days]').click(); document.querySelector('[data-planedit]').click(); 'form=' + !!document.querySelector('#planForm') + ' who=' + document.querySelectorAll('#planForm [data-me]').length` },
+    { eval: `document.querySelector('#planTime').value = '08:30'; document.querySelector('#planNote').value = '우비'; document.querySelector('#planForm button[type=submit]').click(); ${T('#lobBox')}.slice(0, 120) + ' || hero: ' + ${T('#hero .alt')}` },
     { shot: 'f-plan.png' }
   ] },
   { name: 'plan-rainy', now: FREE, ls: ls(FREE, { danang: [80, 70, 65, 40, 5] }), steps: [
-    { wait: 600, eval: `${T('.fc-head')} + ' | am=' + [].slice.call(document.querySelectorAll('#slot-2026-11-04-am .cand')).map(function(e){ return e.querySelector('b').textContent + (e.classList.contains('is-rec') ? '*' : ''); }).join(',') + ' | wx=' + ${T('#slot-2026-11-04-am .wxc')}` },
-    { eval: `document.querySelector('[data-fchub=hoian]').click(); ${T('.fc-head')}` },
-    { eval: `document.querySelector('#cardsTile [data-cardseg=dlv]').click(); document.querySelectorAll('#cardsTile .dlv').length + ' delivery rows; ' + (document.querySelector('#cardsTile [data-cardseg=flood]').click(), document.querySelectorAll('#cardsTile .sprow').length) + ' flood rows'` }
+    { wait: 600, eval: `${PS('s|2026-11-04:am')}; ${T('.fc-head')} + ' | am=' + ${CANDS} + ' | wx=' + ${T('#psBody .wxc')} + ' | rec(tl)=' + ${T('#tl .ev.k-card .ev-tt')}` },
+    { eval: `document.querySelector('[data-psx]').click(); document.querySelector('[data-fchub=hoian]').click(); ${T('.fc-head')}` },
+    { eval: `document.querySelectorAll('#dlvSec .dlv').length + ' delivery rows; ' + document.querySelectorAll('#floodSec .sprow').length + ' flood rows'` }
   ] },
   /* 새벽에 비가 온 맑은 아침 → 오행산 미끄럼 안내 */
   { name: 'plan-slip', now: FREE, ls: ls(FREE, { danang: [10, 15, 20, 30, 80] }), steps: [
-    { wait: 600, eval: `document.querySelector('[data-pkmore="2026-11-04:am"]').click(); ${T('#fcTile .note')} + ' | marble=' + ${T('[data-pkopen="2026-11-04:am|marble"]')} + ' last=' + [].slice.call(document.querySelectorAll('#slot-2026-11-04-am .cand b')).pop().textContent` }
+    { wait: 600, eval: `${PS('s|2026-11-04:am')}; document.querySelector('[data-pkmore="2026-11-04:am"]').click(); ${T('#fcBox .note')} + ' | marble=' + ${T('[data-pkopen="2026-11-04:am|marble"]')} + ' last=' + [].slice.call(document.querySelectorAll('#psBody .cand b')).pop().textContent` }
   ] },
   { name: 'big-theme', now: FREE, ls: ls(FREE), steps: [
-    { wait: 600, eval: `document.querySelector('#bigBtn').click(); [document.documentElement.hasAttribute('data-big'), getComputedStyle(document.documentElement).fontSize, getComputedStyle(document.querySelector('.now-title')).fontSize, localStorage.getItem('${NS}big'), 'overflow=' + (document.documentElement.scrollWidth - innerWidth)].join(' | ')` },
+    { wait: 600, eval: `document.querySelector('[data-bigtoggle]').click(); [document.documentElement.hasAttribute('data-big'), getComputedStyle(document.documentElement).fontSize, getComputedStyle(document.querySelector('.now-title')).fontSize, localStorage.getItem('${NS}big'), 'overflow=' + (document.documentElement.scrollWidth - innerWidth)].join(' | ')` },
     { shot: 'f-big.png' },
-    { reload: true, wait: 600, eval: `'after reload big=' + document.documentElement.hasAttribute('data-big') + ' pressed=' + document.querySelector('#bigBtn').getAttribute('aria-pressed')` },
+    { reload: true, wait: 600, eval: `'after reload big=' + document.documentElement.hasAttribute('data-big') + ' pressed=' + document.querySelector('[data-bigtoggle]').getAttribute('aria-pressed')` },
     { eval: `document.querySelector('#themeBtn').click(); [document.documentElement.getAttribute('data-theme'), localStorage.getItem('${NS}theme'), getComputedStyle(document.body).backgroundColor, document.querySelector('#themeColor').content].join(' | ')` },
-    { eval: `document.querySelector('#bigBtn').click(); document.querySelector('#themeBtn').click(); [document.documentElement.hasAttribute('data-big'), document.documentElement.getAttribute('data-theme'), localStorage.getItem('${NS}theme')].join(' | ')` }
+    { eval: `document.querySelector('[data-bigtoggle]').click(); document.querySelector('#themeBtn').click(); [document.documentElement.hasAttribute('data-big'), document.documentElement.getAttribute('data-theme'), localStorage.getItem('${NS}theme')].join(' | ')` }
   ] },
   { name: 'places', now: FREE, ls: ls(FREE), steps: [
-    { wait: 600, eval: `document.querySelector('#dock [data-view=places]').click(); ${T('#plTile .th')} + ' first=' + document.querySelector('#plTile .pl__c h3').textContent` },
+    { wait: 600, eval: `${PAGE('places')}; ${T('#plTile .th')} + ' first=' + document.querySelector('#plTile .pl__c h3').textContent` },
     { eval: `document.querySelector('[data-plsort=rate]').click(); 'rate-first=' + document.querySelector('#plTile .pl__c h3').textContent + ' ' + document.querySelector('#plTile .pl__rate').textContent` },
     { eval: `var o=[]; ['hoian','danang'].forEach(function(a){ document.querySelector('[data-plarea='+a+']').click(); document.querySelector('[data-plkind=all]').click(); o.push(a + '=' + document.querySelectorAll('#plTile .pl__c').length); }); o.join(' ') + ' href=' + document.querySelector('#sp-d_nhabep .btn--pri').getAttribute('href').slice(0, 120)` },
     { eval: `'links=' + [].slice.call(document.querySelectorAll('#plTile a[href^=tel]')).length + ' tel0=' + document.querySelector('#plTile a[href^=tel]').getAttribute('href')` }
@@ -91,41 +96,41 @@ module.exports = { parallel: 1, scenarios: [
     { eval: `document.querySelector('[data-maparea=hoian]').click(); document.querySelector('[data-mapf=all]').click(); 1` },
     { waitFor: `window.__map.getCenter().lat < 15.9 && !window.__map.isMoving()` }, { wait: 2500, eval: `'hoian center=' + window.__map.getCenter().lat.toFixed(3) + ',' + window.__map.getCenter().lng.toFixed(3)` },
     { shot: 'f-map-hoian.png' },
-    { eval: `document.querySelector('#dock [data-view=places]').click(); document.querySelector('[data-plarea=hoian]').click(); document.querySelector('[data-plkind=food]').click(); document.querySelector('#sp-h_yoon [data-mapgo]').click(); document.body.getAttribute('data-view') + ' ' + ${T('#mapCard h3')}` },
+    { eval: `${PAGE('places')}; document.querySelector('[data-plarea=hoian]').click(); document.querySelector('[data-plkind=food]').click(); document.querySelector('#sp-h_yoon [data-mapgo]').click(); document.body.getAttribute('data-view') + ' ' + ${T('#mapCard h3')}` },
     { waitFor: `window.__map.getZoom() > 15 && !window.__map.isMoving()` }, { wait: 2500, eval: `'sel=' + document.querySelectorAll('.mk.is-sel').length + ' zoom=' + window.__map.getZoom().toFixed(1)` },
     { shot: 'f-map-sel.png' }
   ] },
   { name: 'guide', now: PRE, ls: ls(PRE), steps: [
-    { wait: 600, eval: `document.querySelector('#dock [data-view=guide]').click(); ${T('#qSec .pill')} + ' | ' + ${T('.foot')}.slice(-40) + ' | lastEl=' + document.querySelector('#guide').lastElementChild.className + ' | ver1=' + document.querySelector('#ver1').textContent + ' | details=' + document.querySelectorAll('#guide details').length + ' links=' + document.querySelectorAll('#floodSec a.lnk').length + ' apps=' + document.querySelectorAll('#appsSec .appi').length + ' row=' + document.querySelectorAll('#appRow .app').length + ' href0=' + document.querySelector('#appRow .app').getAttribute('href')` },
+    { wait: 600, eval: `document.querySelector('#dock [data-view=guide]').click(); 'rows=' + document.querySelectorAll('#moreMenu .mrow').length + ' | ' + ${T('.foot')}.slice(-40) + ' | lastEl=' + document.querySelector('#guide').lastElementChild.className + ' | ver1=' + document.querySelector('#ver1').textContent + ' | details=' + document.querySelectorAll('#guide details').length + ' links=' + document.querySelectorAll('#floodSec a.lnk').length + ' menu=' + document.querySelectorAll('#moreMenu .mrow').length + ' row=' + document.querySelectorAll('#appRow .app').length + ' href0=' + document.querySelector('#appRow .app').getAttribute('href')` },
     { eval: `document.querySelectorAll('.qbadge').length + ' badges on page; q list: ' + [].slice.call(document.querySelectorAll('.qlist li')).length` }
   ] },
   /* 가족 공유: 아빠 폰이 코드·위치·계획을 보내고, 엄마 폰이 같은 코드로 받는다 (ntfy.sh, 암호화) */
   { name: 'share-dad', url: U + '#join=' + CODE, now: FREE, geo: [16.0412, 108.2498], ls: ls(FREE, {}, { me: 'd' }), steps: [
-    { wait: 1500, eval: `'hash=' + location.hash + ' code=' + localStorage.getItem('${NS}lsCode').length + ' shared=' + ${T('#planTile .pill')}` },
+    { wait: 1500, eval: `'hash=' + location.hash + ' code=' + localStorage.getItem('${NS}lsCode').length + ' shared=' + ${T('#lobBox')}` },
     { eval: `document.querySelector('#dock [data-view=guide]').click(); document.querySelector('[data-ls=toggle]').click(); ${T('#toast')}` },
     { wait: 5000, eval: `document.querySelector('[data-ls=toggle]').textContent` },
-    { eval: `document.querySelector('#dock [data-view=plan]').click(); document.querySelector('[data-pick="2026-11-04:pm|lotte"]').click(); document.querySelector('[data-planedit]').click(); document.querySelector('#planTime').value = '09:00'; document.querySelector('#planNote').value = 'QA 우비'; document.querySelector('#planForm button[type=submit]').click(); 1` },
-    { waitFor: `/보냈어요|저장했어요/.test(document.querySelector('#toast').textContent)`, timeout: 25000 }, { eval: `${T('#toast')} + ' | ' + ${T('#planTile .plan-now')} + ' | pick=' + ${T('#slot-2026-11-04-pm .pick b')}` }, { wait: 3000 }
+    { eval: `${PS('s|2026-11-04:pm')}; var b0, n0 = 0; while ((b0 = document.querySelector('#psBody [data-pkmore]')) && n0++ < 9) b0.click(); document.querySelector('[data-pick="2026-11-04:pm|lotte"]').click(); document.querySelector('#dock [data-view=days]').click(); document.querySelector('[data-planedit]').click(); document.querySelector('#planTime').value = '09:00'; document.querySelector('#planNote').value = 'QA 우비'; document.querySelector('#planForm button[type=submit]').click(); 1` },
+    { waitFor: `/보냈어요|저장했어요/.test(document.querySelector('#toast').textContent)`, timeout: 25000 }, { eval: `${T('#toast')} + ' | ' + ${T('#lobBox .plan-now')} + ' | pm=' + ${T('#it-3-3 .ev-tt')}` }, { wait: 3000 }
   ] },
   { name: 'share-mom', url: U + '#join=' + CODE, now: FREE, ls: ls(FREE, {}, { me: 'm' }), steps: [
-    { waitFor: `!!document.querySelector('#planTile .plan-now') && !!document.querySelector('#shareBox .peer') && !!document.querySelector('#slot-2026-11-04-pm .pick')`, timeout: 40000 }, { eval: `'fam=' + (document.querySelector('#famTile').hidden ? '-' : ${T('#famTile')})` }, { shot: 'f-share-fam.png' }, { eval: `document.querySelector('#dock [data-view=guide]').click(); ${T('#shareBox .peer')} + ' || plan: ' + ${T('#planTile .plan-now')} + ' / ' + ${T('#planTile .plan-by')} + ' || pick: ' + ${T('#slot-2026-11-04-pm .pick')} + ' || 11/5 lotte gone=' + !document.querySelector('[data-pick="2026-11-05:pm|lotte"]') + ' || hero: ' + ${T('#hero .alt')}` },
+    { waitFor: `!!document.querySelector('#lobBox .plan-now') && !!document.querySelector('#shareBox .peer') && /롯데/.test(document.querySelector('#it-3-3 .ev-tt').textContent)`, timeout: 40000 }, { eval: `'fam=' + (document.querySelector('#famTile').hidden ? '-' : ${T('#famTile')})` }, { shot: 'f-share-fam.png' }, { eval: `document.querySelector('#dock [data-view=guide]').click(); ${T('#shareBox .peer')} + ' || plan: ' + ${T('#lobBox .plan-now')} + ' / ' + ${T('#lobBox .plan-by')} + ' || pm: ' + ${T('#it-3-3 .ev-tt')} + ' || hero: ' + ${T('#hero .alt')}` },
     { shot: 'f-share-mom.png' },
     { eval: `document.querySelector('[data-peer=d]').click(); 1` }, { waitFor: `document.querySelectorAll('.pmk').length > 0 && window.__map.loaded()` }, { wait: 3000, eval: `'view=' + document.body.getAttribute('data-view') + ' peerPins=' + document.querySelectorAll('.pmk').length + ' ' + ${T('.pmk')}` },
     { shot: 'f-share-map.png' }
   ] },
   /* 다른 코드의 폰에는 안 보인다 */
   { name: 'share-other', url: U + '#join=' + CODE.split('').reverse().join(''), now: FREE, ls: ls(FREE, {}, { me: 'g' }), steps: [
-    { wait: 6000, eval: `'fam=' + (document.querySelector('#famTile').hidden ? 'hidden' : 'shown') + ' peers=' + document.querySelectorAll('#shareBox .peer').length + ' plan=' + ${T('#planTile .plan-now')} + ' picks=' + document.querySelectorAll('#planTile .pick').length` }
+    { wait: 6000, eval: `'fam=' + (document.querySelector('#famTile').hidden ? 'hidden' : 'shown') + ' peers=' + document.querySelectorAll('#shareBox .peer').length + ' plan=' + ${T('#lobBox .plan-now')} + ' pm=' + ${T('#it-3-3 .ev-tt')}` }
   ] },
   /* 숙소로 배달: 호이안 날엔 호이안 먼저, 다낭 날엔 다낭 먼저 + 푸라마 반입 금지 안내 · 일정의 「저녁 후보 보기」에서 들어오기 */
   { name: 'delivery', now: '2026-11-02T16:40:00+07:00', ls: ls('2026-11-02T16:40:00+07:00'), steps: [
-    { wait: 600, eval: `document.querySelector('#hero [data-cardseg=dlv], #tl [data-cardseg=dlv]') ? 'btn' : 'no btn'` },
-    { eval: `document.querySelector('#cardsTile [data-cardseg=dlv]').click(); var c = document.querySelector('#dlvCard'); c.scrollIntoView({ block: 'start' }); window.scrollBy(0, -10); [].slice.call(c.querySelectorAll('.grp-h')).map(function(e){ return e.textContent; }).join(' / ') + ' | first=' + c.querySelector('.dlv b').textContent + ' | apps=' + [].slice.call(c.querySelectorAll('.btnrow a')).map(function(a){ return a.textContent + '>' + a.getAttribute('href').slice(0, 40); }).join(', ') + ' | qbadge=' + c.querySelectorAll('.qbadge').length + ' overflow=' + (document.documentElement.scrollWidth - innerWidth)` },
+    { wait: 600, eval: `document.querySelector('#tl [data-go=dlv]') ? 'btn' : 'no btn'` },
+    { eval: `document.querySelector('#tl [data-go=dlv]').click(); var c = document.querySelector('#dlvCard'); c.scrollIntoView({ block: 'start' }); window.scrollBy(0, -10); [].slice.call(c.querySelectorAll('.grp-h')).map(function(e){ return e.textContent; }).join(' / ') + ' | first=' + c.querySelector('.dlv b').textContent + ' | apps=' + [].slice.call(c.querySelectorAll('.btnrow a')).map(function(a){ return a.textContent + '>' + a.getAttribute('href').slice(0, 40); }).join(', ') + ' | qbadge=' + c.querySelectorAll('.qbadge').length + ' overflow=' + (document.documentElement.scrollWidth - innerWidth)` },
     { shot: 'f-delivery-hoian.png' }
   ] },
   { name: 'delivery-danang', now: '2026-11-04T16:20:00+07:00', w: 360, h: 780, ls: ls('2026-11-04T16:20:00+07:00'), steps: [
-    { wait: 600, eval: `document.querySelector('#cardsTile [data-cardseg=dlv]').click(); var c = document.querySelector('#dlvCard'); c.scrollIntoView({ block: 'start' }); window.scrollBy(0, -10); c.querySelector('.grp-h').textContent + ' | note=' + ((c.querySelector('.note') || {}).textContent || '-').slice(0, 40) + ' | first=' + c.querySelector('.dlv b').textContent + ' | rows=' + c.querySelectorAll('.dlv').length + ' overflow=' + (document.documentElement.scrollWidth - innerWidth)` },
+    { wait: 600, eval: `document.querySelector('#dock [data-view=guide]').click(); document.querySelector('#moreMenu [data-go=dlv]').click(); var c = document.querySelector('#dlvCard'); c.scrollIntoView({ block: 'start' }); window.scrollBy(0, -10); c.querySelector('.grp-h').textContent + ' | note=' + ((c.querySelector('.note') || {}).textContent || '-').slice(0, 40) + ' | first=' + c.querySelector('.dlv b').textContent + ' | rows=' + c.querySelectorAll('.dlv').length + ' overflow=' + (document.documentElement.scrollWidth - innerWidth)` },
     { shot: 'f-delivery-danang-360.png' },
-    { eval: `document.querySelector('#dock [data-view=guide]').click(); [].slice.call(document.querySelectorAll('#appsSec .appi b')).map(function(e){ return e.textContent; }).join(',') + ' | q=' + document.querySelectorAll('.qlist li').length` }
+    { eval: `document.querySelector('#dock [data-view=guide]').click(); [].slice.call(document.querySelectorAll('#appRow .app span')).map(function(e){ return e.textContent; }).join(',') + ' | q=' + document.querySelectorAll('.qlist li').length` }
   ] }
-].concat(require('./route').scenarios, require('./pool').scenarios) };   /* 오늘 경로 그림 카드 · 지도 경로 — scenarios/route.js · 나들이 플랜 풀 — scenarios/pool.js */
+].concat(require('./route').scenarios, require('./pool').scenarios) };   /* 경로 그림 · 지도 경로 — scenarios/route.js · 고르기 시트 — scenarios/pool.js */

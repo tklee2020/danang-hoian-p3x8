@@ -45,9 +45,10 @@ const M = [
 ];
 const q = `(function(){ var $=function(s){ return document.querySelector(s); }, NL=String.fromCharCode(10), t=function(s){ var e=$(s); return e ? e.innerText.split(NL).join(' / ') : '-'; };
   return $('#ddayPill').textContent + ' | ' + t('#ticker').slice(0, 90) + ' | now=' + (($('.is-now .ev-tt')||{}).textContent||'-') + ' | day=' + (($('#days [aria-pressed=true]')||{}).getAttribute ? $('#days [aria-pressed=true]').getAttribute('aria-label') : '-') +
-    ' | clock=' + $('#ckL').textContent + '/' + $('#ckK').textContent + ' | stay=' + t('#stayTile .pill') + ' | ck=' + ($('#ckTile').hidden ? 'none' : t('#ckTile .pill')) + ' | fc=' + (($('.fc-head')||{}).textContent||'-') + ' | rec=' + document.querySelectorAll('.cand.is-rec').length +
-    ' | stage=' + ($('#stage').hidden ? '-' : $('#stage').textContent) + ' | chip=' + (($('#chap .on') || {}).textContent || '-') + ' | route=' + ($('#routeTile').hidden ? '-' : document.querySelectorAll('#routeTile .rr').length + '줄') +
-    ' | who=' + ($('#who').hidden ? '-' : 'open') + ' | me=' + (($('.whoBtn') || {}).textContent || '-') + ' | simple=' + document.documentElement.hasAttribute('data-simple') +
+    ' | title=' + $('#planT').textContent + ' | wx=' + t('#wxLine') + ' | hero=' + (($('#hero .now-title')||{}).textContent||'-') + ' | rest=' + ($('#restTile').hidden ? '-' : document.querySelectorAll('#restTile .rl2 li').length + '줄') +
+    ' | stay=' + t('#stayTile small') + ' | ck=' + ($('#ckTile').hidden ? 'none' : t('#ckTile .pill')) + ' | rec=' + document.querySelectorAll('#tl .ev-t .rec').length + ' | pick=' + document.querySelectorAll('[data-psheet]').length +
+    ' | chip=' + (($('#chap .on') || {}).textContent || '-') + ' | route=' + ($('#routeTile').hidden ? '-' : document.querySelectorAll('#routeTile .rr').length + '줄') + ' | h=' + document.documentElement.scrollHeight +
+    ' | who=' + ($('#who').hidden ? '-' : 'open') + ' | me=' + (($('#whoChip') || {}).textContent || '-') + ' | simple=' + document.documentElement.hasAttribute('data-simple') +
     ' | cks=' + document.querySelectorAll('#ckLists input[data-ck]').length + ' | memo=' + document.querySelectorAll('#memoBox [data-memo]').length +
     ' | p8=' + ((document.querySelector('[data-ck=p8]') || { closest: function(){ return null; } }).closest('label') || { textContent: '-' }).textContent.slice(0, 40) + ' | apps=' + Array.prototype.map.call(document.querySelectorAll('#appRow .app span'), function(e){ return e.textContent; }).filter(function(x){ return /Claude|Gemini/.test(x); }).join(',') +
     ' | overflow=' + (document.documentElement.scrollWidth - innerWidth); })()`;
