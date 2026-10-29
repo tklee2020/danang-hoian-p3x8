@@ -1036,7 +1036,7 @@ const TRIP = {
     { id: 'rest', area: 'both', slots: ['am', 'pm'], w: 'any', baby: 'easy', dur: '자유', h: 0, rep: true, title: '숙소에서 쉬기', sub: '수영장 · 낮잠 · 리조트 산책',
       memo: ['아기 컨디션이 안 좋거나 비가 세면 이걸로 — 몇 번이고 고를 수 있어요'], places: [], route: [] },
     { id: 'delivery', area: 'both', slots: ['eve'], w: 'any', baby: 'easy', dur: '주문 뒤 30~60분', h: 0, rep: true, title: '숙소로 배달', sub: '배달K · 그랩푸드 — 아기 재운 뒤 · 비 오는 저녁',
-      memo: ['**17:00~17:30 주문**이면 아기 자기 전에 와요', '가게 목록·받는 곳 안내는 「🛵 배달」 — 지금 숙소 쪽부터 (푸라마는 외부 음식 반입 금지 안내가 있어요)'], places: [], route: [] },
+      memo: ['**17:00~17:30 주문**이면 아기 자기 전에 와요', '가게 목록·받는 곳 안내는 「🛵 배달」 — 지금 숙소 쪽부터 (푸라마는 공식 안내엔 외부 음식 금지지만 정문·로비에서 받은 후기가 많아요)'], places: [], route: [] },
     /* ---- 다낭 (옛 날씨 카드 8장 + 오후·저녁) ---- */
     { id: 'linhung', area: 'danang', slots: ['am'], w: 'sun', baby: 'normal', dur: '3~4시간 (점심 포함)', h: 4, title: '린응사', sub: '해수관음상 · 바다 전망 1시간 (무료)', go: '11 km · 차로 20~25분', when: '08:30 출발',
       memo: ['⏱ 08:30 로비 → 08:55 린응사(1시간) → 10:00 출발 → 10:30 점심 → 11:30 출발 → 11:55 리조트 낮잠', '어깨·무릎 가리는 옷', '원숭이 주의', '점심: **목 해산물**(10:30~) 또는 **벱꾸온**(10:30~, 반쎄오·분짜 — 카톡 bepcuondang 또는 +84 702 689 989 로 예약)', '점심 뒤 달콤한 것: **라핀 베이커리**(구글 4.3 · 07:00~24:00, 목 해산물에서 90m) · **유가네 과일**(4.7 · 08:00~23:00, 550m)'], places: ['s_linhung', 'd_moc', 'd_bepcuon', 'd_lapin', 'd_yuga'], route: ['s_linhung', 'd_moc'] },
@@ -1119,7 +1119,7 @@ const TRIP = {
         { n: '포쓰어 리버사이드', cat: '베트남', menu: '소고기 쌀국수·반쎄오·스프링롤', baby: '쌀국수·공기밥', rate: 4.8, cnt: 1225, km: 2.2, pay: '현금', min: '5만 동', hrs: '08:00~22:00', shop: 4294 },
         { n: '틴틴 레스토랑', cat: '베트남', menu: '쌀국수·누들 수프·스프링롤', baby: '쌀국수·누들 수프', rate: 4.8, cnt: 2012, km: 1.9, pay: '현금', min: '없음', hrs: '10:00~21:30', shop: 13240 }
       ] },
-      danang: { note: '🔴 푸라마는 공식적으로 **외부 음식 반입 금지**(룸서비스 안내) — 정문에서 받아도 되는지 프런트에 먼저 {?푸라마 배달 수령}. 안 되면 룸서비스(06:30~자정)', list: [
+      danang: { note: '푸라마 공식 룸서비스 안내엔 **외부 음식 반입 금지**(위생·안전)라고 돼 있지만, 정문·로비에서 배달을 받아 먹었다는 후기가 많아요 — 받는 곳은 체크인 때 프런트에 한 번 물어봐요 {?푸라마 배달 수령}. 룸서비스는 06:30~자정', list: [
         { n: '오현 조개죽', cat: '죽', menu: '조개죽·갈비죽·새우죽 (3~5만 동)', baby: '👍 아기 1순위 — 부드러운 죽', rate: 4.7, cnt: 325, km: 1.4, pay: '현금', min: '없음', hrs: '06:10~21:40', shop: 6749 },
         { n: '껌땀웃번', cat: '베트남', menu: '껌땀(돼지갈비 덮밥)·계란찜·토마토 계란국', baby: '밥 + 계란찜 + 계란국', rate: 4.8, cnt: 2984, km: 0.3, pay: '현금', min: '없음', hrs: '09:00~21:00', shop: 5046 },
         { n: '냐벱 미케비치점', cat: '베트남', menu: '소고기 쌀국수·반쎄오·분짜', baby: '쌀국수 면·국물', rate: 4.6, cnt: 5617, km: 0.4, pay: '현금', min: '20만 동', hrs: '10:00~22:00', shop: 7894 },
@@ -1576,7 +1576,7 @@ const TRIP = {
 <script>
 (function(){
 'use strict';
-var BUILD = '10/29 10:06';
+var BUILD = '10/29 10:21';
 var NS = 'danang26:';
 var OFF_L = 7, OFF_K = 9;   /* 현지(베트남) UTC+7 · 한국 UTC+9 */
 
@@ -1725,7 +1725,7 @@ function placeCard(s, o){
     (d ? '<div><span aria-hidden="true">🚶</span><span>' + esc(d) + '</span></div>' : '') +
     (s.addr ? '<div><span aria-hidden="true">📍</span><span lang="vi">' + esc(s.addr) + '</span></div>' : '') +
     (s.note ? '<div><span aria-hidden="true">📝</span><span>' + rich(s.note) + '</span></div>' : '') + '</div>' +
-    '<div class="acts acts--sm acts--3"><a class="btn btn--pri" href="' + esc(gmap(s)) + '" ' + EXT + '>' + IC.nav + '구글 지도</a>' +
+    '<div class="acts acts--sm acts--3"><a class="btn btn--pri" href="' + esc(gmap(s)) + '" ' + EXT + '>' + IC.nav + '지도</a>' +
     '<button class="btn btn--sec" type="button" data-show="' + s.key + '">기사에게</button>' +
     (s.tel ? '<a class="btn btn--sec" href="' + telHref(s.tel) + '">' + IC.tel + '전화</a>' : '') + '</div>' +
     '<div class="maplinks"><a href="' + esc(gdir(s)) + '" ' + EXT + '>길찾기</a><span aria-hidden="true">·</span>' +
@@ -3020,6 +3020,7 @@ var share = (function(){
   function stopWatch(){ if (watch != null && navigator.geolocation) navigator.geolocation.clearWatch(watch); watch = null; clearInterval(beatT); }
   function setOn(v){
     if (v && !ok()){ toast('이 브라우저에서는 공유를 쓸 수 없어요'); return; }
+    if (v && !code && MEID !== 'd'){ toast(pv('{@d:이} 보낸 가족 링크나 받은 코드부터 연결해 주세요')); return; }   /* 새 코드는 아빠 폰만 — 다른 폰이 만들면 가족이 갈라진다 */
     if (v && !me()){ toast('먼저 누구 폰인지 골라 주세요'); return; }
     on = !!v; save('lsOn', on);
     if (on){ if (!code) setCode(newCode()); lastSent = 0; startWatch(); toast('📡 내 위치 공유를 켰어요 · 이 페이지를 열어 둔 동안만 보내요'); }
@@ -3040,8 +3041,9 @@ var share = (function(){
     var l = list(), my = last ? last.ll : meLL;
     var rows = l.length ? l.map(function(p){ return '<div class="peer"><i style="--fc:' + p.color + '">' + esc(p.tag) + '</i><span><b>' + esc(p.name) + '</b><small>' + esc(p.age) + (my ? ' · 여기서 ' + fmtDist(hav(my, p.ll)) : '') + '</small></span><button class="mini" type="button" data-peer="' + p.id + '">지도</button></div>'; }).join('')
       : '<p class="k">' + (code ? '아직 받은 위치가 없어요. 가족이 아래 링크로 들어와서 「내 위치 공유」를 켜면 여기에 떠요.' : '「가족 코드 만들기」를 누르고, 그 링크를 가족에게 보내세요.') + '</p>';
-    return '<span class="lbl" style="margin-top:0">이 폰은 누구 폰인가요?</span>' + whoChips() +
-      '<div class="btnrow"><button class="btn ' + (on ? 'btn--sec' : 'btn--pri') + ' btn--full" type="button" data-ls="toggle" aria-pressed="' + on + '">' + (on ? '📡 내 위치 공유 중 (누르면 끄기)' : code ? '📡 내 위치 공유 켜기' : '🔑 가족 코드 만들기 + 위치 공유 켜기') + '</button></div>' +
+    return (code || MEID === 'd'
+        ? '<div class="btnrow" style="margin-top:0"><button class="btn ' + (on ? 'btn--sec' : 'btn--pri') + ' btn--full" type="button" data-ls="toggle" aria-pressed="' + on + '">' + (on ? '📡 내 위치 공유 중 (누르면 끄기)' : '📡 내 위치 공유 켜기') + '</button></div>'
+        : '<p class="k" style="margin-top:0">' + esc(pv('{@d:이} 보낸 가족 링크로 열거나, 아래 「받은 코드 입력」에 가족 코드를 넣으면 위치 공유를 켤 수 있어요.')) + '</p>') +
       '<span class="lbl">가족 위치</span>' + rows +
       '<span class="lbl">가족 코드 — 모두 같아야 서로 보여요</span>' + (code ? '<p class="code">' + esc(pretty(code)) + '</p>' : '<p class="k">아직 없어요.</p>') +
       '<div class="btnrow">' + (code ? '<button class="btn btn--pri btn--sm" type="button" data-ls="link">📤 가족에게 링크 보내기</button>' : '') + '<button class="btn btn--sec btn--sm" type="button" data-ls="enter">받은 코드 입력</button>' + (code ? '<button class="btn btn--sec btn--sm" type="button" data-ls="reset">코드 지우기</button>' : '') + '</div>' +
@@ -3131,7 +3133,6 @@ function renderGuide(){
   var q = collectQ(), mv = TRIP.move, f = TRIP.flood, big = document.documentElement.hasAttribute('data-big');
   $('#guide').innerHTML =
     '<section class="tile" id="shareSec">' + th('가족 공유 · 위치와 오늘 계획', '', true) + '<div class="card" id="shareBox">' + share.html() + '</div></section>' +
-    '<section class="tile" id="appsSec">' + th('앱 바로가기') + '<div class="card"><p class="k">오늘 탭 제목 아래 줄과 같아요. 설치돼 있으면 앱이, 없으면 웹이나 스토어가 열려요. 출발 전에 한 번씩 눌러 로그인까지 해 두세요.</p><div class="appsbox">' + appsHTML() + '</div></div></section>' +
     '<section class="tile" id="floodSec">' + th('날씨 전망 · 침수 · 태풍') + outlookHTML() + '<div class="card"><ul class="dots" style="margin-top:0">' + lis(f.facts) + '</ul><div class="lnks">' +
       f.links.map(function(l){ return '<a class="lnk" href="' + l[1] + '" ' + EXT + '>' + esc(l[0]) + ' ↗</a>'; }).join('') + '</div></div>' +
       '<div class="card"><h3>🌊 ' + esc(f.alt.title) + '</h3><ul class="dots">' + lis(f.alt.lines) + '</ul>' + spotRows(f.alt.places) + '</div></section>' +
