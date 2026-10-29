@@ -108,14 +108,14 @@ module.exports = { parallel: 1, scenarios: [
     { waitFor: `/보냈어요|저장했어요/.test(document.querySelector('#toast').textContent)`, timeout: 25000 }, { eval: `${T('#toast')} + ' | ' + ${T('#planTile .plan-now')} + ' | pick=' + ${T('#slot-2026-11-04-pm .pick b')}` }, { wait: 3000 }
   ] },
   { name: 'share-mom', url: U + '#join=' + CODE, now: FREE, ls: ls(FREE, {}, { me: 'm' }), steps: [
-    { waitFor: `!!document.querySelector('#planTile .plan-now') && !!document.querySelector('#shareBox .peer') && !!document.querySelector('#slot-2026-11-04-pm .pick')`, timeout: 40000 }, { eval: `document.querySelector('#dock [data-view=guide]').click(); ${T('#shareBox .peer')} + ' || plan: ' + ${T('#planTile .plan-now')} + ' / ' + ${T('#planTile .plan-by')} + ' || pick: ' + ${T('#slot-2026-11-04-pm .pick')} + ' || 11/5 lotte gone=' + !document.querySelector('[data-pick="2026-11-05:pm|lotte"]') + ' || hero: ' + ${T('#hero .alt')}` },
+    { waitFor: `!!document.querySelector('#planTile .plan-now') && !!document.querySelector('#shareBox .peer') && !!document.querySelector('#slot-2026-11-04-pm .pick')`, timeout: 40000 }, { eval: `'fam=' + (document.querySelector('#famTile').hidden ? '-' : ${T('#famTile')})` }, { shot: 'f-share-fam.png' }, { eval: `document.querySelector('#dock [data-view=guide]').click(); ${T('#shareBox .peer')} + ' || plan: ' + ${T('#planTile .plan-now')} + ' / ' + ${T('#planTile .plan-by')} + ' || pick: ' + ${T('#slot-2026-11-04-pm .pick')} + ' || 11/5 lotte gone=' + !document.querySelector('[data-pick="2026-11-05:pm|lotte"]') + ' || hero: ' + ${T('#hero .alt')}` },
     { shot: 'f-share-mom.png' },
     { eval: `document.querySelector('[data-peer=d]').click(); 1` }, { waitFor: `document.querySelectorAll('.pmk').length > 0 && window.__map.loaded()` }, { wait: 3000, eval: `'view=' + document.body.getAttribute('data-view') + ' peerPins=' + document.querySelectorAll('.pmk').length + ' ' + ${T('.pmk')}` },
     { shot: 'f-share-map.png' }
   ] },
   /* 다른 코드의 폰에는 안 보인다 */
   { name: 'share-other', url: U + '#join=' + CODE.split('').reverse().join(''), now: FREE, ls: ls(FREE, {}, { me: 'g' }), steps: [
-    { wait: 6000, eval: `'peers=' + document.querySelectorAll('#shareBox .peer').length + ' plan=' + ${T('#planTile .plan-now')} + ' picks=' + document.querySelectorAll('#planTile .pick').length` }
+    { wait: 6000, eval: `'fam=' + (document.querySelector('#famTile').hidden ? 'hidden' : 'shown') + ' peers=' + document.querySelectorAll('#shareBox .peer').length + ' plan=' + ${T('#planTile .plan-now')} + ' picks=' + document.querySelectorAll('#planTile .pick').length` }
   ] },
   /* 숙소로 배달: 호이안 날엔 호이안 먼저, 다낭 날엔 다낭 먼저 + 푸라마 반입 금지 안내 · 일정의 「저녁 후보 보기」에서 들어오기 */
   { name: 'delivery', now: '2026-11-02T16:40:00+07:00', ls: ls('2026-11-02T16:40:00+07:00'), steps: [
