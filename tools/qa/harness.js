@@ -5,6 +5,7 @@
    시나리오 파일: module.exports = { parallel?: n, scenarios: [ {
      name, url?, now?: '2026-10-03T18:30:00+09:00'   // Date를 그 시각으로 속여요 (+07:00 현지 / +09:00 한국)
      w?, h?, dpr?, mobile?, dark?: bool,              // 폭·배율·다크 모드
+     ua?: 'Mozilla/5.0 (iPhone; …)',                 // 사용자 에이전트(아이폰 링크 방식 시험 — scenarios/ios-apps.js)
      ls?: { 'danang26:key': '"json"' },               // 시작 localStorage (값은 JSON 문자열) — scenarios/_fake.js 의 ls()
      geo?: [lat, lng, acc?],                          // 위치 권한 + 가짜 GPS
      steps: [ { eval }, { click }, { tap }, { type: [sel, text] }, { key }, { swipe: [sel, dx, dy] },
@@ -33,6 +34,7 @@ async function runScenario(b, sc){
   const feats = [{ name: 'prefers-reduced-motion', value: sc.reduce ? 'reduce' : 'no-preference' }];
   if (sc.dark != null) feats.push({ name: 'prefers-color-scheme', value: sc.dark ? 'dark' : 'light' });
   await page.emulateMediaFeatures(feats);
+  if (sc.ua) await page.setUserAgent(sc.ua);   /* 아이폰 등 — 앱 바로가기 링크 방식(IS_IOS)을 볼 때 */
   const out = [], logs = [];
   page.on('console', m => { if (['error', 'warn', 'warning'].includes(m.type())) logs.push(m.type() + ': ' + m.text()); });
   page.on('pageerror', e => logs.push('pageerror: ' + e.message));
