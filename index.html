@@ -747,11 +747,7 @@ if(s===true)document.documentElement.setAttribute('data-simple','');})();
     <div class="bento">
       <section class="tile span2 fam" id="famTile" aria-label="가족 위치" hidden></section>
       <section class="tile span2 hero" id="hero" aria-label="지금과 다음"></section>
-      <section class="tile span2" id="routeTile" aria-label="오늘 경로" hidden></section>
-      <section class="tile half" id="clockTile" aria-label="현지 시각과 한국 시각"></section>
-      <section class="tile half" id="wxTile" aria-label="날씨"></section>
-      <section class="tile span2" id="fcTile" aria-label="예보와 나들이 추천"></section>
-      <section class="tile span2" id="planTile" aria-label="나들이 고르기"></section>
+      <section class="tile span2" id="ckTile" aria-label="체크리스트" hidden></section>
       <section class="tile span2" id="tlTile" aria-labelledby="tlH">
         <div class="th"><span class="pill"><i class="dot"></i><span id="tlH">일정</span></span><div class="th-actions"><button class="pill pill--btn" type="button" id="btnCopyPlan" aria-label="이 날 일정 복사">📋 일정 복사</button><button class="pill pill--btn" type="button" id="tlAll" aria-pressed="false">모두 펼치기</button></div></div>
         <div class="card card--tl">
@@ -761,12 +757,16 @@ if(s===true)document.documentElement.setAttribute('data-simple','');})();
         </div>
         <div class="card tmr" id="tmr" hidden></div>
       </section>
-      <section class="tile span2" id="cardsTile" aria-label="나들이 플랜 풀"></section>
+      <section class="tile span2" id="routeTile" aria-label="오늘 경로" hidden></section>
       <section class="tile span2" id="stayTile" aria-label="숙소"></section>
-      <section class="tile span2" id="ckTile" aria-label="체크리스트" hidden></section>
+      <section class="tile half" id="clockTile" aria-label="현지 시각과 한국 시각"></section>
+      <section class="tile half" id="wxTile" aria-label="날씨"></section>
+      <section class="tile span2" id="fevTile" aria-label="체온 기록 요약" hidden></section>
+      <section class="tile span2" id="fcTile" aria-label="예보와 나들이 추천"></section>
+      <section class="tile span2" id="planTile" aria-label="나들이 고르기"></section>
+      <section class="tile span2" id="cardsTile" aria-label="나들이 플랜 풀"></section>
       <section class="tile span2 sos" id="sos" aria-labelledby="sosH"></section>
-      <section class="tile half" id="expTile" aria-label="지출 요약"></section>
-      <section class="tile half" id="fevTile" aria-label="체온 기록 요약"></section>
+      <section class="tile half" id="expTile" aria-label="지출 요약" hidden></section>
     </div>
     <p class="ver" id="ver1"></p>
   </section>
@@ -1576,7 +1576,7 @@ const TRIP = {
 <script>
 (function(){
 'use strict';
-var BUILD = '10/29 10:21';
+var BUILD = '10/29 10:22';
 var NS = 'danang26:';
 var OFF_L = 7, OFF_K = 9;   /* 현지(베트남) UTC+7 · 한국 UTC+9 */
 
@@ -2729,6 +2729,7 @@ function renderFev(){
 }
 function renderFevTile(){
   var L = load('fev', []).slice().sort(function(a, b){ return b.t - a.t; }), e = L[0], fresh = e && Date.now() - e.t < 36 * 3600000;
+  $('#fevTile').hidden = !fresh;   /* 오늘 탭엔 열이 났을 때(36시간 안 기록)만 — 평소엔 기록 탭에서 */
   $('#fevTile').innerHTML = th('체온') + '<div class="card">' + (fresh ? '<p class="k">' + whenTxt(e.t) + '에 잼</p><p class="big' + (e.temp >= 38 ? ' hot' : '') + '">' + (e.temp ? e.temp.toFixed(1) + '°' : '-') + '</p>' + doseHTML(true) :
     '<p class="lead">기록 없음</p><p class="k" style="margin-top:6px">열나면 체온·먹인 약을 적어요</p>') +
     '<span class="sp" aria-hidden="true"></span><button class="btn btn--sec btn--full" type="button" data-go="fev">+ 체온 적기</button></div>';
