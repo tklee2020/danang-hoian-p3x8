@@ -490,7 +490,7 @@ html[data-big] .ibtn--txt{background:var(--sea);color:var(--on-sea)}
 .map-msg{position:absolute;left:12px;right:12px;top:12px;z-index:3;padding:10px 12px;border-radius:12px;background:var(--card);box-shadow:var(--btn-sh);font-size:0.9375rem;font-weight:700;text-align:center}
 .mk{width:30px;height:30px;padding:0;border:2px solid #FFFFFF;border-radius:50%;background:#10242B;color:#FFFFFF;font-size:0.9375rem;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.35);cursor:pointer}
 .mk--stay{width:38px;height:38px;background:#0E7C86;font-size:1.1875rem;z-index:2}
-.mk--food{background:#C2562B}.mk--cafe{background:#8A5A2B}.mk--sight{background:#2C6DB5}.mk--spa{background:#8C4FA8}.mk--kids{background:#B8457A}.mk--med{background:#C0392B}.mk--mart{background:#2F8A4E}.mk--transit{background:#555F66}
+.mk--food{background:#C2562B}.mk--cafe{background:#8A5A2B}.mk--sight{background:#2C6DB5}.mk--spa{background:#8C4FA8}.mk--kids{background:#B8457A}.mk--med{background:#C0392B}.mk--mart{background:#2F8A4E}.mk--transit{background:#555F66}.mk--atm{background:#9A6B00}
 .mk.is-sel{outline:3px solid #FFD23F;outline-offset:1px;z-index:3}
 .pmk{display:flex;align-items:center;gap:4px;padding:2px 8px 2px 2px;border-radius:999px;background:#FFFFFF;color:#10242B;font-size:0.8125rem;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.35);white-space:nowrap}
 .pmk i{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--fc,#BFE3F5);font-style:normal}
@@ -939,7 +939,7 @@ const TRIP = {
     { date: '2026-11-01', label: '일', ic: '✈️', title: '인천 → 다낭 → 호이안', defNote: '첫날 저녁은 가깝고 실내인 곳 — 10/27 전망 맑음(비 0~3mm)', items: [
       { t: '08:20', tz: 'K', k: 'flight', title: '인천공항 **제2터미널** 도착 · 체크인', memo: ['유모차는 탑승구에서 맡겨요', '프레스티지 라운지'] },
       { t: '11:10', tz: 'K', k: 'flight', title: '**KE457 출발** — 인천 T2 → 다낭 T2', memo: ['다낭 도착은 현지 시각 14:15 — 시계를 2시간 뒤로 돌려요'] },
-      { t: '14:15', k: 'flight', title: '**다낭공항 T2 도착** — 입국·짐 찾기', memo: ['입국심사 때 여권 + **사람마다 사전입국신고 QR**(캡처해 둔 것)', '낮 도착이라 보통 40~60분', '도착장에서 이름판 든 기사를 찾아요'], place: 'd_airport' },
+      { t: '14:15', k: 'flight', title: '**다낭공항 T2 도착** — 입국·짐 찾기', memo: ['입국심사 때 여권 + **사람마다 사전입국신고 QR**(캡처해 둔 것)', '낮 도착이라 보통 40~60분', '짐 찾고 **도착장 ATM에서 500만 동 한 번**(토스 카드) — 원화로 바꿀지 물으면 거절 · 공략집 「환전·현금」', '도착장에서 이름판 든 기사를 찾아요'], place: 'd_airport' },
       { t: '15:10', approx: true, k: 'move', title: '**예약 차량(카시트)** → 호이안 리버타운', memo: ['29 km · 45~50분', '카시트는 3점식 벨트 좌석에 뒤보기로 {?16인승 장착 가능 여부}'], place: 'h_rivertown' },
       { t: '16:20', approx: true, k: 'stay', title: '리버타운 체크인', memo: ['체크인 14:00부터 · 조식 06:30~10:00'], place: 'h_rivertown' },
       { t: '17:00', k: 'card', slot: 'eve', maxH: 2, title: '저녁 나들이', memo: ['도착한 날이라 짧게 — 비 오거나 지쳤으면 리조트 식당 또는 **숙소로 배달**'], def: ['h_near'], dinner: true },
@@ -1043,7 +1043,7 @@ const TRIP = {
     { id: 'marble', area: 'danang', slots: ['am', 'pm'], w: 'sun', baby: 'big', dur: '1~1.5시간', h: 1.5, title: '오행산', sub: '엘리베이터로 올라가 사원·동굴 1시간', go: '5 km · 차로 10~12분', when: '07:30 또는 16시 이후',
       memo: ['⏱ 07:30 로비 → 07:45 오행산(07:00~, 엘리베이터, 1시간) → 08:50 출발 → 09:05 핑크망고(09:00~) → 09:40 리조트', '입장 4만 동(6세 미만 무료) + 엘리베이터 왕복 3만 동', '유모차 불가 → 아기띠', '**비 온 뒤엔 미끄러워 생략**', '끝나고 푸라마 쪽 **핑크망고**(망고빙수) — 꼬번 아보카도는 들러도 되는 곳', '11/3 이동 날엔 호이안에서 오는 길에 들러도 돼요(12:00 차량 메모)'], places: ['s_marble', 'd_pinkmango', 'd_kembo'], route: ['s_marble', 'd_pinkmango'] },
     { id: 'city', area: 'danang', slots: ['am'], w: 'sun', baby: 'normal', dur: '3~4시간 (점심 포함)', h: 4, title: '시내 반나절', sub: '한시장(짧게) → 핑크성당(겉) → 원더러스트 → 점심', go: '6 km · 차로 15분',
-      memo: ['⏱ 08:30 로비 → 08:45 한시장(어른 둘, 30분)·나머지는 카페 → 09:30 핑크성당(겉) → 10:00 원더러스트 → 11:00 점심 → 12:00 리조트', '한시장은 좁고 더워요 — 어른 둘만 들어가고 나머지는 카페(**CCCP 커피** 에어컨)', '핑크성당은 겉만(일요일 휴무)', '점심: **피자 4P’s 인도차이나**(웹 예약 booking.pizza4ps.com) 또는 **냐벱 한시장점**', '카페 대안: **탄 커피**(유모차에서 아기 낮잠 후기)', '점심 대안: **반미코티엔**(구글 4.2 · 08:00~20:00, 원더러스트 옆 60m) — 간단히 반미'], places: ['s_han', 's_cathedral', 'd_wonderlust', 'd_cccp', 'd_tan', 'd_4ps_bd', 'd_nhabepcho', 'd_banhmi'], route: ['s_han', 's_cathedral', 'd_wonderlust', 'd_4ps_bd'] },
+      memo: ['⏱ 08:30 로비 → 08:45 한시장(어른 둘, 30분)·나머지는 카페 → 09:30 핑크성당(겉) → 10:00 원더러스트 → 11:00 점심 → 12:00 리조트', '한시장은 좁고 더워요 — 어른 둘만 들어가고 나머지는 카페(**CCCP 커피** 에어컨)', '핑크성당은 겉만(일요일 휴무)', '점심: **피자 4P’s 인도차이나**(웹 예약 booking.pizza4ps.com) 또는 **냐벱 한시장점**', '카페 대안: **탄 커피**(유모차에서 아기 낮잠 후기)', '점심 대안: **반미코티엔**(구글 4.2 · 08:00~20:00, 원더러스트 옆 60m) — 간단히 반미', '현금이 모자라면 **VP뱅크 ATM**(112 Phan Châu Trinh · 24시간 · 한시장에서 600m) — 수수료 0동'], places: ['s_han', 's_cathedral', 'd_wonderlust', 'd_cccp', 'd_tan', 'd_4ps_bd', 'd_nhabepcho', 'd_banhmi', 'm_vphan'], route: ['s_han', 's_cathedral', 'd_wonderlust', 'd_4ps_bd'] },
     { id: 'bana', area: 'danang', slots: ['am'], w: 'sun', cond: true, baby: 'big', dur: '반나절 (07:30~13:00)', h: 5.5, title: '바나힐', sub: '골든브릿지 + 프렌치빌리지 광장만 · 12시 하산', go: '28 km · 차로 45~50분 · 카시트 예약차 반일 대절', when: '07:30 출발',
       memo: ['⏱ 07:30 출발 → 08:20 케이블카(25분) → 골든브릿지 → 프렌치빌리지 광장 → 11:15 내려오는 케이블카 → 12:50 리조트',
              '**전날 예보 + 당일 아침 정상 라이브캠**을 보고 가요', '성인 100만 동 × 4 (11/5 부터는 {@a:까지} × 5)', '케이블카 25분 — 호이안역 방면(환승 없음)', '정상은 5~8도 낮고 안개 잦음 → 얇은 긴팔', '유모차 지참'], places: ['s_bana'], route: ['s_bana'] },
@@ -1208,7 +1208,7 @@ const TRIP = {
         ['p7', '그랩 앱 설치 · 전화번호 인증 · 카드 등록 ([[a:나도 — 11/4 밤에 혼자 타요|{@a:도} — 밤에 혼자 타요]])', ['d', 'm', 'a']],
         ['p7b', '배달K 앱 설치 · 가입(카카오톡 또는 전화번호)', ['d', 'm']],
         ['p8', '[[a:eSIM — 내 것|eSIM — {@g}·{@h} 것은 {@d:이} 챙겨요 · {@a} 것도 확인]]', ['d', 'm', 'a']],
-        ['p9', '환전 — 트래블 카드 + 현금 일부(잔돈)', ['d', 'm', 'a']],
+        ['p9', '환전은 따로 안 해요 — **토스 체크카드**(외화통장 연결)에 원화만 넣어 두면 현지 ATM에서 자동 환전 · 무료 조건(한 달 5회·700달러) 토스 앱에서 확인 {?} · 공략집 「환전·현금」', ['d', 'm', 'a']],
         ['r1', '예약 — 11/6 티아고 16:30 어른 5 + 아기 의자 (전화·Zalo · 공략집 「미리 예약할 곳」)', ['d', 'm']],
         ['r2', '예약 — (하려면) 11/2 호이안 어른 스파 교대 15:30 · 카톡 dahanspa 또는 미노스파 전화', ['d', 'm']],
         ['pb1', '구글 지도 다낭·호이안 오프라인 저장 · 구글 번역 베트남어 오프라인 팩', ['d', 'm', 'a']],
@@ -1229,10 +1229,10 @@ const TRIP = {
         ['pa4', '다낭 21:15 도착 → 그랩 → 푸라마 프런트에서 여권 보여 주고 투숙 등록'] ] } ] },
     { id: 'pack', title: '짐 싸기', sub: '아기 짐부터 · 기저귀·물티슈는 현지 마트에서도 사요', groups: [
       { name: '서류 · 돈', items: [
-        ['b8', '여권 3개({@d}·{@m}·용준) · 현금 동 잔돈 (1만·2만·5만 섞어서)', ['d', 'm']],
+        ['b8', '여권 3개({@d}·{@m}·용준)', ['d', 'm']],
         ['b8g', '여권 — 내 것', ['g', 'h']],
-        ['b8a', '여권 — 내 것 · 현금 동 잔돈 조금', ['a']],
-        ['k1', '트래블 카드 + 해외 결제 되는 신용카드 1장', ['d', 'm', 'a']],
+        ['b8a', '여권 — 내 것', ['a']],
+        ['k1', '토스 체크카드(외화통장 연결 · ATM 출금) + 해외 결제 되는 신용카드 1장', ['d', 'm', 'a']],
         ['k2', '숙소·항공·차량 예약 화면 캡처 (인터넷 안 될 때)', ['d', 'm']] ] },
       { name: '아기 — 먹기', who: ['d', 'm'], items: [
         ['b1', '분유·이유식 전량 + 하루치 여유 (현지 재고 근거 없음)'],
@@ -1327,7 +1327,7 @@ const TRIP = {
     { e: '🔍', n: '구글 렌즈', s: '렌즈', d: '간판·메뉴를 비추면 번역·검색. 안드로이드는 스토어의 「열기」를 거쳐요(구글 번역 → 카메라도 같은 기능).', web: 'https://lens.google/', and: ['play', 'com.google.ar.lens'], ios: 284815942 },
     { e: '✈️', n: '대한항공', d: 'KE457·KE458 모바일 체크인·탑승권. 앱이 있으면 앱, 없으면 웹으로 열려요.', web: 'https://www.koreanair.com/', who: ['d', 'm', 'g', 'h'] },    { e: '🤖', n: 'Claude', d: '사진 찍어 「이거 뭐야?」, 비 와서 일정이 바뀌면 동선 다시 짜기.', web: 'https://claude.ai/new', and: ['claude.ai/new', 'https', 'com.anthropic.claude'], who: ['d'] },
     { e: '✨', n: 'Gemini', d: '사진 찍어 「이거 뭐야?」, 메뉴판·간판 물어보기, 비 와서 일정이 바뀌면 동선 다시 짜기. 안드로이드는 스토어의 「열기」를 거쳐요.', web: 'https://gemini.google.com/app', and: ['play', 'com.google.android.apps.bard'], ios: 6477489729, who: ['m', 'g', 'h', 'a'] },
-    { e: '💳', n: '트래블월렛', d: '트래블월렛 카드 잔액 확인·충전.', web: 'https://www.travel-wallet.com/', and: ['play', 'com.mobiletoong.travelwallet'], ios: 1460769945 },
+    { e: '💳', n: '토스', d: '외화통장 잔액 확인·원화 넣기 — ATM 출금은 토스 체크카드로(무료 조건 한 달 5회·700달러 {?}).', web: 'https://toss.im/', and: ['play', 'viva.republica.toss'], ios: 839333328, who: ['d', 'm', 'a'] },
     { e: '🆘', n: '해외안전여행', s: '해외안전', d: '외교부 해외안전여행 — 영사콜센터·현지 안전 공지. 급한 전화는 오늘 탭 🚑 비상 연락처에.', web: 'https://www.0404.go.kr/' }
   ],
   driverLead: 'Xin chở tôi đến địa chỉ này:',   /* 기사에게 보여주기 첫 줄 */
@@ -1341,6 +1341,15 @@ const TRIP = {
       '**11월 초는 우기 한가운데.** 비 오는 날이 절반쯤 — 다낭 3일은 날짜에 일정을 박지 않고 그날 아침 카드에서 골라요',
       '**호이안 올드타운 침수.** 10/29부터 매일 수위를 봐요 (침수·태풍 칸)',
       '**두 숙소 모두 걸어서 해결되는 게 많아요.** 비 오는 날 차를 안 타도 돼요' ] },
+    { t: '환전 · 현금 — 토스 카드로 ATM', ul: [
+      '**환전은 따로 안 해요.** 토스뱅크 **외화통장에 연결한 체크카드**로 현지 ATM에서 동을 뽑아요 — 원화만 넣어 두면 자동으로 바뀌어요. 토스 수수료는 **한 달 5회·700달러까지 0원**, 사람(카드)마다 따로 {?토스 앱 → 외화통장에서 확인}',
+      '**ATM은 아무 은행이나 되지만 은행이 따로 받아요** — **VP뱅크 0동**(한 번에 500만 동 이하 {?단일 출처}) · BIDV·비엣콤·신한 등 22,000~55,000동(1,100~2,900원) · **TP뱅크는 약 3%라 피해요**(2025-06부터 유료)',
+      '**얼마나**: 11/1 **다낭공항 도착장 ATM에서 500만 동(약 26만 원) 한 번** — 공항엔 VP뱅크가 없어서 2~3천 원은 감수. 모자라면 다낭에서 더(가족 전체 하루 150만 동쯤 — 대략 추정). 남은 동은 토스에 다시 못 넣으니 많이 뽑지 않아요. 큰비가 오면 호이안 ATM이 비기도 해서 공항에서 먼저',
+      'VP뱅크: **한시장 앞 112 Phan Châu Trinh(24시간 ATM)** · 호이안 523 Hai Bà Trưng 지점 · 선짜 1094 Ngô Quyền 지점(두 지점은 ATM {?}) — 장소·지도의 🏧 ATM',
+      '**ATM이 원화(KRW)로 바꿔 줄지 물으면 거절** — 「Without conversion」 또는 VND. 원화를 고르면 5~10% 손해',
+      '화면에 **수수료 금액이 뜨면 취소**하고 다른 ATM으로 · 끝나면 카드 챙기기',
+      '**현금만 받는 곳**: 배달K 가게 대부분 · 시장 · 작은 식당 · 소원배(15~20만 동) · 팁. 리조트·큰 식당·그랩은 카드',
+      '**한시장 금은방 환전은 피해요** — 2026년 무허가 환전 단속이 세졌다는 글 {?단일 출처}' ] },
     { t: '미리 예약할 곳 · 방법', ul: [
       '**스파는 꼭 예약** — 시간을 잡는 곳이에요. **다한스파**(호이안·다낭 둘 다) 카카오톡 ID **dahanspa** · 2인 이상 무료 픽업 · 24시간 전까지 무료 취소(WAUG 상품 기준). 다낭은 그날 나들이가 정해지면 **전날** 예약',
       '**11/6 티아고**(어른 5 + 아기, 16:30) — 온라인 예약은 없어요. 전화·Zalo **+84 236 3689 005** 로 자리·아기 의자 부탁 {?예약 받는지}. 안 받으면 그냥 가요 — 붐비는 건 19시 전후라 16:30은 한산',
@@ -1364,7 +1373,7 @@ const TRIP = {
       '10/27 다시 보고 뺀 곳: 에피스(리뷰 41) · APEC 공원(아기 볼거리 없음 — 목록엔 남김) · 꼬 쭈 녀 3.9 · 구글에 안 나온 곳(비키니 보텀·벱 꾸어 응오아이·미꽝 흐엉꿰·샌디 스파·아모르 스파·바빌론 스파·리틀엠)',
       '전망·위치로만 남긴 곳: 선짜 마리나 4.0 · 콩카페 박당점 4.1' ] }
   ],
-  footer: '장소·평점: 구글 지도 직접 조회(10/27 기준, 일부 10/14) · 날씨: Open-Meteo · 환율: open.er-api.com · 지도: OpenFreeMap / OpenStreetMap · 경로 그림 해안선·강: © OpenStreetMap contributors (ODbL) · 글꼴: Pretendard, Jua (SIL OFL)',
+  footer: '장소·평점: 구글 지도 직접 조회(10/27 기준, 일부 10/14·ATM 10/29) · 날씨: Open-Meteo · 환율: open.er-api.com · 지도: OpenFreeMap / OpenStreetMap · 경로 그림 해안선·강: © OpenStreetMap contributors (ODbL) · 글꼴: Pretendard, Jua (SIL OFL)',
 
   /* 장소 시설 뱃지 — 장소 메모(10/14·10/27 조사)에 「있다」고 적힌 곳만 손으로 옮겼다. 메모 글을 정규식으로 훑으면
      「개방형(에어컨 없음)」·「방」까지 붙어서(8a4fe7f) 데이터로 뺐다. 새로 확인하면 여기에 key 를 더한다 */
@@ -1441,6 +1450,7 @@ const TRIP = {
     ["h_pharm","hoian","med","파마시티 약국","Nhà thuốc Pharmacity",4.6,85,15.8833367,108.32847,1.8,1262,"298 Lý Thường Kiệt","+84 1800 6821","~23:00"],
     ["h_winmart","hoian","mart","윈마트+ (훙브엉)","WinMart+",4.1,183,15.8792608,108.3205488,0.5,390,"57 Hùng Vương","+84 934 178 843","~22:00"],
     ["h_concung","hoian","mart","꼰꿍 (아기용품)","Con Cưng",4.4,61,15.8841388,108.3254388,1.7,1112,"550 Hai Bà Trưng","+84 1800 6609","07:30~"],
+    ["h_vpbank","hoian","atm","VP뱅크 호이안 지점","VPBANK HỘI AN",3.9,368,15.8831722,108.3251177,1.6,1004,"523 Hai Bà Trưng","+84 235 3922 003","은행 지점(07:30~) · ATM {?있는지·시간} · VP뱅크 ATM은 수수료 0동"],
     ["d_furama","danang","stay","푸라마 리조트 다낭","Furama Resort Danang",4.5,6579,16.0399456,108.2510681,0,0,"105 Võ Nguyên Giáp","+84 236 3847 333","11/3~11/7 숙소"],
     ["d_airport","danang","transit","다낭 국제공항","Danang International Airport",4.2,14555,16.0569804,108.2025372,7.3,5521,"T2 국제선","",""],
     ["d_nhabep","danang","food","냐벱 미케비치점","Nhà Bếp (416 Võ Nguyên Giáp)",4.6,5634,16.0419366,108.2482737,0.7,372,"416 Võ Nguyên Giáp","+84 236 3958 080","10:00~, 에어컨·한국어"],
@@ -1529,6 +1539,8 @@ const TRIP = {
     ["m_kmarket","danang","mart","K마켓 VNG점","Kmarket Vo Nguyen Giap",3.8,86,16.0400599,108.2491614,0.7,204,"448 Võ Nguyên Giáp","","~24:00, 한국 식품"],
     ["m_bacmyan","danang","mart","박미안 시장","Chợ Bắc Mỹ An",4.4,38,16.0412504,108.2427141,1.3,904,"14 Mỹ Đa Đông 3","","과일·로컬"],
     ["m_aeon","danang","mart","이온몰 다낭 탄케","AEON MALL Đà Nẵng Thanh Khê",3.9,710,16.0661625,108.2043594,7.5,5780,"46 Điện Biên Phủ","+84 236 3639 888","10:00~22:00(토·일 09:00), 2026-07 개점 · 유모차 대여"],
+    ["m_vphan","danang","atm","VP뱅크 ATM (한시장 앞)","ATM - VPbank",3.9,279,16.0648548,108.2198624,5.8,4335,"112 Phan Châu Trinh","+84 236 3835 090","24시간 ATM · 수수료 0동 · 한시장에서 600m"],
+    ["m_vpsontra","danang","atm","VP뱅크 선짜 지점","VPBANK SƠN TRÀ",3.1,296,16.0593831,108.2347343,4.1,2778,"1094 Ngô Quyền","+84 236 3946 797","은행 지점(07:30~) · ATM {?있는지·시간} · 푸라마에서 가장 가까운 VP뱅크"],
     ["k_funny","danang","kids","퍼니키즈 (빈컴 3층)","Funny Kids Vincom Đà Nẵng",4.6,438,16.0712737,108.2304481,5.4,4122,"910A Ngô Quyền (빈컴 3층)","+84 1900 996664","10:00~22:00(토·일 09:30), 아이 평일 10만·주말 12만 동 · 시간 무제한"],
     ["k_abc","danang","kids","ABC 키즈클럽","Abc kids club",4.1,398,16.0784569,108.222884,6.8,5235,"20 Trần Phú","+84 935 446 025","08:00~22:00, 아이 평일 8만·주말 12만 동 · 보호자는 1메뉴 주문"],
     ["k_kubo","danang","kids","쿠보 키즈카페 (고마트 2층)","Kubo Nano GO! Đà Nẵng",4.1,41,16.0667392,108.2135158,6.5,4998,"255 Hùng Vương (GO! 2층)","+84 236 3666 085","09:00~21:30 · 월 휴무, 리뷰 41 — 근거 약함"],
@@ -1576,7 +1588,7 @@ const TRIP = {
 <script>
 (function(){
 'use strict';
-var BUILD = '10/29 10:22';
+var BUILD = '10/29 23:30';
 var NS = 'danang26:';
 var OFF_L = 7, OFF_K = 9;   /* 현지(베트남) UTC+7 · 한국 UTC+9 */
 
@@ -1685,7 +1697,7 @@ TRIP.spots.forEach(function(r){
   var s = { key: r[0], area: r[1], kind: r[2], ko: r[3], g: r[4], rate: r[5], n: r[6], ll: [r[7], r[8]], km: r[9], line: r[10], addr: r[11], tel: r[12], note: r[13] };
   SP[s.key] = s; SPK.push(s.key);
 });
-var SK = { stay: ['숙소', '🏨'], food: ['식당', '🍜'], cafe: ['카페', '☕'], sight: ['관광', '📷'], spa: ['스파', '💆'], kids: ['아기 놀이', '🧸'], med: ['병원·약국', '🏥'], mart: ['마트', '🛒'], transit: ['공항', '✈️'] };
+var SK = { stay: ['숙소', '🏨'], food: ['식당', '🍜'], cafe: ['카페', '☕'], sight: ['관광', '📷'], spa: ['스파', '💆'], kids: ['아기 놀이', '🧸'], med: ['병원·약국', '🏥'], mart: ['마트', '🛒'], atm: ['ATM', '🏧'], transit: ['공항', '✈️'] };
 var HAN = /[가-힣]/;
 /* 기사에게 보여 줄 주소: 한글 설명(괄호)은 빼고, 한글만 있는 칸은 비운다 */
 function vaddr(s){
@@ -2745,7 +2757,7 @@ function renderMemo(){
 
 /* ---------- 장소 목록 ---------- */
 var plArea = null, plKind = 'food', plSort = 'near';
-var PLK = ['food', 'cafe', 'sight', 'kids', 'spa', 'mart', 'med', 'all'];
+var PLK = ['food', 'cafe', 'sight', 'kids', 'spa', 'mart', 'med', 'atm', 'all'];
 function renderPlaces(){
   if (!plArea) plArea = hubAt(Date.now());
   $('#plArea').innerHTML = ['hoian', 'danang'].map(function(k){ return '<button type="button" data-plarea="' + k + '" aria-pressed="' + (k === plArea) + '">' + TRIP.hubs[k].name + ' · ' + TRIP.hubs[k].short + '</button>'; }).join('');
@@ -2801,8 +2813,8 @@ function renderMapUI(){
   if (!mapArea) mapArea = mapRt ? SP[mapRt.home].area : hubAt(Date.now());
   $('#mapArea').innerHTML = ['hoian', 'danang'].map(function(k){ return '<button type="button" data-maparea="' + k + '" aria-pressed="' + (k === mapArea) + '">' + TRIP.hubs[k].name + '</button>'; }).join('') +
     '<button type="button" data-mapme aria-pressed="false">📍 내 위치</button>';
-  $('#mapFilt').innerHTML = ['all', 'food', 'cafe', 'sight', 'kids', 'spa', 'mart', 'med'].map(function(k){ return '<button type="button" data-mapf="' + k + '" aria-pressed="' + (k === mapFilter) + '">' + (k === 'all' ? '주요 장소' : SK[k][1] + ' ' + SK[k][0]) + '</button>'; }).join('');
-  if (!$('#mapCard').innerHTML) $('#mapCard').innerHTML = '<div class="card"><p class="k">🏨 숙소 · 🍜 식당 · ☕ 카페 · 📷 관광 · 💆 스파 · 🛒 마트 · 🏥 병원. 처음엔 일정에 나오는 곳만 보이고, 확대하거나 종류를 고르면 121곳이 다 나와요.</p></div>';
+  $('#mapFilt').innerHTML = ['all', 'food', 'cafe', 'sight', 'kids', 'spa', 'mart', 'med', 'atm'].map(function(k){ return '<button type="button" data-mapf="' + k + '" aria-pressed="' + (k === mapFilter) + '">' + (k === 'all' ? '주요 장소' : SK[k][1] + ' ' + SK[k][0]) + '</button>'; }).join('');
+  if (!$('#mapCard').innerHTML) $('#mapCard').innerHTML = '<div class="card"><p class="k">🏨 숙소 · 🍜 식당 · ☕ 카페 · 📷 관광 · 💆 스파 · 🛒 마트 · 🏥 병원 · 🏧 ATM. 처음엔 일정에 나오는 곳만 보이고, 확대하거나 종류를 고르면 ' + SPK.length + '곳이 다 나와요.</p></div>';
 }
 function mapVis(){
   if (!map) return;

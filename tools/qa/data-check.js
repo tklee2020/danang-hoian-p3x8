@@ -121,7 +121,7 @@ const swS = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
 
 /* spots ↔ research TSV */
 const B = [[107.9, 15.75], [108.5, 16.25]];
-const KINDS = ['stay', 'food', 'cafe', 'sight', 'kids', 'spa', 'med', 'mart', 'transit'];   /* index.html 의 SK 와 같게 — kids 는 10/27 */
+const KINDS = ['stay', 'food', 'cafe', 'sight', 'kids', 'spa', 'med', 'mart', 'atm', 'transit'];   /* index.html 의 SK 와 같게 — kids 는 10/27, atm 은 10/29 */
 TRIP.spots.forEach(r => { if (KINDS.indexOf(r[2]) < 0) out.push('spot ' + r[0] + ': 모르는 종류 ' + r[2]); });
 const SKs = (html.match(/var SK = \{([^\n]*)\};/) || [])[1] || '';
 KINDS.forEach(k => { if (SKs.indexOf(k + ':') < 0) out.push('SK 에 종류 ' + k + ' 없음 (지도·장소 아이콘)'); });
