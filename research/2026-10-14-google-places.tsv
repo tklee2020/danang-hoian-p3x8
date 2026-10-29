@@ -194,3 +194,6 @@ h_lemongrass	hoian	spa	레몬그라스 스파 (리버타운 안)	Lemongrass Spa	
 h_vpbank	hoian	atm	VP뱅크 호이안 지점	VPBANK HỘI AN	3.9	368	15.8831722	108.3251177	1.6	2	1004	523 Hai Bà Trưng	+84 235 3922 003	은행 지점(07:30~) · ATM {?있는지·시간} · VP뱅크 ATM은 수수료 0동
 m_vphan	danang	atm	VP뱅크 ATM (한시장 앞)	ATM - VPbank	3.9	279	16.0648548	108.2198624	5.8	8	4335	112 Phan Châu Trinh	+84 236 3835 090	24시간 ATM · 수수료 0동 · 한시장에서 600m
 m_vpsontra	danang	atm	VP뱅크 선짜 지점	VPBANK SƠN TRÀ	3.1	296	16.0593831	108.2347343	4.1	5	2778	1094 Ngô Quyền	+84 236 3946 797	은행 지점(07:30~) · ATM {?있는지·시간} · 푸라마에서 가장 가까운 VP뱅크
+h_vietbank	hoian	atm	VietBank ATM	VIETBANK ATM	4.8	35	15.8832652	108.3249141	1.6	3	1000	Bà Triệu		24시간 ATM · 수수료 0동 은행 · VP뱅크 호이안 지점 근처
+h_ocb	hoian	atm	OCB ATM (호이안)	ATM OCB PGD Hội An	4.0	57	15.8877299	108.3276357	2.2	3	1575	540 Hai Bà Trưng		24시간 ATM · 수수료 0동 은행
+m_ocbsontra	danang	atm	OCB ATM (선짜)	Ocb - Atm	2.7	21	16.0602541	108.2350078	3.7	5	2836	1011 Ngô Quyền		수수료 0동 은행 · 은행 시간(07:30~)에 {?24시간인지} · VP뱅크 선짜 지점 옆
