@@ -222,7 +222,7 @@ ul.dots li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;hei
 .ev-t{font-size:1rem;font-weight:700;line-height:1.45;letter-spacing:-.01em}
 .ev-m{margin-top:2px;font-size:0.9375rem;color:var(--ink-2);line-height:1.5}
 /* 접힌 상태에서는 첫 메모를 한 줄만 — 눌러 펼치면 전부 */
-.ev:not(.is-open) .ev-m{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.ev:not(.is-open):not(.no-x) .ev-m{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .chev{position:absolute;right:4px;top:6px;width:10px;height:10px;border:solid var(--ink-3);border-width:0 2px 2px 0;transform:rotate(45deg);transition:transform .15s}
 .is-open .chev{transform:rotate(-135deg);top:11px}
 .ev__x{display:none}
@@ -1061,12 +1061,12 @@ const TRIP = {
     { key: 'h_rivertown', hub: 'hoian', name: '리버타운 호이안 리조트', from: '2026-11-01', to: '2026-11-03', nights: 2, in: '14:00', out: '12:00', bf: '06:30~10:00',
       brief: '올드타운 서쪽 입구(안호이·야시장)까지 700m · 윈마트+ 390m · 윤식당(한식) 480m',
       facts: ['올드타운 서쪽 강변(깜포) — 강물이 불면 주변 도로가 영향받을 수 있어요 {?침수 대응·객실 층}', '아기 침대·유아 의자·전자레인지 {?}', '안방비치 셔틀 시각 {?}',
-              '후기(2024-07): 3층 가든·풀뷰 객실은 차·오토바이 소리가 안 들리고 벌레가 없었어요 — 객실은 상층으로 부탁 {?}', '후기(2024-07): 조식에 김치 등 한식 코너가 있고, 조식당은 에어컨 없이 선풍기예요 {?}', '후기(2024-07): 유아풀은 보수공사로 물을 뺀 상태였어요 — 쓸 수 있는지 {?유아풀}'] },
+              '조식에 김치 등 한식 코너 · 조식당은 선풍기(에어컨 없음) — 후기 2024-07 {?}', '객실은 **상층**으로 부탁 — 3층 가든·풀뷰가 조용하고 벌레가 없었다는 후기', '유아풀은 2024-07 후기에 보수공사로 물을 뺀 상태 {?유아풀}'] },
     { key: 'd_furama', hub: 'danang', name: '푸라마 리조트 다낭', from: '2026-11-03', to: '2026-11-07', nights: 4, in: '14:00', out: '11:00', bf: '06:30~10:30',
       brief: '길 건너에 냐벱 370m · 다한스파 250m · K마켓 200m · 약국 550m',
       facts: ['**{@a:은} 11/4 밤부터** — 인원 추가(엑스트라 베드 + 조식) 1박 1,492,230동(아고다 문의 답). 베트남은 숙소가 외국인 투숙객 여권을 바로 신고해야 해서 **등록 없이 같이 자는 건 안 돼요** {?3박 등록 확정}',
               '키즈클럽(Little Nemo)은 만 4~12세 — 13개월은 못 가요 (공식 안내 PDF 2026-03)', '베이비시터 08:30~18:00 · 1명 250,000동++/시간 · 24시간 전 예약(키즈클럽·내선 3308)', '레이트 체크아웃(13시) {?}', '아기 침대·유아 의자·전자레인지 {?}', '수영장은 온수가 아니라 흐린 날 차갑다는 후기',
-              '후기: 라군풀은 아기에겐 차갑고 부유물이 있고, 인피니티풀은 1.3m 이상이라 13개월엔 깊어요. 유아풀은 수심 0.4~0.6m·구명조끼 비치(후기 1건) — 아기는 유아풀로, 수온은 체크인 때 {?유아풀}', '후기·호텔 답변 2건: 조식이 4일 내내 같아 질렸다는 말이 있어요 — 길 건너 냐벱·반미를 섞어요', '후기(1건): 메인 건물 1층 객실이 이동이 적고, 체크아웃 때(11~12시) 버기카가 밀려 20분 전에 불러야 해요 {?}'] }
+              '아기는 **유아풀**(0.4~0.6m · 구명조끼) — 라군풀은 차갑고, 인피니티풀은 1.3m 이상 (후기) {?유아풀}', '조식이 4일 내내 같다는 후기 — 길 건너 냐벱·반미를 섞어요', '체크아웃 때(11~12시) 버기카가 밀려요 — 20분 전에 부르기 (후기) {?}'] }
   ],
 
   /* k: flight·move·stay·food·walk·rest·spa·shop·card / place: 대표 장소(spots key) / places: 고를 곳들 / alt: 비·피곤할 때
@@ -1074,41 +1074,40 @@ const TRIP = {
      slot: am·pm·eve = 나들이 칸(plans 에서 고름 — 그 시각 숙소 지역(hubAt)의 플랜만) · def: 아무것도 안 골랐을 때의 힌트(첫 장이 경로 그림에) · maxH: 이 칸에 쓸 수 있는 시간(넘는 플랜은 아래로 + ⏱ 빠듯)
      defNote: 그날 기본 배치 한 줄 — 10/27 날씨 전망(outlook)에 맞춤 */
   days: [
-    { date: '2026-11-01', label: '일', ic: '✈️', title: '인천 → 다낭 → 호이안', defNote: '첫날 저녁은 가깝고 실내인 곳 — 10/27 전망 맑음(비 0~3mm)', items: [
-      { t: '08:20', tz: 'K', k: 'flight', title: '인천공항 **제2터미널** 도착 · 체크인', memo: ['유모차는 탑승구에서 맡겨요', '프레스티지 라운지'] },
+    { date: '2026-11-01', label: '일', ic: '✈️', title: '인천 → 다낭 → 호이안', defNote: '첫날 저녁은 숙소에서 걸어서 — QQ 저녁 · 강변 · 야시장 야식 — 10/27 전망 맑음(비 0~3mm)', items: [
+      { t: '08:20', tz: 'K', k: 'flight', title: '인천공항 **제2터미널** 도착 · 체크인', memo: ['프레스티지 라운지'] },
       { t: '11:10', tz: 'K', k: 'flight', title: '**KE457 출발** — 인천 T2 → 다낭 T2', memo: ['다낭 도착은 현지 시각 14:15 — 시계를 2시간 뒤로 돌려요'] },
-      { t: '14:15', k: 'flight', title: '**다낭공항 T2 도착** — 입국·짐 찾기', memo: ['입국심사 때 여권 + **사람마다 사전입국신고 QR**(캡처해 둔 것)', '낮 도착이라 보통 40~60분', '짐 찾고 **도착장 ATM에서 500만 동 한 번**(토스 카드) — 원화로 바꿀지 물으면 거절 · 더보기 → 알아 둘 것 「환전·현금」', '도착장에서 이름판 든 기사를 찾아요'], place: 'd_airport' },
-      { t: '15:10', approx: true, k: 'move', title: '**예약 차량(카시트)** → 호이안 리버타운', memo: ['29 km · 45~50분', '카시트는 3점식 벨트 좌석에 뒤보기로 {?16인승 장착 가능 여부}'], place: 'h_rivertown' },
+      { t: '14:15', k: 'flight', title: '**다낭공항 T2 도착** — 입국·짐 찾기', memo: ['입국심사 때 여권 + **사람마다 사전입국신고 QR**(캡처해 둔 것)', '낮 도착이라 보통 40~60분', '짐 찾고 **도착장 ATM에서 500만 동** 뽑기', '도착장에서 이름판 든 기사를 찾아요'], place: 'd_airport' },
+      { t: '15:10', approx: true, k: 'move', title: '**예약 차량(카시트)** → 호이안 리버타운', memo: ['29 km · 45~50분'], place: 'h_rivertown' },
       { t: '16:20', approx: true, k: 'stay', title: '리버타운 체크인', memo: ['체크인 14:00부터 · 조식 06:30~10:00'], place: 'h_rivertown' },
-      { t: '17:00', k: 'card', slot: 'eve', maxH: 2, title: '저녁 나들이', memo: ['도착한 날이라 짧게 — 비 오거나 지쳤으면 리조트 식당 또는 **숙소로 배달**'], def: ['h_near'], dinner: true },
-      { t: '18:00', approx: true, k: 'shop', title: '윈마트+ 에서 생수·간식', memo: ['57 Hùng Vương · 390m · 22시쯤까지', '(힘 남으면) 안호이 강변 등불만 보고 오기 — 700m'], places: ['h_winmart'] },
+      { t: '17:00', k: 'card', slot: 'eve', maxH: 2, title: '저녁 나들이', def: ['h_qqnight'], dinner: true },
       { t: '19:00', approx: true, k: 'rest', title: '숙소 · 아기 재우기', memo: ['현지 19시 = 아기 몸시계(한국) 21시'] }
     ] },
     { date: '2026-11-02', label: '월', ic: '🏮', title: '호이안 올드타운 — 아침 한 번, 해 질 녘 한 번', defNote: '기본 배치: 올드타운 아침 산책 + 이른 저녁·소원배 — 10/27 전망 맑음(비 3~6mm), 올드타운은 오늘 몰아서', items: [
       { t: '06:30', k: 'food', title: '조식', memo: ['06:30~10:00'] },
-      { t: '08:00', end: '10:30', k: 'card', slot: 'am', title: '오전 나들이', memo: ['선선하고 사람 없을 때 — 11시엔 리조트로'], def: ['h_oldtown'] },
+      { t: '08:00', end: '10:30', k: 'card', slot: 'am', title: '오전 나들이', def: ['h_oldtown'] },
       { t: '11:00', k: 'rest', title: '리조트 — 낮잠 · 수영장 · 반미 점심' },
-      { t: '15:30', k: 'spa', title: '(선택) 어른 마사지 교대', memo: ['**미노스파**(안호이 520m) 또는 **빌라 드 스파**(숙소에서 걸어서) — 어른 2명씩 교대', '**전날까지 예약** — 두 곳은 전화(장소 목록), 또는 **다한스파 호이안** 카톡 **dahanspa**(2인↑ 무료 픽업)', '아기 동반 가능 여부 {?} — 아기와 한 방에서 받았다는 후기는 다한스파 호이안(안방)뿐 · 13개월은 키즈 마사지 대상 아님'], places: ['h_mino', 'h_villade', 'h_dahan'] },
-      { t: '16:30', k: 'card', slot: 'eve', title: '저녁 나들이', memo: ['18시 전엔 한산 — 19시 전 귀가'], def: ['h_lantern'], dinner: true },
+      { t: '15:30', k: 'spa', title: '(선택) 어른 마사지 교대', eat: ['**미노스파**(안호이 520m) 또는 **빌라 드 스파**(숙소에서 걸어서) — 어른 2명씩 교대'], memo: ['**전날까지 예약** — 두 곳은 전화(장소 목록), 또는 **다한스파 호이안** 카톡 **dahanspa**(2인↑ 무료 픽업)', '아기 동반 가능 여부 {?} — 아기와 한 방에서 받았다는 후기는 다한스파 호이안(안방)뿐 · 13개월은 키즈 마사지 대상 아님'], places: ['h_mino', 'h_villade', 'h_dahan'] },
+      { t: '16:30', k: 'card', slot: 'eve', title: '저녁 나들이', def: ['h_lantern'], dinner: true },
       { t: '18:30', k: 'rest', title: '귀가 (19시 전)', memo: ['현지 19시 = 아기 몸시계(한국) 21시'] }
     ] },
     { date: '2026-11-03', label: '화', ic: '🚗', title: '호이안 → 다낭', defNote: '10/27 전망 비·소나기(3~11mm) — 오전은 숙소·박물관, 오행산 경유는 맑을 때만', items: [
       { t: '06:30', k: 'food', title: '조식', memo: ['06:30~10:00'] },
-      { t: '08:00', approx: true, k: 'card', slot: 'am', maxH: 3, title: '오전 나들이 (12시 체크아웃 전)', memo: ['짐 싸기 시간을 빼고 3시간쯤'], def: ['rest', 'h_museum'] },
+      { t: '08:00', approx: true, k: 'card', slot: 'am', maxH: 3, title: '오전 나들이 (12시 체크아웃 전)', def: ['rest', 'h_museum'] },
       { t: '12:00', k: 'move', title: '**12:00 체크아웃 → 예약 차량(카시트)** → 푸라마', memo: ['23 km · 35~40분 — 아기는 차에서 낮잠', '맑고 아기가 깨어 있으면 가는 길에 **오행산** 엘리베이터 코스 1시간(차는 대기) {?대기 요금}'], place: 'd_furama', places: ['s_marble'] },
       { t: '12:45', approx: true, k: 'food', title: '푸라마에 짐 맡기고 점심 — 냐벱 미케비치점', memo: ['길 건너 370m · 에어컨 · 한국어 메뉴 · 10:00~'], places: ['d_nhabep'] },
       { t: '14:00', k: 'stay', title: '푸라마 체크인', memo: ['체크인 14:00부터 · 조식 06:30~10:30'], place: 'd_furama' },
-      { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 2, title: '오후 나들이', memo: ['체크인 뒤 가볍게 — 저녁 17시 전'], def: ['d_beach'] },
-      { t: '17:00', approx: true, k: 'food', title: '저녁 — 리조트 식당 또는 길 건너', memo: ['**랑**(인도 요리, 저녁은 17:30부터 {?브레이크 타임}) · **냐벱**'], places: ['d_rang', 'd_nhabep'] }
+      { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 2, title: '오후 나들이', def: ['d_beach'] },
+      { t: '17:00', approx: true, k: 'food', title: '저녁 — 리조트 식당 또는 길 건너', eat: ['**랑**(인도 요리, 저녁은 17:30부터 {?브레이크 타임}) · **냐벱**'], places: ['d_rang', 'd_nhabep'] }
     ] },
     { date: '2026-11-04', label: '수', ic: '🌴', title: '다낭 자유 1 — [[a:밤에 다낭 도착|밤에 {@a} 도착]]', free: true, defNote: '기본 배치: 실내(롯데마트 또는 미술관+카페) + 안트엉 저녁 — [[a:내가 오기 전 가족 나들이|{@a} 오기 전에 나들이]] · 10/27 전망 비·소나기(9~11mm)', items: [
       { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 나들이 고르기', memo: ['06:30~10:30'] },
-      { t: '08:00', approx: true, k: 'card', slot: 'am', maxH: 4, title: '오전 나들이', memo: ['아침에 나갔다가 12시 전후에 돌아와요'], def: ['lotte', 'museum'] },
+      { t: '08:00', approx: true, k: 'card', slot: 'am', maxH: 4, title: '오전 나들이', def: ['lotte', 'museum'] },
       { t: '12:00', approx: true, k: 'rest', title: '리조트 — 낮잠 · 수영장' },
-      { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 1.5, title: '오후 (골라도 되고 비워도 돼요)', memo: ['낮잠 뒤 16:30 저녁 전까지'] },
+      { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 1.5, title: '오후 (골라도 되고 비워도 돼요)' },
       { t: '18:15', tz: 'K', k: 'flight', only: ['a'], title: '**WE201 출발** — 인천 **T1** → 다낭 T2', memo: ['파라타항공 **WE201** · 인천 T1 에 15:15쯤(3시간 전) — 가족 KE 와 다른 터미널', '다낭 도착은 현지 21:15 — 폰 시계가 2시간 뒤로 바뀌어요'] },
-      { t: '16:30', k: 'card', slot: 'eve', title: '저녁 나들이 (16:30~17:00 출발)', memo: ['비 오는 저녁은 그랩이 잘 안 잡혀요 — **돌아올 차를 식사 전에** 생각해 둬요'], def: ['d_anthuong'], dinner: true },
-      { t: '21:15', k: 'flight', title: '**[[a:다낭 도착|{@a} 도착]]** — 파라타항공 WE201 · 다낭공항 T2 → 그랩 → 푸라마', memo: ['파라타항공 **WE201** · 인천 **T1**(가족과 다른 터미널) 18:15 출발 → 다낭 21:15', '입국심사 때 여권 + 사전입국신고 QR',
+      { t: '16:30', k: 'card', slot: 'eve', title: '저녁 나들이 (16:30~17:00 출발)', def: ['d_anthuong'], dinner: true },
+      { t: '21:15', k: 'flight', title: '**[[a:다낭 도착|{@a} 도착]]** — 파라타항공 WE201 · 다낭공항 T2 → 그랩 → 푸라마', memo: ['입국심사 때 여권 + 사전입국신고 QR',
           '밤에는 한국발 비행기가 몰려 입국 줄이 길어요 — 내려서 30~60분, 푸라마엔 22:30~23:00쯤',
           '그랩 7 km · 15~20분 — 밤 할증 {?요금}. 차에 타면 가족 위치 공유 켜기',
           '푸라마 정문 → **프런트에서 여권 보여 주고 투숙 등록 → 카드키** 받아 방으로. 미리 등록해 두면 아무도 마중 안 나가도 돼요',
@@ -1116,28 +1115,28 @@ const TRIP = {
     ] },
     { date: '2026-11-05', label: '목', ic: '🌴', title: '다낭 자유 2 — [[a:가족과 함께|{@a:과} 함께]]', free: true, defNote: '기본 배치: 리조트 데이 + 길 건너 저녁 — [[a:내가 늦게 온 다음 날|{@a:이} 늦게 온 다음 날]] · 어른 5명이라 스파 교대가 쉬워요 · 10/27 전망 비가 가장 많은 날(13~28mm). 맑으면 시내 반나절·린응사', items: [
       { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 나들이 고르기', memo: ['06:30~10:30 · [[a:나는|{@a:은}]] 늦잠 자도 10:30까지'] },
-      { t: '08:00', approx: true, k: 'card', slot: 'am', maxH: 4, title: '오전 나들이', memo: ['아침에 나갔다가 12시 전후에 돌아와요'], def: ['resort'] },
+      { t: '08:00', approx: true, k: 'card', slot: 'am', maxH: 4, title: '오전 나들이', def: ['resort'] },
       { t: '12:00', approx: true, k: 'rest', title: '리조트 — 낮잠 · 수영장' },
-      { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 1.5, title: '오후 (골라도 되고 비워도 돼요)', memo: ['낮잠 뒤 16:30 저녁 전까지'] },
-      { t: '16:30', k: 'card', slot: 'eve', title: '저녁 나들이 (16:30~17:00 출발)', memo: ['오늘부터 어른 5 + 아기 — 그랩은 7인승 한 대', '비 오는 저녁은 그랩이 잘 안 잡혀요 — **돌아올 차를 식사 전에** 생각해 둬요'], def: ['d_across'], dinner: true }
+      { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 1.5, title: '오후 (골라도 되고 비워도 돼요)' },
+      { t: '16:30', k: 'card', slot: 'eve', title: '저녁 나들이 (16:30~17:00 출발)', memo: ['오늘부터 어른 5 + 아기 — 그랩은 7인승 한 대'], def: ['d_across'], dinner: true }
     ] },
     { date: '2026-11-06', label: '금', ic: '🌴', title: '다낭 자유 3 — 마지막 밤', free: true, defNote: '기본 배치: 시내 반나절(또는 린응사) + 가족 저녁(티아고) — 10/27 전망은 모델끼리 엇갈려요(0~27mm). 전날 비가 많았으면 오행산은 미끄러워요', items: [
       { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 나들이 고르기', memo: ['06:30~10:30'] },
-      { t: '07:30', approx: true, k: 'card', slot: 'am', maxH: 4.5, title: '오전 나들이', memo: ['아침에 나갔다가 12시 전후에 돌아와요'], def: ['city', 'linhung'] },
+      { t: '07:30', approx: true, k: 'card', slot: 'am', maxH: 4.5, title: '오전 나들이', def: ['city', 'linhung'] },
       { t: '12:00', approx: true, k: 'rest', title: '리조트 — 낮잠 · 수영장 · 짐 미리 싸기' },
-      { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 1.5, title: '오후 (골라도 되고 비워도 돼요)', memo: ['낮잠 뒤 16:30 저녁 전까지'] },
-      { t: '16:30', k: 'card', slot: 'eve', title: '마지막 저녁 (16:30~17:00 출발)', memo: ['용다리 불쇼는 21:00(아기에겐 한국 23시)이라 넣지 않았어요. 보고 싶으면 아기 재운 뒤 어른 몇 명만 그랩으로 {?금요일 운영}'], def: ['d_thiago'], dinner: true }
+      { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 1.5, title: '오후 (골라도 되고 비워도 돼요)' },
+      { t: '16:30', k: 'card', slot: 'eve', title: '마지막 저녁 (16:30~17:00 출발)', def: ['d_thiago'], dinner: true }
     ] },
     { date: '2026-11-07', label: '토', ic: '🏠', title: '귀국 — 11:45 차량, 15:45 비행기', defNote: '11:00 체크아웃 전 짧게 — 숙소에서 쉬기·짐 싸기', items: [
       { t: '06:30', k: 'food', title: '조식', memo: ['06:30~10:30'] },
-      { t: '08:30', approx: true, k: 'card', slot: 'am', maxH: 2, title: '오전 (11:00 체크아웃 전)', memo: ['짐은 전날 밤에 거의 싸 두고'], def: ['rest'] },
-      { t: '11:00', k: 'stay', title: '**11:00 체크아웃**', memo: ['짐은 로비에 맡기고 11:45 차까지 리조트에서 — 차가 일러서 레이트 체크아웃은 필요 없어요'], place: 'd_furama' },
-      { t: '11:45', k: 'move', title: '**11:45 예약 차량(카시트)** → 다낭공항 **T2 국제선** — [[a:내|{@a}]] 비행기에 맞춰 다 같이', memo: ['7 km · 15~20분 — 12:05쯤 공항 ([[a:내|{@a}]] 비행기 14:15 출발 2시간 전)', '어른 5 + 아기 + 짐 — 업체에 인원·짐 미리 알려요', '유모차는 탑승구에서 맡겨요'], place: 'd_airport' },
-      { t: '12:05', approx: true, k: 'food', title: '공항 — 체크인 뒤 점심', memo: ['[[a:나는|{@a:은}]] 제주항공, 가족은 대한항공 카운터 — 체크인부터 해요', '점심은 공항에서 — 가족 비행기까지 3시간 넘게 남아요. 아기 낮잠은 유모차에서'] },
+      { t: '08:30', approx: true, k: 'card', slot: 'am', maxH: 2, title: '오전 (11:00 체크아웃 전)', def: ['rest'] },
+      { t: '11:00', k: 'stay', title: '**11:00 체크아웃**', memo: ['짐은 로비에 맡기고 11:45 차까지 리조트에서', '버기카는 이 시간에 밀려요 — **20분 전에** 불러요'], place: 'd_furama' },
+      { t: '11:45', k: 'move', title: '**11:45 예약 차량(카시트)** → 다낭공항 **T2 국제선** — [[a:내|{@a}]] 비행기에 맞춰 다 같이', memo: ['7 km · 15~20분 — 12:05쯤 공항 ([[a:내|{@a}]] 비행기 14:15 출발 2시간 전)'], place: 'd_airport' },
+      { t: '12:05', approx: true, k: 'food', title: '공항 — 체크인 뒤 점심', memo: ['[[a:나는|{@a:은}]] 제주항공, 가족은 대한항공 카운터 — 체크인부터 해요', '점심은 공항에서'] },
       { t: '14:15', k: 'flight', title: '**[[a:내 비행기 출발|{@a} 출발]]** — 제주항공 7C2212 · 다낭 T2 → 인천 T1', memo: ['제주항공 **7C2212** · 인천 **T1** 20:40 도착(요즘 실제 20:33~21:02) — 가족(KE458, T2 22:05)과 터미널이 달라 집까지는 따로'] },
       { t: '15:45', k: 'flight', title: '**KE458 출발** — 다낭 T2 → 인천 T2', memo: ['인천 도착은 한국 시각 22:05'] },
       { t: '20:40', tz: 'K', k: 'flight', only: ['a'], title: '인천공항 **T1** 도착', memo: ['가족(KE458)은 T2 22:05 — 집까지는 따로'] },
-      { t: '22:05', tz: 'K', k: 'flight', title: '인천공항 T2 도착', memo: ['아기는 자는 시간 — 집까지 이동은 미리 정해 둔 대로'] }
+      { t: '22:05', tz: 'K', k: 'flight', title: '인천공항 T2 도착' }
     ] }
   ],
 
@@ -1149,7 +1148,7 @@ const TRIP = {
     /* ---- 호이안 ---- */
     { id: 'h_oldtown', area: 'hoian', slots: ['am'], w: 'sun', baby: 'normal', dur: '2~2.5시간', h: 2.5, title: '올드타운 아침 산책', sub: '내원교 → 쩐푸 거리 → 회관·고택 한 곳 → 찻집', go: '걸어서 12분', when: '08:00 출발',
       memo: ['**내원교**(겉에서) → 쩐푸 거리 → **복건회관**(07:00~) 또는 **떤끼 고택**(08:30~) 중 한 곳만 → **리칭아웃 티하우스**(08:00~)에서 쉬기 → 호이안 시장 앞',
-             '리칭아웃 티하우스는 깨지기 쉬운 찻주전자가 많아 아기와는 건너뛰었다는 해외 가족 후기(1건) — 아기가 손을 뻗으면 **핀 커피**(비 오는 날 카드)로 바꿔요 {?현장 판단}',
+             '리칭아웃은 찻주전자가 많아 아기와는 건너뛰었다는 후기 — 그러면 **핀 커피**로',
              '반미 포장: **마담칸**(06:30~) 또는 **반미프엉**(06:30~, 줄 김)', '고택·회관 안에 들어갈 때만 입장권 — 12만 동 통합권 안내와 「2026-08-10부터 유적별 2만 동·16세 미만 면제」 보도가 엇갈려요. 거리 걷기는 무료 {?관람료 체계}', '고택은 문턱·계단 → 유모차 접고 아기띠'],
       places: ['h_bridge', 'h_phuckien', 'h_tanky', 'h_reaching', 'h_khanh', 'h_phuong'], route: ['h_bridge', 'h_phuckien', 'h_reaching'] },
     { id: 'h_museum', area: 'hoian', slots: ['am'], w: 'rain', baby: 'easy', dur: '1.5~2시간', h: 2, title: '박물관 + 카페', sub: '프레셔스 헤리티지 박물관(실내·무료) → 핀 커피 / 에스프레소 스테이션', go: '1.6 km · 걸어서 20~25분, 비 오면 그랩', when: '08:00~',
@@ -1164,16 +1163,18 @@ const TRIP = {
       memo: ['요금이 후기마다 달라요(60분 60만 동 / 90분 1인 19만 동) {?요금 단위}', '개방형 전기차 — 비 오면 빼요 · 카시트 없음', '끝나고 **우베베**나 **아나바스**에서 쉬기'], places: ['h_hoiango', 'h_ube', 'h_anabas'], route: ['h_bridge'] },
     { id: 'h_vinwonders', area: 'hoian', slots: ['am'], w: 'any', baby: 'big', dur: '하루 (5~6시간)', h: 6, title: '남호이안 빈원더스 (하루)', sub: '리버사파리(지붕 있는 배) → 실내 키즈존 → 파크 안 점심', go: '15 km · 차로 30분쯤 (예약 차량)', when: '09:00 개장',
       memo: ['비 와도 반나절은 채운다는 후기 — 놀이기구만 멈춰요', '키 100cm 미만 무료 · 어른 65만 동(14시 뒤 45만 동) — 넷이면 입장료가 커요', '11/2 하루를 다 써요 — 올드타운과 둘 중 하나', '유모차는 가져가요(대여는 유료·수량 적음) · 낮잠은 차에서'], places: ['h_vinwonders'], route: ['h_vinwonders'] },
-    { id: 'h_near', area: 'hoian', slots: ['eve'], w: 'any', baby: 'easy', dur: '1시간', h: 1, title: '가까운 실내 저녁', sub: '레드빈(리조트 식당) 또는 윤식당(한식) — 걸어서 7~8분', when: '17:00',
-      memo: ['**레드빈**(라 시에스타 리조트 식당) — 베트남 요리, 자리 넓음', '**윤식당**(한식, 12시~) — 어르신·아기 밥', '**압꾸정**(한식 고기구이, 리버타운 140m · 11:15~)', '돌아오는 길에 **윈마트+**(390m)에서 생수·간식'], places: ['h_redbean', 'h_yoon', 'h_apggu', 'h_winmart'], route: ['h_redbean'] },
+    { id: 'h_near', area: 'hoian', slots: ['eve'], w: 'any', baby: 'easy', dur: '1시간', h: 1, title: '가까운 실내 저녁', sub: '레드빈(리조트 식당) 또는 윤식당(한식) — 걸어서 7~8분', eatSub: true, when: '17:00',
+      eat: ['**레드빈**(라 시에스타 리조트 식당) — 베트남 요리, 자리 넓음', '**윤식당**(한식, 12시~) — 어르신·아기 밥', '**압꾸정**(한식 고기구이, 리버타운 140m · 11:15~)'], memo: ['돌아오는 길에 **윈마트+**(390m)에서 생수·간식'], places: ['h_redbean', 'h_yoon', 'h_apggu', 'h_winmart'], route: ['h_redbean'] },
     { id: 'h_lantern', area: 'hoian', slots: ['eve'], w: 'sun', baby: 'normal', dur: '2~2.5시간', h: 2.5, title: '이른 저녁 + 등불 강변 · 소원배', sub: '16:30 저녁 → 17:30 등불 켜질 때 소원배 20분 → 야시장 입구', go: '걸어서 10분', when: '16:30 출발 · 19시 전 귀가',
-      memo: ['저녁(18시 전엔 한산): **비스마켓**(넓은 푸드홀) · **모닝글로리 오리지널**(2층 에어컨) · **홈 호이안**(11:30~)', '소원배 척당 15~22만 동(2026-07 후기: 4인 22만 동·약 20분) — **타기 전에 값·시간 합의**', '강물이 높거나 비 오면 배는 빼고 저녁만', '야시장 입구까지만 보고 돌아와요'],
+      eat: ['저녁(18시 전엔 한산): **비스마켓**(넓은 푸드홀) · **모닝글로리 오리지널**(2층 에어컨) · **홈 호이안**(11:30~)'], memo: ['소원배 척당 15~22만 동(2026-07 후기: 4인 22만 동·약 20분) — **타기 전에 값·시간 합의**', '강물이 높거나 비 오면 배는 빼고 저녁만', '야시장 입구까지만 보고 돌아와요'],
       places: ['h_vys', 'h_morning', 'h_home', 'h_nightmarket'], route: ['h_vys', 'h_nightmarket'] },
-    { id: 'h_oldeats', area: 'hoian', slots: ['eve'], w: 'any', baby: 'normal', dur: '1.5시간', h: 1.5, title: '올드타운 저녁 맛집', sub: '까오러우 바레(현지식) · 바바스 키친(인도) · 발레웰(반쎄오 세트)', go: '1.1~1.2 km · 걸어서 15분', when: '16:30~',
-      memo: ['구글 4.3~4.8 · 외국인·현지인 평이 고른 곳', '바바스 키친은 안 매운 버터치킨·달·난 — 어르신·아기', '까오러우 바레는 평일 11:00 · 주말 08:30부터', '안호이 쪽(등불 강변 가까이): **안토이 호이안** 4.9 · **QQ 레스토랑** 4.9 — 베트남 가정식', '더 있는 곳: **MẸT**(4.9 · 10:00~22:30) · **A Little Kitchen**(4.8 · 11:00~21:00) · **All Day Bánh Mì**(4.8 · 09:00~21:00) · **Pause and Enjoy**(4.9, 야시장 거리 {?영업시간 구글에 없음})'], places: ['h_bale', 'h_babas', 'h_balewell', 'h_anthoi', 'h_qq', 'h_alittle', 'h_met', 'h_pause', 'h_allday'], route: ['h_bale'] },
+    { id: 'h_qqnight', area: 'hoian', slots: ['eve'], w: 'any', baby: 'normal', dur: '2시간', h: 2, title: 'QQ 저녁 → 강변 → 야시장 야식', sub: 'QQ 레스토랑 저녁 → 안호이 강변 등불 → 야시장에서 야식 사서 숙소로', go: '740m · 걸어서 10분', when: '17:00 출발 · 19시 전 귀가',
+      memo: ['야시장은 QQ에서 150m — 야식은 포장해서 아기 재운 뒤 어른끼리 한잔'], places: ['h_qq', 'h_nightmarket'], route: ['h_qq', 'h_nightmarket'] },
+    { id: 'h_oldeats', area: 'hoian', slots: ['eve'], w: 'any', baby: 'normal', dur: '1.5시간', h: 1.5, title: '올드타운 저녁 맛집', sub: '까오러우 바레(현지식) · 바바스 키친(인도) · 발레웰(반쎄오 세트)', eatSub: true, go: '1.1~1.2 km · 걸어서 15분', when: '16:30~',
+      eat: ['구글 4.3~4.8 · 외국인·현지인 평이 고른 곳', '바바스 키친은 안 매운 버터치킨·달·난 — 어르신·아기', '까오러우 바레는 평일 11:00 · 주말 08:30부터', '안호이 쪽(등불 강변 가까이): **안토이 호이안** 4.9 · **QQ 레스토랑** 4.9 — 베트남 가정식', '더 있는 곳: **MẸT**(4.9 · 10:00~22:30) · **A Little Kitchen**(4.8 · 11:00~21:00) · **All Day Bánh Mì**(4.8 · 09:00~21:00) · **Pause and Enjoy**(4.9, 야시장 거리 {?영업시간 구글에 없음})'], places: ['h_bale', 'h_babas', 'h_balewell', 'h_anthoi', 'h_qq', 'h_alittle', 'h_met', 'h_pause', 'h_allday'], route: ['h_bale'] },
     /* ---- 두 숙소 모두 (몇 번이고 고를 수 있음) ---- */
     { id: 'rest', area: 'both', slots: ['am', 'pm'], w: 'any', baby: 'easy', dur: '자유', h: 0, rep: true, title: '숙소에서 쉬기', sub: '수영장 · 낮잠 · 리조트 산책',
-      memo: ['아기 컨디션이 안 좋거나 비가 세면 이걸로 — 몇 번이고 고를 수 있어요'], places: [], route: [] },
+      places: [], route: [] },
     { id: 'delivery', area: 'both', slots: ['eve'], w: 'any', baby: 'easy', dur: '주문 뒤 30~60분', h: 0, rep: true, title: '숙소로 배달', sub: '배달K · 그랩푸드 — 아기 재운 뒤 · 비 오는 저녁',
       memo: ['**17:00~17:30 주문**이면 아기 자기 전에 와요', '가게 목록·받는 곳 안내는 「🛵 배달」 — 지금 숙소 쪽부터 (푸라마는 공식 안내엔 외부 음식 금지지만 정문·로비에서 받은 후기가 많아요)'], places: [], route: [] },
     /* ---- 다낭 (옛 날씨 카드 8장 + 오후·저녁) ---- */
@@ -1208,20 +1209,20 @@ const TRIP = {
       memo: ['2026-07 새로 연 곳 — 구글 3.9, 붐빔', '유모차·물품보관함 · 4층 키즈 시설 {?요금}', '롯데마트·빈컴보다 멀어요'], places: ['m_aeon'], route: ['m_aeon'] },
     { id: 'd_helio', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '2시간', h: 2, title: '헬리오 야시장 + 실내 키즈카페', sub: '16:30 이른 저녁 → 1층 실내 키즈카페 또는 야외 미니 놀이기구 → 길거리 간식', go: '2.6 km · 그랩 10분', when: '야시장 17:00~ · 19시 전 귀가',
       memo: ['야외 놀이 1인 5만 동(큰 아이 위주 — 부딪힘 주의) · 비 오면 1층 실내 키즈카페(5~6만 동)', '야시장 여는 17시 무렵이 한산해요'], places: ['k_helio'], route: ['k_helio'] },
-    { id: 'd_citydinner', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '1.5시간', h: 1.5, title: '시내 현지 맛집 저녁', sub: '안 터이(미쉐린 빕) · 꼬바 퍼보 · 반쎄오 바뚜옛 — 한시장 옆 한 거리', go: '4~4.5 km · 그랩 15분',
-      memo: ['안 터이는 번호표 — 16:30에 가면 덜 기다려요(목요일은 20:00 마감)', '꼬바 퍼보 국물·면은 아기용으로 좋아요', '외국인·현지인 평 모두 4.7~4.8', '같은 박당 거리: **티엔킴**(4.4, 10:00~21:30)'], places: ['d_anthoi', 'd_coba', 'd_batuyet', 'd_thienkim'], route: ['d_anthoi'] },
-    { id: 'd_localnear', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '1~1.5시간', h: 1.5, title: '푸라마 근처 미쉐린 빕 저녁', sub: '반쎄오 76 · 인디언 아로마 · 레 지아(후에식 국수)', go: '0.5~2.5 km · 그랩 5분',
-      memo: ['셋 다 미쉐린 빕구르망 — 가까워서 비 오는 저녁에도', '인디언 아로마는 11:30부터 열어 이른 저녁이 돼요 · 안 매운 달·버터치킨', '레 지아는 16:30부터(점심 뒤 쉼)', '빕 말고 더 가까운 곳: **Le Comptoir**(프랑스식 4.9 · 17:00~21:00, 0.9 km) · **Happy Bites**(버거 4.9 · 12:00~22:00, 0.7 km) · **조조씨푸드**(해산물 4.9 · 11:00~24:00, 2.5 km)'], places: ['d_bx76', 'd_indianaroma', 'd_legia', 'd_jojo', 'd_comptoir', 'd_happybites'], route: ['d_bx76'] },
+    { id: 'd_citydinner', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '1.5시간', h: 1.5, title: '시내 현지 맛집 저녁', sub: '안 터이(미쉐린 빕) · 꼬바 퍼보 · 반쎄오 바뚜옛 — 한시장 옆 한 거리', eatSub: true, go: '4~4.5 km · 그랩 15분',
+      eat: ['안 터이는 번호표 — 16:30에 가면 덜 기다려요(목요일은 20:00 마감)', '꼬바 퍼보 국물·면은 아기용으로 좋아요', '외국인·현지인 평 모두 4.7~4.8', '같은 박당 거리: **티엔킴**(4.4, 10:00~21:30)'], places: ['d_anthoi', 'd_coba', 'd_batuyet', 'd_thienkim'], route: ['d_anthoi'] },
+    { id: 'd_localnear', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '1~1.5시간', h: 1.5, title: '푸라마 근처 미쉐린 빕 저녁', sub: '반쎄오 76 · 인디언 아로마 · 레 지아(후에식 국수)', eatSub: true, go: '0.5~2.5 km · 그랩 5분',
+      eat: ['셋 다 미쉐린 빕구르망 — 가까워서 비 오는 저녁에도', '인디언 아로마는 11:30부터 열어 이른 저녁이 돼요 · 안 매운 달·버터치킨', '레 지아는 16:30부터(점심 뒤 쉼)', '빕 말고 더 가까운 곳: **Le Comptoir**(프랑스식 4.9 · 17:00~21:00, 0.9 km) · **Happy Bites**(버거 4.9 · 12:00~22:00, 0.7 km) · **조조씨푸드**(해산물 4.9 · 11:00~24:00, 2.5 km)'], places: ['d_bx76', 'd_indianaroma', 'd_legia', 'd_jojo', 'd_comptoir', 'd_happybites'], route: ['d_bx76'] },
     { id: 'd_thiago', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '1.5시간', h: 1.5, title: '가족 저녁 — 티아고', sub: '미쉐린 빕구르망 · 북부식 쌀국수·반쎄오', go: '2.2 km · 그랩 5분', when: '16:30~17:00 출발',
       memo: ['10:00~ · 가족 식사 한 번 후보', '11/5 부터는 어른 5 + 아기 — 그랩 7인승 한 대', '아기 의자 — 출발 전에 전화·Zalo **+84 236 3689 005** 로 부탁 {?예약 받는지}. 16:30은 한산(붐비는 건 19시 전후)', '비 오는 저녁은 그랩이 잘 안 잡혀요 — **돌아올 차를 식사 전에**'], places: ['d_thiago'], route: ['d_thiago'] },
-    { id: 'd_anthuong', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '1~1.5시간', h: 1.5, title: '안트엉 거리 저녁', sub: '응온티호아 · 버거브로스 · 43 스페셜티 커피 · 콩카페', go: '1.2~1.5 km · 그랩 5분', when: '16:30~17:00 출발',
-      memo: ['고르기 쉬운 거리 — 걸어서 가게를 바꿔도 돼요', '버거브로스는 평일 14~17시 쉼 · 현금만', '아기 밥: **오현 조개죽**(죽 전문, 같은 동네)', '같은 동네(모두 150~200m 안, 구글 4.8↑): **Missteak** 스테이크 11:30~22:45 · **Vietnom Local Eatery** 08:30~22:00 · **Black Pearl** 해산물 11:00~22:00 · **Butcher Grilled** 스테이크 {?영업시간 구글에 없음}'], places: ['d_ngonthihoa', 'd_burgerbros', 'd_43', 'd_cong_at', 'd_ohoen', 'd_missteak', 'd_vietnom', 'd_blackpearl', 'd_butcher'], route: ['d_ngonthihoa'] },
-    { id: 'd_korean', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '1.5시간', h: 1.5, title: '한식 저녁', sub: '굽고(룸 있음) · 연꽃식당', go: '3~4.9 km · 그랩 10분',
-      memo: ['**굽고**: 숯불 고기를 구워 줘요 · 계란찜·흰밥 — 어르신·아기 밥'], places: ['d_gubgo', 'd_lotus'], route: ['d_gubgo'] },
-    { id: 'd_fancy', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '1.5~2시간', h: 2, title: '조금 격식 있는 저녁', sub: '더 템테이션(프렌치) · 올리비아 프라임(스테이크)', go: '4~6 km · 그랩 10~15분',
-      memo: ['템테이션 저녁은 18:00부터 — 16:30 이른 저녁이면 **올리비아**(11:00~)'], places: ['d_olivia', 'd_temptation'], route: ['d_olivia'] },
-    { id: 'd_across', area: 'danang', slots: ['eve'], w: 'rain', baby: 'easy', dur: '1시간', h: 1, title: '길 건너 저녁 (걸어서)', sub: '냐벱 미케비치점 · 랑(인도 요리)', go: '걸어서 5~7분',
-      memo: ['비 오는 날 차 없이', '냐벱: 에어컨 · 한국어 메뉴 · 랑은 17:30부터(16:30이면 냐벱)'], places: ['d_nhabep', 'd_rang'], route: ['d_nhabep'] }
+    { id: 'd_anthuong', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '1~1.5시간', h: 1.5, title: '안트엉 거리 저녁', sub: '응온티호아 · 버거브로스 · 43 스페셜티 커피 · 콩카페', eatSub: true, go: '1.2~1.5 km · 그랩 5분', when: '16:30~17:00 출발',
+      eat: ['고르기 쉬운 거리 — 걸어서 가게를 바꿔도 돼요', '버거브로스는 평일 14~17시 쉼 · 현금만', '아기 밥: **오현 조개죽**(죽 전문, 같은 동네)', '같은 동네(모두 150~200m 안, 구글 4.8↑): **Missteak** 스테이크 11:30~22:45 · **Vietnom Local Eatery** 08:30~22:00 · **Black Pearl** 해산물 11:00~22:00 · **Butcher Grilled** 스테이크 {?영업시간 구글에 없음}'], places: ['d_ngonthihoa', 'd_burgerbros', 'd_43', 'd_cong_at', 'd_ohoen', 'd_missteak', 'd_vietnom', 'd_blackpearl', 'd_butcher'], route: ['d_ngonthihoa'] },
+    { id: 'd_korean', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '1.5시간', h: 1.5, title: '한식 저녁', sub: '굽고(룸 있음) · 연꽃식당', eatSub: true, go: '3~4.9 km · 그랩 10분',
+      eat: ['**굽고**: 숯불 고기를 구워 줘요 · 계란찜·흰밥 — 어르신·아기 밥'], places: ['d_gubgo', 'd_lotus'], route: ['d_gubgo'] },
+    { id: 'd_fancy', area: 'danang', slots: ['eve'], w: 'any', baby: 'normal', dur: '1.5~2시간', h: 2, title: '조금 격식 있는 저녁', sub: '더 템테이션(프렌치) · 올리비아 프라임(스테이크)', eatSub: true, go: '4~6 km · 그랩 10~15분',
+      eat: ['템테이션 저녁은 18:00부터 — 16:30 이른 저녁이면 **올리비아**(11:00~)'], places: ['d_olivia', 'd_temptation'], route: ['d_olivia'] },
+    { id: 'd_across', area: 'danang', slots: ['eve'], w: 'rain', baby: 'easy', dur: '1시간', h: 1, title: '길 건너 저녁 (걸어서)', sub: '냐벱 미케비치점 · 랑(인도 요리)', eatSub: true, go: '걸어서 5~7분',
+      eat: ['비 오는 날 차 없이', '냐벱: 에어컨 · 한국어 메뉴 · 랑은 17:30부터(16:30이면 냐벱)'], places: ['d_nhabep', 'd_rang'], route: ['d_nhabep'] }
   ],
 
   /* 10/27 발표 날씨 전망 — 출발 2일 전(10/30)부터는 페이지가 Open-Meteo 실시간 예보로 추천(advise)해요. 그 전 기본 배치 힌트(defNote·def)의 근거 */
@@ -1374,7 +1375,7 @@ const TRIP = {
         ['k1', '토스 체크카드(외화통장 연결 · ATM 출금) + 해외 결제 되는 신용카드 1장', ['d', 'm', 'a']],
         ['k2', '숙소·항공·차량 예약 화면 캡처 (인터넷 안 될 때)', ['d', 'm']] ] },
       { name: '아기 — 먹기', who: ['d', 'm'], items: [
-        ['b1', '분유·이유식 전량 + 하루치 여유 (현지 재고 근거 없음) · 짜먹는 이유식은 하루 한 끼 비상용 — 낮잠이 어른 식사와 어긋나면 아기가 밥을 못 먹어요(후기)'],
+        ['b1', '분유·이유식 전량 + 하루치 여유 · 짜먹는 이유식(낮잠과 식사가 어긋날 때 비상 한 끼)'],
         ['k3', '젖병·빨대컵·젖병 솔·세제·분유 소분 케이스'],
         ['k4', '보온병(분유 물) · 휴대용 전기포트 {?객실 포트}'],
         ['k5', '아기 간식 · 숟가락 · 턱받이'],
@@ -1389,7 +1390,7 @@ const TRIP = {
         ['b5', '유모차 레인커버 · 우비'],
         ['b2', '아기용 모기 기피제 · 모기 패치 · 아기 침대 모기장 (올해 다낭은 뎅기열이 많아요)'],
         ['k10', '아기 선크림 · 모자 · 유모차 선풍기'],
-        ['k11', '여벌옷 하루 2~3벌 · 얇은 긴팔·긴바지 (모기·에어컨) · 시내·호이안 매연·향 냄새가 옷에 밴다는 후기 — 아기 빨래 세제 소량'],
+        ['k11', '여벌옷 하루 2~3벌 · 얇은 긴팔·긴바지 (모기·에어컨) · 아기 빨래 세제 소량'],
         ['k12', '카시트 — 예약 차량에 없을 때만 (뒤보기) {?차량 카시트}'] ] },
       { name: '약', items: [
         ['b7', '해열제 2종(아세트아미노펜·이부프로펜 계열) · 체온계', ['d', 'm']],
@@ -1469,6 +1470,20 @@ const TRIP = {
     { e: '💳', n: '토스', d: '외화통장 잔액 확인·원화 넣기 — ATM 출금은 토스 체크카드로(무료 조건 한 달 5회·700달러 {?}).', web: 'https://toss.im/', and: ['play', 'viva.republica.toss'], ios: 839333328, who: ['d', 'm', 'a'] },
     { e: '🆘', n: '해외안전여행', s: '해외안전', d: '외교부 해외안전여행 — 영사콜센터·현지 안전 공지. 급한 전화는 오늘 탭 🚑 비상 연락처에.', web: 'https://www.0404.go.kr/' }
   ],
+  /* 식당을 고르면 그 식당 밑에 보일 한 줄 — 추천 메뉴·꼭 알 것 (후기 기준) */
+  menus: {
+    h_qq: '추천 메뉴(후기): **가지 볶음** · **스프링롤**(새우) · **생선 튀김** — 식으면 짜져요',
+    h_babas: '안 매운 **버터치킨·달·난** — 어르신·아기',
+    d_coba: '국물·면은 아기용으로 좋아요',
+    d_anthoi: '번호표 — 16:30에 가면 덜 기다려요(목요일은 20:00 마감)',
+    d_indianaroma: '11:30부터 · 안 매운 **달·버터치킨**',
+    d_legia: '16:30부터(점심 뒤 쉼)',
+    d_burgerbros: '평일 14~17시 쉼 · 현금만',
+    d_gubgo: '숯불 고기를 구워 줘요 · **계란찜·흰밥** — 어르신·아기 밥',
+    d_temptation: '저녁은 18:00부터',
+    d_rang: '저녁은 17:30부터',
+    d_nhabep: '에어컨 · 한국어 메뉴'
+  },
   driverLead: 'Xin chở tôi đến địa chỉ này:',   /* 기사에게 보여주기 첫 줄 */
   showVi: { d_airport: ['Sân bay quốc tế Đà Nẵng', 'Ga quốc tế T2 (Terminal 2)'] },   /* 주소 칸이 한글뿐인 곳의 베트남어 표기 */
   sunset: '17:17',   /* 예보를 못 받았을 때 보여 줄 11월 초 일몰 */
@@ -1727,7 +1742,7 @@ const TRIP = {
 <script>
 (function(){
 'use strict';
-var BUILD = '10/30 00:45';
+var BUILD = '10/30 02:30';
 var NS = 'danang26:';
 var OFF_L = 7, OFF_K = 9;   /* 현지(베트남) UTC+7 · 한국 UTC+9 */
 
@@ -1808,7 +1823,8 @@ function pv(s){
 /* 사람을 바꾸면 새로고침 — 여행 시각·목록·앱·간단히 보기가 전부 그 사람 기준으로 다시 그려진다. true = 새로고침 중 */
 function setMe(id){
   var c = crew(id); if (!c || id === me()) return false;
-  save('me', id); save('simple', !!c.simple); if (c.simple) save('big', true); save('meToast', 1);
+  var bb = load('bigBy', {}) || {};
+  save('me', id); save('simple', !!c.simple); save('big', typeof bb[id] === 'boolean' ? bb[id] : !!c.simple); save('meToast', 1);
   location.reload(); return true;
 }
 function setSimple(v){
@@ -1999,13 +2015,13 @@ function renderDays(){
 }
 /* 일정 한 줄: 접으면 제목 + 한 줄, 누르면 메모·장소. 미정 칸·미정 식당은 접혀 있어도 「고르기」(아빠·엄마 폰) */
 function evHTML(it, st){
-  var sv = it.slot ? slotView(it) : null, memo = sv ? sv.memo : it.memo || [], pk = sv ? sv.places : itemPlaces(it);
-  var rk = rOpts(it), rp = rPickAt(it), edit = canPick();
-  if (rp) pk = [rp].concat(pk.filter(function(k){ return k !== rp; }));
+  var sv = it.slot ? slotView(it) : null, pk = sv ? sv.places : itemPlaces(it);
+  var rk = rOpts(it), rp = rPickAt(it), edit = canPick(), memo = evMemo(it, sv, rp);
+  if (rp) pk = [rp].concat(pk.filter(function(k){ return rk.indexOf(k) < 0; }));
   var isNow = st.phase === 'during' && st.cur === it;
   var past = !isNow && (st.phase === 'after' || (st.phase === 'during' && it._at < st.cur._at));
   var more = memo.length > 1 || !!it.alt || pk.length > 0, open = more && !!openSet[it._id];
-  var h = '<li class="ev k-' + it.k + (isNow ? ' is-now' : '') + (past ? ' is-past' : '') + (open ? ' is-open' : '') + '" id="' + it._id + '"' + (isNow ? ' aria-current="step"' : '') + '>';
+  var h = '<li class="ev k-' + it.k + (isNow ? ' is-now' : '') + (past ? ' is-past' : '') + (open ? ' is-open' : '') + (more ? '' : ' no-x') + '" id="' + it._id + '"' + (isNow ? ' aria-current="step"' : '') + '>';
   h += '<div class="tm">' + (it.approx ? '~' : '') + it.t + (it.end ? '<small>–' + it.end + '</small>' : '') + (it.tz === 'K' ? '<small class="kst">한국</small>' : '') + '</div><div class="rail" aria-hidden="true"><i></i></div>';
   h += '<div class="ev__c"><div class="ev__h"' + (more ? ' role="button" tabindex="0" aria-expanded="' + open + '" data-ev="' + it._id + '"' : '') + '>';
   h += '<h3 class="ev-t"><span class="cat">' + KIND[it.k] + '</span><span class="ev-tt">' + rich(sv ? sv.title : it.title) + '</span>' + (sv && sv.rec ? '<span class="rec">추천</span>' : '') + (isNow ? ' <span class="tag now">지금</span>' : '') + '</h3>';
@@ -2014,12 +2030,12 @@ function evHTML(it, st){
   if (more) h += '<span class="chev" aria-hidden="true"></span>';
   h += '</div>';
   var acts = [];
-  if (edit && sv && !sv.picked) acts.push('<button class="mini mini--pri" type="button" data-psheet="s|' + it._slot.key + '">' + (sv.rec ? '다른 걸로 고르기' : '고르기') + '</button>');
+  if (edit && sv && !sv.picked) acts.push('<button class="mini mini--pri" type="button" data-psheet="s|' + it._slot.key + '">' + (sv.rec ? '다른 일정 고르기' : '고르기') + '</button>');
   if (edit && rk.length && !rp) acts.push('<button class="mini mini--pri" type="button" data-psheet="r|' + it._rk + '">' + (it.k === 'spa' ? '💆 마사지 고르기' : '🍽 식당 고르기') + '</button>');
   if (acts.length) h += '<div class="ev__a">' + acts.join('') + '</div>';
   if (more){
     var xa = [];
-    if (edit && sv && sv.picked) xa.push('<button class="btn btn--sec btn--sm" type="button" data-psheet="s|' + it._slot.key + '">다른 걸로 바꾸기</button>');
+    if (edit && sv && sv.picked) xa.push('<button class="btn btn--sec btn--sm" type="button" data-psheet="s|' + it._slot.key + '">다른 일정으로 바꾸기</button>');
     if (edit && rk.length && rp) xa.push('<button class="btn btn--sec btn--sm" type="button" data-psheet="r|' + it._rk + '">' + (it.k === 'spa' ? '마사지' : '식당') + ' 바꾸기</button>');
     if (it.dinner) xa.push('<button class="btn btn--sec btn--sm" type="button" data-go="dlv">🛵 배달 가게</button>');
     h += '<div class="ev__x">' + (memo.length > 1 ? '<ul class="ev-ml">' + lis(memo.slice(1)) + '</ul>' : '') + (it.alt ? '<p class="alt">' + rich(it.alt) + '</p>' : '') + spotRows(pk) +
@@ -2152,12 +2168,18 @@ function recPlan(it){
 /* 일정·지금 카드에서 칸 보기: 고른 플랜 → 추천 → 칸 제목(비워 둬도 되는 오후 칸) */
 function slotView(it){
   var s = it._slot, p = PL[pickAt(s.key)], im = it.memo || [];
-  if (p) return { title: p.title, plan: p, picked: true, rec: false, memo: [p.sub].concat(p.memo || [], im), places: p.places || [] };
+  if (p) return { title: p.title, plan: p, picked: true, rec: false, memo: [p.sub].concat(p.eat || [], p.memo || [], im), memoR: (p.eatSub ? [] : [p.sub]).concat(p.memo || [], im), places: p.places || [] };
   var r = recPlan(it);
-  if (r) return { title: r.p.title, plan: r.p, picked: false, rec: true, memo: [r.p.sub].concat(r.alt.length ? ['또는 **' + r.alt.join('** · **') + '**'] : [], r.p.memo || [], im), places: r.p.places || [] };
-  return { title: it.title, plan: null, picked: false, rec: false, memo: im, places: [] };
+  if (r) return { title: r.p.title, plan: r.p, picked: false, rec: true, memo: [r.p.sub].concat(r.alt.length ? ['또는 **' + r.alt.join('** · **') + '**'] : [], r.p.eat || [], r.p.memo || [], im), memoR: (r.p.eatSub ? [] : [r.p.sub]).concat(r.p.memo || [], im), places: r.p.places || [] };
+  return { title: it.title, plan: null, picked: false, rec: false, memo: im, memoR: im, places: [] };
 }
 function itTitle(it){ return it.slot ? slotView(it).title : it.title; }
+/* 일정 한 줄의 메모: 식당을 골랐으면 그 식당 한 줄(menus) + 고르기용 글을 뺀 메모, 아니면 고르기용 글까지 */
+function evMemo(it, sv, rp){
+  var rn = rp && TRIP.menus[rp] ? [TRIP.menus[rp]] : [];
+  if (sv) return rp ? rn.concat(sv.memoR) : sv.memo;
+  return rp ? rn.concat(it.memo || []) : (it.eat || []).concat(it.memo || []);
+}
 
 /* 시트 조각 */
 function planTags(p, c){
@@ -2180,7 +2202,7 @@ function prow(key, pick){
 }
 function planBody(p){
   return '<p class="k">' + rich(p.sub) + (p.when ? ' · ' + esc(p.when) : '') + '</p>' +
-    (p.memo ? '<ul class="dots">' + lis(p.memo) + '</ul>' : '') + (p.places && p.places.length ? '<div class="prows">' + p.places.map(function(k){ return prow(k); }).join('') + '</div>' : '') +
+    (p.eat || p.memo ? '<ul class="dots">' + lis((p.eat || []).concat(p.memo || [])) + '</ul>' : '') + (p.places && p.places.length ? '<div class="prows">' + p.places.map(function(k){ return prow(k); }).join('') + '</div>' : '') +
     (p.id === 'delivery' ? '<div class="btnrow"><button class="btn btn--sec btn--sm" type="button" data-go="dlv">🛵 배달 가게 보기 →</button></div>' : '');
 }
 var pkMore = {}, pkOpen = {};
@@ -2280,11 +2302,11 @@ function renderHero(){
       '<button class="btn btn--sec" type="button" data-day="' + i0 + '">' + (i0 + 1) + '일차 일정</button></div></article>';
   } else if (st.phase === 'during'){
     var c = st.cur, n = st.next, sv = c.slot ? slotView(c) : null, day = TRIP.days[c._day], p = plans()[day.date], edit = canPick();
-    var pk = sv ? (sv.plan && sv.plan.places || []) : itemPlaces(c), rp = rPickAt(c), sub = sv ? (sv.plan ? sv.plan.sub : (c.memo || [])[0]) : (c.memo || [])[0];
+    var pk = sv ? (sv.plan && sv.plan.places || []) : itemPlaces(c), rp = rPickAt(c), sub = rp ? evMemo(c, sv, rp)[0] : sv ? (sv.plan ? sv.plan.sub : (c.memo || [])[0]) : evMemo(c, null, '')[0];
     var mapB = sv && sv.plan && (sv.plan.route || pk).length ? '<button class="btn btn--pri" type="button" data-rmgo="' + day.date + '">🗺 코스 지도</button>'
       : (rp || pk[0]) && SP[rp || pk[0]] ? '<a class="btn btn--pri" href="' + esc(gmap(SP[rp || pk[0]])) + '" ' + EXT + '>🗺 지도</a>' : '';
-    var chB = edit && sv ? '<button class="btn btn--sec" type="button" data-psheet="s|' + c._slot.key + '">' + (sv.picked ? '다른 걸로 바꾸기' : '다른 걸로 고르기') + '</button>'
-      : edit && rOpts(c).length ? '<button class="btn btn--sec" type="button" data-psheet="r|' + c._rk + '">' + (rp ? '바꾸기' : c.k === 'spa' ? '마사지 고르기' : '식당 고르기') + '</button>' : '';
+    var chB = edit && sv ? '<button class="btn btn--sec" type="button" data-psheet="s|' + c._slot.key + '">' + (sv.picked ? '다른 일정으로 바꾸기' : '다른 일정 고르기') + '</button>'
+      : edit && rOpts(c).length ? '<button class="btn btn--sec" type="button" data-psheet="r|' + c._rk + '">' + (rp ? (c.k === 'spa' ? '마사지 바꾸기' : '식당 바꾸기') : c.k === 'spa' ? '마사지 고르기' : '식당 고르기') + '</button>' : '';
     h = '<article class="card now nowc"><div class="meta"><span class="tag now">지금' + (c.end ? ' · ' + c.end + '까지' : '') + '</span>' +
       (sv && sv.plan && sv.plan.go ? '<span class="eta">' + esc(sv.plan.go) + '</span>' : c.tz === 'K' ? '<span class="eta">한국 시각</span>' : '') + '</div>' +
       '<h2 class="now-title">' + rich(sv ? sv.title : c.title) + (sv && sv.rec ? '<span class="rec">추천</span>' : '') + '</h2>' +
@@ -3369,7 +3391,7 @@ function renderGuide(){
     gsec('tipSec', '<div class="tile">' + TRIP.tips.map(function(t, i){ return det('tip' + i, esc(t.t), '<ul class="dots">' + lis(t.ul) + '</ul>', i === 0); }).join('') + '</div>') +
     gsec('setSec', '<div class="tile"><div class="card"><h3>👤 누구 폰</h3><p class="k" style="margin-top:4px">지금 ' + esc(c ? c.name : '아직 안 고름') + (document.documentElement.hasAttribute('data-simple') ? ' · 간단히 보기' : '') + '</p>' +
         '<div class="btnrow"><button class="btn btn--sec btn--sm" type="button" data-whoopen>사람 · 간단히 보기 바꾸기</button></div></div>' +
-      '<div class="card"><h3>🔎 큰 글씨 · 🌗 밝기</h3><p class="k" style="margin-top:4px">이 폰에만 적용돼요.</p><div class="btnrow"><button class="btn btn--sec btn--sm" type="button" data-bigtoggle aria-pressed="' + big + '">' + (big ? '큰 글씨 끄기' : '큰 글씨 켜기') + '</button>' +
+      '<div class="card"><h3>🔎 큰 글씨 · 🌗 밝기</h3><p class="k" style="margin-top:4px">이 폰 · 지금 사람에게만 적용돼요.</p><div class="btnrow"><button class="btn btn--sec btn--sm" type="button" data-bigtoggle aria-pressed="' + big + '">' + (big ? '큰 글씨 끄기' : '큰 글씨 켜기') + '</button>' +
         '<button class="btn btn--sec btn--sm" type="button" id="themeBtn">밝게 · 어둡게</button></div></div>' +
       '<div class="card"><h3>📲 홈 화면에 추가</h3>' + (standalone ? '<p style="margin-top:6px">이미 홈 화면 앱으로 열었어요 👍 한 번 열어 두면 인터넷이 약한 곳에서도 열려요.</p>' :
         '<ul class="dots"><li><b>안드로이드(크롬)</b>: 아래 버튼, 또는 ⋮ 메뉴 → "홈 화면에 추가"</li><li><b>아이폰(사파리)</b>: 공유 버튼 → "홈 화면에 추가"</li></ul>') +
@@ -3451,7 +3473,7 @@ function toggleEv(h){
 function syncThemeColor(){ var m = $('#themeColor'); if (m) m.setAttribute('content', effTheme() === 'dark' ? '#0A1722' : '#DCEFF4'); }
 function setBig(v){
   if (v) document.documentElement.setAttribute('data-big', ''); else document.documentElement.removeAttribute('data-big');
-  save('big', !!v); renderGuide();
+  save('big', !!v); var bb = load('bigBy', {}) || {}; if (me()){ bb[me()] = !!v; save('bigBy', bb); } renderGuide();
   toast(v ? '큰 글씨로 보여요' : '보통 글씨로 돌아왔어요'); if (map) setTimeout(function(){ map.resize(); }, 60);
 }
 
