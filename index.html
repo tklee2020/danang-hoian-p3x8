@@ -7,6 +7,7 @@
 <meta name="description" content="다낭·호이안 가족여행 (2026.11.1–11.7) 일정·지도·날씨·장소·기록">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" id="themeColor" content="#DCEFF4">
+<meta name="color-scheme" id="schemeMeta" content="only light">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -45,24 +46,6 @@
   --warn-bg:#FFF1BF; --warn-ink:#10242B;
   --f-body:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',system-ui,sans-serif;
   --gutter:16px;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#0A1722;
-    --m1:22,60,108; --m2:12,100,106; --m3:42,52,124; --m4:10,82,90;
-    --glass:rgba(20,28,36,.55); --glass-fb:rgba(20,28,36,.9); --nav-glass:rgba(20,28,36,.74);
-    --glass-line:rgba(255,255,255,.14);
-    --glass-sh:0 10px 28px rgba(0,0,0,.35);
-    --solid:#121B23;
-    --card:#1A2630; --card-line:rgba(255,255,255,.06);
-    --ink:#EAF1F4; --ink-2:#B9C7CD; --ink-3:#9DAEB5;
-    --line:#33434E; --chip:#24323C; --chip-ink:#CFDBE0;
-    --sea:#0E7C86; --sea-ink:#6CCFD7; --on-sea:#FFFFFF; --sea-tint:rgba(108,207,215,.13); --sea-track:#24323C;
-    --inv:#EAF2F4; --inv-ink:#10242B; --inv-ink-2:#34474F; --inv-line:rgba(16,36,43,.75); --inv-btn:#10242B; --inv-btn-ink:#FFFFFF;
-    --head-ink:#F1F6F8; --head-sub:#C3D0D6;
-    --btn-sh:0 2px 10px rgba(0,0,0,.35);
-  }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
@@ -526,7 +509,6 @@ html[data-big] .ibtn--txt{background:var(--sea);color:var(--on-sea)}
 .dose b{font-variant-numeric:tabular-nums}
 .hot{color:#C0392B}
 :root[data-theme="dark"] .hot{color:#FF8A7A}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hot{color:#FF8A7A}}
 textarea.field{min-height:110px;padding:12px 14px;line-height:1.5;resize:vertical}
 .mf{display:grid;gap:4px;margin-top:10px}
 .mf label{font-size:0.875rem;font-weight:800;color:var(--ink-2)}
@@ -577,7 +559,6 @@ html[data-big] .ev{grid-template-columns:68px 18px minmax(0,1fr)}
 .now-title{font-size:1.75rem}
 .card h3{font-size:1.25rem}
 .title em{color:var(--lan-txt)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .title em{color:var(--lan)}}
 :root[data-theme="dark"] .title em{color:var(--lan)}
 
 /* 오늘 탭 머리: DAY 표시 · 등불 그림 */
@@ -620,7 +601,6 @@ body:not([data-view="plan"]) .top .chap{display:none}
 
 /* 오늘 경로 그림 카드 — 실제 좌표 + OSM 해안선·강 위에 점선 */
 :root{--rm-land:#EEF2E1;--rm-sea:#A9D8EF;--rm-ink:#1E2A30;--rm-halo:#FFFFFF}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--rm-land:#26323A;--rm-sea:#123A52;--rm-ink:#EAF1F4;--rm-halo:#0E171D}}
 :root[data-theme="dark"]{--rm-land:#26323A;--rm-sea:#123A52;--rm-ink:#EAF1F4;--rm-halo:#0E171D}
 .rcard{padding:12px}
 .rmap{display:block;width:100%;height:auto;margin-top:8px;border-radius:14px;overflow:hidden}
@@ -850,7 +830,8 @@ html[data-big] .prow__b{flex-direction:row}
 </style>
 <script>
 (function(){var m=null,b=null,s=null;try{m=JSON.parse(localStorage.getItem('danang26:theme'));b=JSON.parse(localStorage.getItem('danang26:big'));s=JSON.parse(localStorage.getItem('danang26:simple'));}catch(e){}
-if(m==='light'||m==='dark')document.documentElement.setAttribute('data-theme',m);
+/* 폰 다크 모드와 상관없이 밝게 — 🌗 로 '어둡게'를 고른 폰만 어둡게 */
+var d=m==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');if(d)document.getElementById('schemeMeta').setAttribute('content','dark');
 if(b===true)document.documentElement.setAttribute('data-big','');
 if(s===true)document.documentElement.setAttribute('data-simple','');})();
 </script>
@@ -1746,7 +1727,7 @@ const TRIP = {
 <script>
 (function(){
 'use strict';
-var BUILD = '10/30 19:55';
+var BUILD = '10/30 22:53';
 var NS = 'danang26:';
 var OFF_L = 7, OFF_K = 9;   /* 현지(베트남) UTC+7 · 한국 UTC+9 */
 
@@ -3025,11 +3006,7 @@ var TOP = {};
   TRIP.flood.alt.places.forEach(add);
   add(TRIP.sos.hoian.show); add(TRIP.sos.danang.show);
 })();
-function effTheme(){
-  var t = load('theme', 'system');
-  if (t === 'light' || t === 'dark') return t;
-  return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
+function effTheme(){ return load('theme', 'light') === 'dark' ? 'dark' : 'light'; }
 function mapMsg(t){ var m = $('#mapMsg'); m.textContent = t || ''; m.hidden = !t; }
 function loadMapLib(){
   if (window.maplibregl) return Promise.resolve(window.maplibregl);
@@ -3474,7 +3451,7 @@ function toggleEv(h){
   if (openSet[id]) delete openSet[id]; else openSet[id] = 1;
   li.classList.toggle('is-open', !!openSet[id]); h.setAttribute('aria-expanded', String(!!openSet[id]));
 }
-function syncThemeColor(){ var m = $('#themeColor'); if (m) m.setAttribute('content', effTheme() === 'dark' ? '#0A1722' : '#DCEFF4'); }
+function syncThemeColor(){ var d = effTheme() === 'dark', m = $('#themeColor'), c = $('#schemeMeta'); if (m) m.setAttribute('content', d ? '#0A1722' : '#DCEFF4'); if (c) c.setAttribute('content', d ? 'dark' : 'only light'); }
 function setBig(v){
   if (v) document.documentElement.setAttribute('data-big', ''); else document.documentElement.removeAttribute('data-big');
   save('big', !!v); var bb = load('bigBy', {}) || {}; if (me()){ bb[me()] = !!v; save('bigBy', bb); } renderGuide();
@@ -3517,12 +3494,11 @@ document.addEventListener('click', function(e){
     return;
   }
   if ((b = t.closest('#themeBtn'))) {
-    /* 누를 때마다 지금 보이는 것의 반대로. 폰 설정과 같은 쪽으로 돌아오면 '폰 따라가기'로 저장 */
-    var sysDark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches), nx = effTheme() === 'dark' ? 'light' : 'dark', follow = nx === (sysDark ? 'dark' : 'light');
-    save('theme', follow ? 'system' : nx);
-    if (follow) document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', nx);
+    /* 밝게 ↔ 어둡게 (폰 다크 모드는 따라가지 않음) */
+    var nx = effTheme() === 'dark' ? 'light' : 'dark';
+    save('theme', nx); document.documentElement.setAttribute('data-theme', nx);
     syncThemeColor(); mapSetStyle(nx);
-    toast((nx === 'light' ? '테마: 밝게' : '테마: 어둡게') + (follow ? ' (폰 설정 따라가기)' : '')); return;
+    toast(nx === 'light' ? '테마: 밝게' : '테마: 어둡게'); return;
   }
   if ((b = t.closest('#bigBtn, [data-bigtoggle]'))) { setBig(!document.documentElement.hasAttribute('data-big')); return; }
   /* 누구 폰 */
@@ -3650,8 +3626,6 @@ window.addEventListener('popstate', function(){
   show(location.hash.slice(1), false);
 });
 window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferredPrompt = e; var b = $('#installBtn'); if (b) b.disabled = false; });
-function onScheme(){ syncThemeColor(); if (load('theme', 'system') === 'system') mapSetStyle(effTheme()); }
-try { var mq = matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', onScheme); else if (mq.addListener) mq.addListener(onScheme); } catch (e) {}
 try { if (window.speechSynthesis){ findVoice(); speechSynthesis.onvoiceschanged = function(){ var had = !!viVoice; findVoice(); if (had !== !!viVoice){ var b = $('#phrBox'); if (b) b.innerHTML = phrasesHTML(); } }; } } catch (e) {}
 
 /* ---------- 시작 ---------- */
