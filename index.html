@@ -1053,9 +1053,9 @@ const TRIP = {
   /* k: flight·move·stay·food·walk·rest·spa·shop·card / place: 대표 장소(spots key) / places: 고를 곳들 / alt: 비·피곤할 때
      ic: 날짜 칩 아이콘(예보가 없을 때) / 오늘 경로 = 일정마다 place 또는 places 의 첫 곳, 장소 없는 쉬기·숙소·조식은 그 시각의 숙소, 나들이 칸은 고른 플랜(없으면 def 첫 장)의 route
      slot: am·pm·eve = 나들이 칸(plans 에서 고름 — 그 시각 숙소 지역(hubAt)의 플랜만) · def: 아무것도 안 골랐을 때의 힌트(첫 장이 경로 그림에) · maxH: 이 칸에 쓸 수 있는 시간(넘는 플랜은 아래로 + ⏱ 빠듯)
-     defNote: 그날 기본 배치 한 줄 — 10/27 날씨 전망(outlook)에 맞춤 */
+     defNote: 그날 기본 배치 한 줄 — 10/31 날씨 전망(outlook)에 맞춤 */
   days: [
-    { date: '2026-11-01', label: '일', ic: '✈️', title: '인천 → 다낭 → 호이안', defNote: '첫날 저녁은 숙소에서 걸어서 — QQ 저녁 · 강변 · 야시장 야식 — 10/27 전망 맑음(비 0~3mm)', items: [
+    { date: '2026-11-01', label: '일', ic: '✈️', title: '인천 → 다낭 → 호이안', defNote: '첫날 저녁은 숙소에서 걸어서 — QQ 저녁 · 강변 · 야시장 야식 — 10/31 전망 구름·소나기 가능', items: [
       { t: '08:20', tz: 'K', k: 'flight', title: '인천공항 **제2터미널** 도착 · 체크인', memo: ['프레스티지 라운지'] },
       { t: '11:10', tz: 'K', k: 'flight', title: '**KE457 출발** — 인천 T2 → 다낭 T2', memo: ['다낭 도착은 현지 시각 14:15 — 시계를 2시간 뒤로 돌려요'] },
       { t: '14:15', k: 'flight', title: '**다낭공항 T2 도착** — 입국·짐 찾기', memo: ['입국심사 때 여권 + **사람마다 사전입국신고 QR**(캡처해 둔 것)', '낮 도착이라 보통 40~60분', '짐 찾고 도착장 밖 왼쪽 **Star Cafe 옆 ATM(BIDV)에서 300만 동**', '도착장에서 이름판 든 기사를 찾아요'], place: 'd_airport' },
@@ -1064,7 +1064,7 @@ const TRIP = {
       { t: '17:00', k: 'card', slot: 'eve', maxH: 2, title: '저녁 나들이', def: ['h_qqnight'], dinner: true },
       { t: '19:00', approx: true, k: 'rest', title: '숙소 · 아기 재우기', memo: ['현지 19시 = 아기 몸시계(한국) 21시'] }
     ] },
-    { date: '2026-11-02', label: '월', ic: '🏮', title: '호이안 올드타운 — 아침 한 번, 해 질 녘 한 번', defNote: '기본 배치: 올드타운 아침 산책 + 이른 저녁·소원배 — 10/27 전망 맑음(비 3~6mm), 올드타운은 오늘 몰아서', items: [
+    { date: '2026-11-02', label: '월', ic: '🏮', title: '호이안 올드타운 — 아침 한 번, 해 질 녘 한 번', defNote: '기본 배치: 올드타운 아침 산책 + 이른 저녁·소원배 — 10/31 전망 오후 소나기·뇌우, 올드타운은 오늘 오전에 몰아서', items: [
       { t: '06:30', k: 'food', title: '조식', memo: ['06:30~10:00'] },
       { t: '08:00', end: '10:30', k: 'card', slot: 'am', title: '오전 나들이', def: ['h_oldtown'] },
       { t: '11:00', k: 'rest', title: '리조트 — 낮잠 · 수영장 · 반미 점심' },
@@ -1072,7 +1072,7 @@ const TRIP = {
       { t: '16:30', k: 'card', slot: 'eve', title: '저녁 나들이', def: ['h_lantern'], dinner: true },
       { t: '18:30', k: 'rest', title: '귀가 (19시 전)', memo: ['현지 19시 = 아기 몸시계(한국) 21시'] }
     ] },
-    { date: '2026-11-03', label: '화', ic: '🚗', title: '호이안 → 다낭', defNote: '10/27 전망 비·소나기(3~11mm) — 오전은 숙소·박물관, 오행산 경유는 맑을 때만', items: [
+    { date: '2026-11-03', label: '화', ic: '🚗', title: '호이안 → 다낭', defNote: '10/31 전망 소나기·뇌우 — 오전은 숙소·박물관, 오행산 경유는 맑을 때만', items: [
       { t: '06:30', k: 'food', title: '조식', memo: ['06:30~10:00'] },
       { t: '08:00', approx: true, k: 'card', slot: 'am', maxH: 3, title: '오전 나들이 (12시 체크아웃 전)', def: ['rest', 'h_museum'] },
       { t: '12:00', k: 'move', title: '**12:00 체크아웃 → 예약 차량(카시트)** → 푸라마', memo: ['23 km · 35~40분 — 아기는 차에서 낮잠', '맑고 아기가 깨어 있으면 가는 길에 **오행산** 엘리베이터 코스 1시간(차는 대기) {?대기 요금}'], place: 'd_furama', places: ['s_marble'] },
@@ -1081,7 +1081,7 @@ const TRIP = {
       { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 2, title: '오후 나들이', def: ['d_beach'] },
       { t: '17:00', approx: true, k: 'food', title: '저녁 — 리조트 식당 또는 길 건너', eat: ['**랑**(인도 요리, 저녁은 17:30부터 {?브레이크 타임}) · **냐벱**'], places: ['d_rang', 'd_nhabep'] }
     ] },
-    { date: '2026-11-04', label: '수', ic: '🌴', title: '다낭 자유 1 — [[a:밤에 다낭 도착|밤에 {@a} 도착]]', free: true, defNote: '기본 배치: 실내(롯데마트 또는 미술관+카페) + 안트엉 저녁 — [[a:내가 오기 전 가족 나들이|{@a} 오기 전에 나들이]] · 10/27 전망 비·소나기(9~11mm)', items: [
+    { date: '2026-11-04', label: '수', ic: '🌴', title: '다낭 자유 1 — [[a:밤에 다낭 도착|밤에 {@a} 도착]]', free: true, defNote: '기본 배치: 실내(롯데마트 또는 미술관+카페) + 안트엉 저녁 — [[a:내가 오기 전 가족 나들이|{@a} 오기 전에 나들이]] · 10/31 전망 소나기·뇌우(오후 곳에 따라 강하게)', items: [
       { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 나들이 고르기', memo: ['06:30~10:30'] },
       { t: '08:00', approx: true, k: 'card', slot: 'am', maxH: 4, title: '오전 나들이', def: ['lotte', 'museum'] },
       { t: '12:00', approx: true, k: 'rest', title: '리조트 — 낮잠 · 수영장' },
@@ -1094,14 +1094,14 @@ const TRIP = {
           '푸라마 정문 → **프런트에서 여권 보여 주고 투숙 등록 → 카드키** 받아 방으로. 미리 등록해 두면 아무도 마중 안 나가도 돼요',
           '엑스트라 베드는 **저녁 6시 전에** 깔아 달라고 미리 부탁 (아기 재운 뒤엔 방에 사람 들이기 어려워요)'] }
     ] },
-    { date: '2026-11-05', label: '목', ic: '🌴', title: '다낭 자유 2 — [[a:가족과 함께|{@a:과} 함께]]', free: true, defNote: '기본 배치: 리조트 데이 + 길 건너 저녁 — [[a:내가 늦게 온 다음 날|{@a:이} 늦게 온 다음 날]] · 어른 5명이라 스파 교대가 쉬워요 · 10/27 전망 비가 가장 많은 날(13~28mm). 맑으면 시내 반나절·린응사', items: [
+    { date: '2026-11-05', label: '목', ic: '🌴', title: '다낭 자유 2 — [[a:가족과 함께|{@a:과} 함께]]', free: true, defNote: '기본 배치: 리조트 데이 + 길 건너 저녁 — [[a:내가 늦게 온 다음 날|{@a:이} 늦게 온 다음 날]] · 어른 5명이라 스파 교대가 쉬워요 · 10/31 전망 비(보통). 맑으면 시내 반나절·린응사', items: [
       { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 나들이 고르기', memo: ['06:30~10:30 · [[a:나는|{@a:은}]] 늦잠 자도 10:30까지'] },
       { t: '08:00', approx: true, k: 'card', slot: 'am', maxH: 4, title: '오전 나들이', def: ['resort'] },
       { t: '12:00', approx: true, k: 'rest', title: '리조트 — 낮잠 · 수영장' },
       { t: '15:00', approx: true, k: 'card', slot: 'pm', maxH: 1.5, title: '오후 (골라도 되고 비워도 돼요)' },
       { t: '16:30', k: 'card', slot: 'eve', title: '저녁 나들이 (16:30~17:00 출발)', memo: ['오늘부터 어른 5 + 아기 — 그랩은 7인승 한 대'], def: ['d_across'], dinner: true }
     ] },
-    { date: '2026-11-06', label: '금', ic: '🌴', title: '다낭 자유 3 — 마지막 밤', free: true, defNote: '기본 배치: 시내 반나절(또는 린응사) + 가족 저녁(티아고) — 10/27 전망은 모델끼리 엇갈려요(0~27mm). 전날 비가 많았으면 오행산은 미끄러워요', items: [
+    { date: '2026-11-06', label: '금', ic: '🌴', title: '다낭 자유 3 — 마지막 밤', free: true, defNote: '기본 배치: 시내 반나절(또는 린응사) + 가족 저녁(티아고) — 10/31 전망 비(보통)·오후 소나기, 아침 예보 보고 고르기. 전날 비가 많았으면 오행산은 미끄러워요', items: [
       { t: '06:30', k: 'food', title: '조식 — 예보 보고 오늘 나들이 고르기', memo: ['06:30~10:30'] },
       { t: '07:30', approx: true, k: 'card', slot: 'am', maxH: 4.5, title: '오전 나들이', def: ['city', 'linhung'] },
       { t: '12:00', approx: true, k: 'rest', title: '리조트 — 낮잠 · 수영장 · 짐 미리 싸기' },
@@ -1206,20 +1206,22 @@ const TRIP = {
       eat: ['비 오는 날 차 없이', '냐벱: 에어컨 · 한국어 메뉴 · 랑은 17:30부터(16:30이면 냐벱)'], places: ['d_nhabep', 'd_rang'], route: ['d_nhabep'] }
   ],
 
-  /* 10/27 발표 날씨 전망 — 출발 2일 전(10/30)부터는 페이지가 Open-Meteo 실시간 예보로 추천(advise)해요. 그 전 기본 배치 힌트(defNote·def)의 근거 */
+  /* 10/31 날씨 전망(10/27 판을 갈음) — 출발 2일 전(10/30)부터는 페이지가 Open-Meteo 실시간 예보로 추천(advise)해요. 기본 배치 힌트(defNote·def)의 근거.
+     col = 셋째 칸 제목(없으면 「비 ECMWF / GFS」) */
   outlook: {
-    date: '2026-10-27', src: '베트남 기상청 NCHMF 하이쩌우(다낭) 10/27 발표 + Open-Meteo ECMWF/GFS',
-    short: '11/1~2 맑음 · 11/3~5 비·소나기(11/5 가장 많음) · 11/6~7 모델끼리 엇갈림',
-    rows: [['11/1', '24~32°C · 비 없음', '3 / 0mm'], ['11/2', '24~31°C · 비 없음', '6 / 3~5mm'], ['11/3', '23~29°C · 비·소나기', '11 / 3~6mm'],
-           ['11/4', '23~28°C · 비·소나기', '10 / 9~11mm'], ['11/5', '23~28°C · 비·소나기 — 가장 많음', '28 / 13~18mm'], ['11/6~7', '발표 범위 밖 · 모델끼리 엇갈림', '23~27 / 0~8mm']],
-    lines: ['바다(11/1~4): 파도 0.6~0.9m · 수온 27~29°C',
-            '태풍: 11월 동해 태풍은 평년보다 적을 전망. 중부 큰비는 11/20경까지 가능',
-            '10/27~29 중부(하띤~다낭)에 비 소식 — **호이안 침수 소식을 도착 전날(10/31) 확인**',
-            '판단: 호이안 올드타운 나들이는 맑은 **11/1~2에 몰고**, 다낭 **11/5 전후는 실내 플랜**을 기본 힌트로',
-            '**출발 2일 전(10/30)부터**는 이 페이지가 실시간 예보(Open-Meteo, 3일 앞까지)로 나들이 플랜을 정렬·추천해요'],
+    date: '2026-10-31', src: '베트남 기상청 NCHMF 하이쩌우(다낭) 10/28 10일 예보 + 10/30~31 기상청 발표 보도(VietNamNet · Nhân Dân · VOH)',
+    short: '10/29에 큰비 끝 · 11/1~4 소나기·오후 뇌우(곳에 따라 강하게) · 11/5~6 비 · 태풍 없음',
+    col: '기온',
+    rows: [['11/1(일)', '구름 · 소나기 가능 — 예보마다 갈려요', '24~32°C'], ['11/2(월)', '구름 · 오후 소나기·뇌우', '24~32°C'], ['11/3(화)', '소나기·뇌우 — 오후 곳에 따라 강한 비', '24~32°C'],
+           ['11/4(수)', '소나기·뇌우 — 오후 곳에 따라 강한 비', '24~32°C'], ['11/5(목)', '비(보통) · 오후 소나기', '24~31°C'], ['11/6(금)', '비(보통) · 오후 소나기', '24~31°C'], ['11/7(토)', '발표 범위 밖 — 그날 실시간 예보로', '—']],
+    lines: ['10/27~29 중부 큰비(60~130mm, 많은 곳 250mm↑)는 끝났고 10/31부터 소나기·뇌우 몇 곳 — **호이안 올드타운 침수 보도는 10/31까지 없어요**',
+            '태풍: 기상청 — 11/10까지 동해 태풍·열대저압부는 평년보다 적고, 지금 영향 주는 것 없음',
+            '11/2~6 **오후**에 소나기·뇌우(곳에 따라 강하게) — 나들이는 오전에, 오후는 낮잠·실내로',
+            '판단: 기본 배치는 그대로(올드타운 11/1~2 · 11/5 실내). 비는 대부분 오후 소나기라 오전 나들이는 그날 아침 예보로 정해요',
+            '이 페이지의 실시간 예보(Open-Meteo, 3일 앞까지)가 나들이 플랜을 정렬·추천해요 — 이 표보다 그쪽을 믿어요'],
     links: [['NCHMF 하이쩌우 예보', 'https://nchmf.gov.vn/kttvsite/vi-VN/1/hai-chau-tp-da-nang-w55.html'],
-            ['11월 기상 전망 (VietnamPlus)', 'https://www.vietnamplus.vn/khong-khi-lanh-trong-thang-11-co-the-hoat-dong-yeu-hon-trung-binh-nhieu-nam-post1144220.vnp'],
-            ['태풍 전망 (VietNamNet)', 'https://vietnamnet.vn/bao-co-kha-nang-do-bo-dat-lien-viet-nam-trong-1-thang-toi-2555472.html']]
+            ['11월 초 전망 (VietNamNet 10/30)', 'https://vietnamnet.vn/mien-bac-sap-don-khong-khi-lanh-manh-hon-trung-bo-hung-dot-mua-lon-2566056.html'],
+            ['태풍 1개월 전망 (VOH)', 'https://voh.com.vn/thoi-tiet/du-bao-1-thang-toi-bao-va-ap-thap-tren-bien-dong-it-hon-trung-binh-nhieu-nam-674079.html']]
   },
 
   /* 숙소로 배달 — 2026-10-14 배달K 앱에서 각 숙소 좌표로 조회해 배달되던 곳(구글 평점 4.2↑·리뷰 50↑). km 는 숙소에서 직선.
@@ -1258,7 +1260,7 @@ const TRIP = {
     facts: ['호이안 올드타운은 2022~2025년 연속으로 10월 말~11월에 잠겼어요. 2025년에는 11/1~11/3에 2차 침수.',
             '수위 눈금 감(보도에서 역산한 어림): 투본강 호이안 관측소 경보2 ≈ 1.5m · 경보3 ≈ 2.0m',
             '**10/29부터 매일** 태풍·수위·항공편을 확인해요',
-            '2026-10-26 예보: **10/27 저녁~10/29 중부(하띤~다낭)에 큰비**, 많은 곳 250mm↑ — 이 비 뒤 투본강 수위가 11/1~3 호이안을 좌우해요',
+            '10/27~29 중부(하띤~다낭) 큰비는 끝났고, **10/31까지 호이안 올드타운 침수 보도는 없어요**(검색 기준) — 도착 날 아침에 한 번 더 확인',
             '리버타운은 올드타운 서쪽 강변 — 호텔에 대응을 물어봐요 {?}'],
     links: [['베트남 기상청 (태풍·수위)', 'https://nchmf.gov.vn/'], ['Windy 비구름', 'https://www.windy.com/?rain,15.88,108.33,9'],
             ['한국 기상청 태풍', 'https://www.weather.go.kr/w/typhoon/ongoing.do'], ['Zoom Earth 위성', 'https://zoom.earth/'], ['대한항공', 'https://www.koreanair.com/']],
@@ -1727,7 +1729,7 @@ const TRIP = {
 <script>
 (function(){
 'use strict';
-var BUILD = '10/30 22:53';
+var BUILD = '10/31 14:18';
 var NS = 'danang26:';
 var OFF_L = 7, OFF_K = 9;   /* 현지(베트남) UTC+7 · 한국 UTC+9 */
 
@@ -3348,7 +3350,7 @@ var deferredPrompt = null;
 function outlookHTML(){
   var o = TRIP.outlook;
   return '<div class="card" id="outlookCard"><h3>🌦 날씨 전망 — ' + md(o.date) + ' 발표</h3><p class="k" style="margin-top:2px">' + esc(o.src) + '</p>' +
-    '<table class="tbl olk" style="margin-top:8px"><tr><th>날짜</th><th>예보</th><th>비<small>ECMWF / GFS</small></th></tr>' +
+    '<table class="tbl olk" style="margin-top:8px"><tr><th>날짜</th><th>예보</th><th>' + (o.col ? esc(o.col) : '비<small>ECMWF / GFS</small>') + '</th></tr>' +
     o.rows.map(function(r){ return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td><td>' + esc(r[2]) + '</td></tr>'; }).join('') + '</table>' +
     '<ul class="dots">' + lis(o.lines) + '</ul><div class="lnks">' + o.links.map(function(l){ return '<a class="lnk" href="' + l[1] + '" ' + EXT + '>' + esc(l[0]) + ' ↗</a>'; }).join('') + '</div></div>';
 }
