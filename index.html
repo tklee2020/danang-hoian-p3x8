@@ -489,6 +489,17 @@ html[data-big] .ibtn--txt{background:var(--sea);color:var(--on-sea)}
 .show__addr{margin-top:16px;font-size:2.125rem;font-weight:800;line-height:1.2;word-break:normal;overflow-wrap:anywhere}
 .show__tel{margin-top:auto;padding-top:18px;font-size:1.125rem;font-weight:700}
 .show--txt .show__name{font-size:3rem}
+.doc__tabs{margin-top:12px;display:flex;gap:8px}
+.doc__tab{flex:1;min-height:48px;border:2px solid #000000;border-radius:999px;background:#FFFFFF;color:#000000;font-size:1.0625rem;font-weight:800;cursor:pointer}
+.doc__tab.on{background:#000000;color:#FFFFFF}
+.doc{margin-top:14px;font-size:1.1875rem;line-height:1.45;word-break:normal;overflow-wrap:anywhere}
+.doc__lead{font-size:1.5rem;font-weight:900;line-height:1.25}
+.doc__h{margin-top:16px;padding-bottom:4px;border-bottom:2px solid #000000;font-size:1.0625rem;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.doc__ul{margin:8px 0 0;padding-left:1.1em}
+.doc__ul li{margin-top:6px}
+.doc__pee{font-weight:800}
+.doc__pee input{font:inherit;min-height:44px;padding:2px 8px;border:2px solid #000000;border-radius:10px;background:#FFFFFF;color:#000000}
+.sos-sheet__doc{margin-top:8px;width:100%;display:flex;flex-direction:column;gap:2px;align-items:center}
 
 /* 표현 */
 .ph{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--line)}
@@ -1303,7 +1314,37 @@ const TRIP = {
     danang: { name: '다낭', calls: [['빈멕 다낭 · 응급실 24시간', '+84 236 3711 111'], ['패밀리 메디컬 · 24시간 응급 라인', '+84 913 917 303']], show: 'm_vinmec',
       lines: ['빈멕 — 푸라마에서 5.7 km · 15분'] },
     common: [['영사콜센터 · 24시간(서울)', '+82 2 3210 0404'], ['주다낭 총영사관', '+84 236 3566 100']],
-    lines: ['구급 115는 베트남어 위주 — **호텔 프런트에 먼저 부탁**하거나 병원 번호로 직접', '빈멕 소아과는 08:00~17:00, 그 뒤엔 응급실 당직 소아과 · 한국어 통역은 새벽엔 없다는 후기 {?}', '총영사관 24시간 긴급 +84 93 112 0404 {?단일 출처}', '약국: 호이안 파마시티(~23:00) · 다낭 파마시티(푸라마 550m, ~23:30)']
+    lines: ['구급 115는 베트남어 위주 — **호텔 프런트에 먼저 부탁**하거나 병원 번호로 직접', '빈멕 소아과는 08:00~17:00, 그 뒤엔 응급실 당직 소아과 · 한국어 통역은 새벽엔 없다는 후기 {?}', '총영사관 24시간 긴급 +84 93 112 0404 {?단일 출처}', '약국: 호이안 파마시티(~23:00) · 다낭 파마시티(푸라마 550m, ~23:30)'],
+    /* 의사에게 보여주기 — 11/3 아기 기침·구토 진료용(빈멕). 사람 이름은 넣지 않음. [제목, [줄…]] · 「마지막 소변」 시각은 화면에서 적어 폰에만 저장 */
+    doctor: {
+      ko: '아기 증상 (11/3 진료용)',
+      en: { lab: 'English', pee: 'Last urination', groups: [
+        ['My baby is 13 months old. Weight: 10.4 kg', []],
+        ['Symptoms', ['Cough since Saturday (Oct 31). It is getting worse.', 'Runny nose since Sunday (Nov 1), gradually increasing.',
+          'Vomited after coughing during night sleep, on **Sunday night (Nov 1)** and **Monday night (Nov 2)**.', 'Temperature goes up and down between **37.0 and 37.7°C**.',
+          '**Urine output has decreased to about half of usual.** (The diaper is wet, but much less than usual.)', '@pee',
+          'Eating and drinking: normal amount.', 'Otherwise in good condition: smiling and playing well.']],
+        ['Medicine', ['**No fever medicine given.**', 'Cold medicine prescribed in Korea, given since Sunday (Nov 1):',
+          'Mucoteran granules (**acetylcysteine**)', 'Ambrocol syrup (**ambroxol**)',
+          'Comy tablet (**phenylephrine HCl 10 mg + chlorpheniramine maleate 4 mg** per tablet) — dose: see the Korean prescription']],
+        ['Other', ['Allergies: none known.', 'We are Korean tourists. We fly home on Nov 7.']],
+        ['Questions', ['1. Is my baby dehydrated?', '2. Is this a chest infection (pneumonia / bronchiolitis)? Does my baby need a test (chest X-ray, RSV / flu test)?',
+          '3. Should we continue the Korean medicine (especially Comy), or change it? What dose (by weight)?', '4. Which signs mean we must come back to the ER?', '5. Is it safe to fly on Nov 7?']]
+      ] },
+      vi: { lab: 'Tiếng Việt', pee: 'Lần đi tiểu gần nhất', groups: [
+        ['Bé nhà tôi 13 tháng tuổi. Cân nặng: 10,4 kg', []],
+        ['Triệu chứng', ['Ho từ thứ Bảy (31/10), ngày càng nặng hơn.', 'Sổ mũi từ Chủ nhật (1/11), tăng dần.',
+          '**Đêm Chủ nhật (1/11)** và **đêm thứ Hai (2/11)**, bé ho nhiều trong lúc ngủ rồi bị nôn.', 'Nhiệt độ lên xuống trong khoảng **37,0–37,7°C**.',
+          '**Lượng nước tiểu giảm còn khoảng một nửa so với bình thường.** (Tã vẫn ướt nhưng ít hơn nhiều so với bình thường.)', '@pee',
+          'Ăn uống: bình thường.', 'Ngoài ra bé vẫn khỏe: hay cười, chơi tốt.']],
+        ['Thuốc', ['**Chưa dùng thuốc hạ sốt.**', 'Thuốc cảm do bác sĩ Hàn Quốc kê, đã dùng từ Chủ nhật (1/11):',
+          'Mucoteran dạng cốm (**acetylcysteine**)', 'Ambrocol siro (**ambroxol**)',
+          'Comy viên (**phenylephrine HCl 10 mg + chlorpheniramine maleate 4 mg** mỗi viên) — liều dùng: xem đơn thuốc Hàn Quốc']],
+        ['Khác', ['Dị ứng: chưa phát hiện.', 'Chúng tôi là khách du lịch Hàn Quốc, về nước ngày 7/11.']],
+        ['Câu hỏi', ['1. Bé có bị mất nước không?', '2. Bé có bị viêm phổi / viêm tiểu phế quản không? Có cần xét nghiệm (chụp X-quang phổi, test RSV / cúm) không?',
+          '3. Có nên tiếp tục dùng thuốc Hàn Quốc (nhất là Comy) không, hay cần đổi thuốc? Liều theo cân nặng bao nhiêu?', '4. Dấu hiệu nào thì phải đưa bé đi cấp cứu ngay?', '5. Bé có thể đi máy bay ngày 7/11 không?']]
+      ] }
+    }
   },
 
   /* 체온·해열제 — 간격은 일반 제품 설명서 기준. 용량은 넣지 않음(체중 기준 — 소아과에서 받은 대로) */
@@ -1729,7 +1770,7 @@ const TRIP = {
 <script>
 (function(){
 'use strict';
-var BUILD = '10/31 14:18';
+var BUILD = '11/3 08:31';
 var NS = 'danang26:';
 var OFF_L = 7, OFF_K = 9;   /* 현지(베트남) UTC+7 · 한국 UTC+9 */
 
@@ -1915,13 +1956,29 @@ function showSpot(key){
       (s.tel ? '<a class="btn btn--sec" href="' + esc(telHref(s.tel)) + '">☎ 전화</a>' : '') +
     '</div>');
 }
+/* 의사에게 보여주기 — TRIP.sos.doctor. 영어·베트남어 전환, 「마지막 소변」 시각은 폰에만(load/save 'docPee') */
+function docBtn(cls){ return TRIP.sos.doctor ? '<button class="' + cls + '" type="button" data-doc="en"><b>🩺 의사에게 아기 증상 보여주기</b><span>영어 · 베트남어</span></button>' : ''; }
+function showDoctor(lang){
+  var D = TRIP.sos.doctor, L = D[lang] || D.en, pee = load('docPee', '');
+  var el = $('#show'), html = '<p class="show__ko">' + esc(D.ko) + ' — 의사·간호사에게 이 화면을 보여 주세요</p>' +
+    '<div class="doc__tabs" role="group" aria-label="언어">' + ['en', 'vi'].map(function(k){ return '<button class="doc__tab' + (k === lang ? ' on' : '') + '" type="button" data-doc="' + k + '" aria-pressed="' + (k === lang) + '">' + esc(D[k].lab) + '</button>'; }).join('') + '</div>' +
+    '<div class="doc" lang="' + (lang === 'vi' ? 'vi' : 'en') + '">' + L.groups.map(function(g, i){
+      return (i === 0 ? '<p class="doc__lead">' + rich(g[0]) + '</p>' : '<p class="doc__h">' + rich(g[0]) + '</p>') +
+        (g[1].length ? '<ul class="doc__ul">' + g[1].map(function(m){
+          return m === '@pee' ? '<li class="doc__pee"><label for="docPee">' + esc(L.pee) + ':</label> <input id="docPee" type="time" value="' + esc(pee) + '" aria-label="' + esc(L.pee) + ' (마지막 소변 시각)"></li>' : '<li>' + rich(m) + '</li>';
+        }).join('') + '</ul>' : '');
+    }).join('') + '</div>';
+  /* 언어만 바꿀 땐 기록을 더 쌓지 않아요(닫기 한 번에 닫히게) */
+  if (!el.hidden && el.classList.contains('show--doc')) { el.innerHTML = '<button class="show__x" type="button" data-showx>닫기 ✕</button>' + html; el.scrollTop = 0; }
+  else openShow(html, 'show--doc');
+}
 var sosHospitalKey = '';
 /* 지금 시각의 숙소 지역(hubAt — hubSwitchISO 기준) 병원·번호 + 어디서나 번호. 자세한 건 오늘 탭 비상 칸(renderSOS) */
 function openSosSheet(){
   var so = TRIP.sos, a = so[hubAt(Date.now())];
   sosHospitalKey = a.show;
   function call(c){ return '<a class="sos-call" href="' + telHref(c[1]) + '"><span class="sos-call__name">' + esc(c[0]) + '</span><span class="sos-call__tel">' + esc(c[1]) + '</span></a>'; }
-  $('#sosBody').innerHTML = '<div class="sos-sheet__hero"><button class="btn btn--pri" id="sosHospitalBtn" type="button"><b>🏥 기사에게 병원 보여주기</b><span>' + esc(SP[a.show].ko) + ' · ' + esc(a.name) + '</span></button></div>' +
+  $('#sosBody').innerHTML = '<div class="sos-sheet__hero"><button class="btn btn--pri" id="sosHospitalBtn" type="button"><b>🏥 기사에게 병원 보여주기</b><span>' + esc(SP[a.show].ko) + ' · ' + esc(a.name) + '</span></button>' + docBtn('btn btn--sec sos-sheet__doc') + '</div>' +
     '<p class="sos-sheet__label">' + esc(a.name) + ' — 바로 걸기</p><div class="sos-sheet__calls">' + a.calls.map(call).join('') +
     so.local.filter(function(c){ return c[1] === '115'; }).map(function(c){ return call([c[0] + ' (베트남어)', c[1]]); }).join('') + so.common.map(call).join('') + '</div>' +
     '<ul class="dots">' + lis(a.lines.concat(so.lines)) + '</ul>' +
@@ -2807,6 +2864,7 @@ function sosGroup(g, pri){
 function renderSOS(){
   var so = TRIP.sos, hub = hubAt(Date.now()), a = so[hub], b = so[hub === 'hoian' ? 'danang' : 'hoian'];
   $('#sos').innerHTML = '<div class="card inv"><h2 id="sosH">🚑 ' + esc(so.title) + '</h2>' +
+    (so.doctor ? '<div class="hosp">' + docBtn('btn hbtn hbtn--pri') + '</div>' : '') +
     sosGroup(a, true) + sosGroup(b, false) +
     '<p class="sos-h">어디서나</p><div class="hosp">' + so.local.map(function(c){ return '<a class="btn hbtn" href="tel:' + c[1] + '"><b>' + esc(c[0]) + ' ' + c[1] + '</b><span>현지 · 베트남어</span></a>'; }).join('') +
     so.common.map(function(c){ return '<a class="btn hbtn" href="' + telHref(c[1]) + '"><b>' + esc(c[0]) + '</b><span>' + esc(c[1]) + '</span></a>'; }).join('') + '</div>' +
@@ -3465,6 +3523,7 @@ document.addEventListener('click', function(e){
   var t = e.target, b;
   if (!t.closest) return;
   if ((b = t.closest('[data-showx]'))) { closeShow(); return; }
+  if ((b = t.closest('[data-doc]'))) { var dl = b.getAttribute('data-doc'); if ($('#sosSheet').hidden) showDoctor(dl); else closeSosSheet(false, function(){ showDoctor(dl); }); return; }
   /* 고르기 시트 (아빠·엄마 폰) */
   if ((b = t.closest('[data-psheet]'))) { var pv0 = b.getAttribute('data-psheet').split('|'); openPS(pv0[0], pv0[1]); return; }
   if ((b = t.closest('[data-psx]'))) { closePS(); return; }
@@ -3580,6 +3639,7 @@ document.addEventListener('change', function(e){
 });
 document.addEventListener('input', function(e){
   var i = e.target;
+  if (i.id === 'docPee'){ save('docPee', i.value); return; }
   if (i.id === 'eAmt'){ var n = i.value.replace(/[^0-9]/g, ''); i.value = n ? comma(+n) : ''; expConv(); return; }
   if (i.hasAttribute && i.hasAttribute('data-memo')){
     var m = load('memo', { f: {}, free: '' }), k = i.getAttribute('data-memo');
