@@ -1321,27 +1321,31 @@ const TRIP = {
       en: { lab: 'English', pee: 'Last urination', groups: [
         ['My baby is 13 months old. Weight: 10.4 kg', []],
         ['Symptoms', ['Cough since Saturday (Oct 31). It is getting worse.', 'Runny nose since Sunday (Nov 1), gradually increasing.',
-          'Vomited after coughing during night sleep, on **Sunday night (Nov 1)** and **Monday night (Nov 2)**.', 'Temperature goes up and down between **37.0 and 37.7°C**.',
-          '**Urine output has decreased to about half of usual.** (The diaper is wet, but much less than usual.)', '@pee',
+          'Vomited after coughing during night sleep, on **Sunday night (Nov 1)** and **Monday night (Nov 2)**.',
+          '**After waking up, the throat seems very swollen and the cough is severe.** It gets better some time after waking up.', 'Temperature goes up and down between **37.0 and 37.7°C**.',
+          '**Urine output has decreased to about half of usual.** (The diaper is wet, but much less than usual.)',
+          '**Last diaper change: around 8:30 AM.** Please check the current diaper.',
           'Eating and drinking: normal amount.', 'Otherwise in good condition: smiling and playing well.']],
         ['Medicine', ['**No fever medicine given.**', 'Cold medicine prescribed in Korea, given since Sunday (Nov 1):',
           'Mucoteran granules (**acetylcysteine**)', 'Ambrocol syrup (**ambroxol**)',
           'Comy tablet (**phenylephrine HCl 10 mg + chlorpheniramine maleate 4 mg** per tablet) — dose: see the Korean prescription']],
         ['Other', ['Allergies: none known.', 'We are Korean tourists. We fly home on Nov 7.']],
-        ['Questions', ['1. Is my baby dehydrated?', '2. Is this a chest infection (pneumonia / bronchiolitis)? Does my baby need a test (chest X-ray, RSV / flu test)?',
+        ['Questions', ['1. Is my baby dehydrated?', '2. Is this croup, pneumonia or bronchiolitis? Does my baby need a test (chest X-ray, RSV / flu test)?',
           '3. Should we continue the Korean medicine (especially Comy), or change it? What dose (by weight)?', '4. Which signs mean we must come back to the ER?', '5. Is it safe to fly on Nov 7?']]
       ] },
       vi: { lab: 'Tiếng Việt', pee: 'Lần đi tiểu gần nhất', groups: [
         ['Bé nhà tôi 13 tháng tuổi. Cân nặng: 10,4 kg', []],
         ['Triệu chứng', ['Ho từ thứ Bảy (31/10), ngày càng nặng hơn.', 'Sổ mũi từ Chủ nhật (1/11), tăng dần.',
-          '**Đêm Chủ nhật (1/11)** và **đêm thứ Hai (2/11)**, bé ho nhiều trong lúc ngủ rồi bị nôn.', 'Nhiệt độ lên xuống trong khoảng **37,0–37,7°C**.',
-          '**Lượng nước tiểu giảm còn khoảng một nửa so với bình thường.** (Tã vẫn ướt nhưng ít hơn nhiều so với bình thường.)', '@pee',
+          '**Đêm Chủ nhật (1/11)** và **đêm thứ Hai (2/11)**, bé ho nhiều trong lúc ngủ rồi bị nôn.',
+          '**Khi ngủ dậy, cổ họng có vẻ sưng nhiều và bé ho rất nặng.** Một lúc sau khi dậy thì đỡ hơn.', 'Nhiệt độ lên xuống trong khoảng **37,0–37,7°C**.',
+          '**Lượng nước tiểu giảm còn khoảng một nửa so với bình thường.** (Tã vẫn ướt nhưng ít hơn nhiều so với bình thường.)',
+          '**Lần thay tã gần nhất: khoảng 8 giờ 30 sáng.** Xin bác sĩ kiểm tra tã hiện tại.',
           'Ăn uống: bình thường.', 'Ngoài ra bé vẫn khỏe: hay cười, chơi tốt.']],
         ['Thuốc', ['**Chưa dùng thuốc hạ sốt.**', 'Thuốc cảm do bác sĩ Hàn Quốc kê, đã dùng từ Chủ nhật (1/11):',
           'Mucoteran dạng cốm (**acetylcysteine**)', 'Ambrocol siro (**ambroxol**)',
           'Comy viên (**phenylephrine HCl 10 mg + chlorpheniramine maleate 4 mg** mỗi viên) — liều dùng: xem đơn thuốc Hàn Quốc']],
         ['Khác', ['Dị ứng: chưa phát hiện.', 'Chúng tôi là khách du lịch Hàn Quốc, về nước ngày 7/11.']],
-        ['Câu hỏi', ['1. Bé có bị mất nước không?', '2. Bé có bị viêm phổi / viêm tiểu phế quản không? Có cần xét nghiệm (chụp X-quang phổi, test RSV / cúm) không?',
+        ['Câu hỏi', ['1. Bé có bị mất nước không?', '2. Bé có bị viêm thanh khí phế quản (croup), viêm phổi hay viêm tiểu phế quản không? Có cần xét nghiệm (chụp X-quang phổi, test RSV / cúm) không?',
           '3. Có nên tiếp tục dùng thuốc Hàn Quốc (nhất là Comy) không, hay cần đổi thuốc? Liều theo cân nặng bao nhiêu?', '4. Dấu hiệu nào thì phải đưa bé đi cấp cứu ngay?', '5. Bé có thể đi máy bay ngày 7/11 không?']]
       ] }
     }
@@ -1770,7 +1774,7 @@ const TRIP = {
 <script>
 (function(){
 'use strict';
-var BUILD = '11/3 08:31';
+var BUILD = '11/3 13:08';
 var NS = 'danang26:';
 var OFF_L = 7, OFF_K = 9;   /* 현지(베트남) UTC+7 · 한국 UTC+9 */
 
